@@ -1,0 +1,17 @@
+machine:
+  ghc:
+    version: 7.10.3
+
+dependencies:
+  cache_directories:
+    - "~/.ghc"
+    - "~/.cabal"
+  pre:
+    - "./mafia update"
+  override:
+    - "./mafia build"
+
+test:
+  override:
+    - "./mafia test"
+

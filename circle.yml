@@ -28,3 +28,15 @@ dependencies:
 test:
   override:
     - nox cabal test
+
+deployment:
+  master:
+    branch: master
+    commands:
+      - ./auto-tag.sh
+
+  hackage:
+    branch: /v.*/
+    commands:
+      - echo Publishing "$CIRCLE_TAG"
+

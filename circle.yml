@@ -28,3 +28,11 @@ dependencies:
 test:
   override:
     - nox cabal test
+
+deployment:
+  hackage:
+    owner: haskell-works
+    tag: /v.*/
+    commands:
+      - ./publish.sh
+

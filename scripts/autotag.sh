@@ -12,6 +12,14 @@ _version=$(
   cat $_repo_name.cabal | grep '^version:' | head | cut -d ':' -f 2 | xargs
 )
 
+_branch=$(git rev-parse --abbrev-ref HEAD)
+_branch_prefix=${_branch%-branch}
+
+if [[ "v$_version" != "$_branch_prefix".* ]]; then
+  echo "The version $_version does not belong to the branch $_branch"
+  exit 1
+fi
+
 _commit=$(git rev-parse --verify HEAD)
 
 _release_data=$(cat <<EOF
@@ -25,6 +33,8 @@ _release_data=$(cat <<EOF
 }
 EOF
 )
+
+echo "Creating release v$_version from commit $_commit in branch $_branch"
 
 curl -H "Authorization: token $GITHUB_TOKEN" \
   -X POST https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/releases \

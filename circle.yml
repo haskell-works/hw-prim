@@ -30,9 +30,15 @@ test:
     - nox cabal test
 
 deployment:
+  release_branch:
+    owner: haskell-works
+    branch: /v.*/
+    commands:
+      - ./scripts/autotag.sh
+
   hackage:
     owner: haskell-works
     tag: /v.*/
     commands:
-      - ./publish.sh
+      - ./scripts/publish.sh
 

@@ -20,6 +20,11 @@ if [[ "v$_version" != "$_branch_prefix".* ]]; then
   exit 1
 fi
 
+if git show-ref --tags | grep -q 'refs/tags/v'$_version'$'; then
+  echo "The tag v$_version already exists.  Will not tag"
+  exit 0
+fi
+
 _commit=$(git rev-parse --verify HEAD)
 
 _release_data=$(cat <<EOF

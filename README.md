@@ -1,3 +1,4 @@
 # hw-prim
-[![Circle CI](https://circleci.com/gh/haskell-works/hw-prim/tree/master.svg?style=svg)](https://circleci.com/gh/haskell-works/hw-prim/tree/master)
+[![v0.0-branch](https://circleci.com/gh/haskell-works/hw-prim/tree/v0.0-branch.svg?style=svg)](https://circleci.com/gh/haskell-works/hw-prim/tree/v0.0-branch)
+
 Primitive types library.

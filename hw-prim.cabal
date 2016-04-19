@@ -25,6 +25,7 @@ executable hw-prim-example
 library
   hs-source-dirs:       src
   exposed-modules:      HaskellWorks.Data.ByteString
+                      , HaskellWorks.Data.Char.IsChar
                       , HaskellWorks.Data.FromByteString
                       , HaskellWorks.Data.FromForeignRegion
                       , HaskellWorks.Data.Positioning

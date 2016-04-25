@@ -37,4 +37,6 @@ source_url "https://raw.githubusercontent.com/haskell-works/hw-buildopts/master/
 source_url "https://raw.githubusercontent.com/haskell-works/hw-buildopts/master/hash/$_git_hash"
 source_url "https://raw.githubusercontent.com/haskell-works/hw-buildopts/master/hash/$_git_short_hash"
 
+export LD_LIBRARY_PATH=~/.nix-profile/lib
+
 "$@"

@@ -1,5 +1,5 @@
 name:                   hw-prim
-version:                0.0.0.8
+version:                0.0.0.9
 synopsis:               Primitive functions and data types
 description:            Please see README.md
 homepage:               http://github.com/haskell-works/hw-prim#readme
@@ -30,6 +30,7 @@ library
                       , HaskellWorks.Data.FromForeignRegion
                       , HaskellWorks.Data.Positioning
                       , HaskellWorks.Data.Search
+                      , HaskellWorks.Data.TreeCursor
                       , HaskellWorks.Data.Vector.BoxedVectorLike
                       , HaskellWorks.Data.Vector.StorableVectorLike
                       , HaskellWorks.Data.Vector.VectorLike

@@ -3,7 +3,7 @@
 -- License: MIT
 --
 -- Tree Cursor
-module HaskellWorks.Data.Succinct
+module HaskellWorks.Data.TreeCursor
     ( TreeCursor(..)
     ) where
 

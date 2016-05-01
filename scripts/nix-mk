@@ -5,6 +5,8 @@ ghc_attr_namever="ghc7103"
 
 nix-env -i cabal2nix
 
+cabal update
+
 cabal2nix . > "$repo_name".nix
 
 cat > default.nix <<EOF

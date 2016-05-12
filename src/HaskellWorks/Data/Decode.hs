@@ -2,7 +2,10 @@
 
 module HaskellWorks.Data.Decode
   ( Decode(..)
+  , DecodeError(..)
   ) where
 
-class Decode c a where
-  decode :: c -> Maybe a
+data DecodeError = DecodeError String
+
+class Decode s t where
+  decode :: s -> Either DecodeError t

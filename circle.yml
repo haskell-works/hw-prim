@@ -27,4 +27,4 @@ deployment:
     owner: haskell-works
     tag: /v.*/
     commands:
-      - nox when deploy publish
+      - nox when deploy nix-shell shell.nix --command publish

@@ -1,5 +1,5 @@
 name:                   hw-prim
-version:                0.0.1.0
+version:                0.0.1.1
 synopsis:               Primitive functions and data types
 description:            Please see README.md
 homepage:               http://github.com/haskell-works/hw-prim#readme

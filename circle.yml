@@ -14,7 +14,10 @@ dependencies:
 
 test:
   override:
-    - nox when build nix-build
+    - nox when build nix-shell -p haskell.compiler.ghc7103 --command "cabal sandbox init"
+    - nox when build nix-shell -p haskell.compiler.ghc7103 --command "cabal update"
+    - nox when build nix-shell -p haskell.compiler.ghc7103 --command "cabal install --only-dependencies"
+    - nox when build nix-shell -p haskell.compiler.ghc7103 --command "cabal configure"
 
 deployment:
   release_branch:

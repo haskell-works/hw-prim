@@ -15,7 +15,7 @@ _version=$(
 _branch=$(git rev-parse --abbrev-ref HEAD)
 _branch_prefix=${_branch%-branch}
 
-if [[ "v$_version" != "$_branch_prefix".* ]]; then
+if [[ "$_version" != "0.0".* ]]; then
   echo "The version $_version does not belong to the branch $_branch"
   exit 1
 fi

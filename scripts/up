@@ -40,7 +40,6 @@ minor)
   ;;
 point)
   _new_version="$_major.$_minor.$(($_point + 1)).0"
-  _new_branch="$_major.$_minor.$(($_point + 1))"
   ;;
 patch)
   _new_version="$_major.$_minor.$_point.$(($_patch + 1))"

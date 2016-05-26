@@ -11,12 +11,10 @@ dependencies:
   override:
     - nox when deps nix-mk
     - nox when deps nix-deps
-    - nox when deps nix-deps --arg compiler \"ghc801\"
 
 test:
   override:
     - nox when build nix-build
-    - nox when build nix-build --arg compiler \"ghc801\"
 
 deployment:
   release_branch:

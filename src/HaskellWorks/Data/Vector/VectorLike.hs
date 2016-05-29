@@ -26,6 +26,7 @@ class VectorLike v where
   vTake :: Count -> v -> v
   vIndex :: v -> Position -> Elem v
   vSlice :: Position -> Position -> v -> v
+  vUncons :: v -> Maybe (Elem v, v)
 
 instance VectorLike String where
   type Elem String = Char
@@ -40,6 +41,9 @@ instance VectorLike String where
   vTake = take . fromIntegral
   vIndex v (Position i) = v !! fromIntegral i
   vSlice (Position i) (Position j) = take (fromIntegral j) . drop (fromIntegral i)
+  vUncons s = case s of
+    (x:xs)  -> Just (x, xs)
+    _       -> Nothing
   {-# INLINE (!!!)     #-}
   {-# INLINE vConcat   #-}
   {-# INLINE vEmpty    #-}
@@ -51,6 +55,7 @@ instance VectorLike String where
   {-# INLINE vTake     #-}
   {-# INLINE vIndex    #-}
   {-# INLINE vSlice    #-}
+  {-# INLINE vUncons   #-}
 
 instance VectorLike BS.ByteString where
   type Elem BS.ByteString = Word8
@@ -67,6 +72,7 @@ instance VectorLike BS.ByteString where
   vTake = BS.take . fromIntegral
   vIndex v (Position i) = BS.index v (fromIntegral i)
   vSlice (Position i) (Position j) = BS.take (fromIntegral j) . BS.drop (fromIntegral i)
+  vUncons = BS.uncons
   {-# INLINE (!!!)     #-}
   {-# INLINE vConcat   #-}
   {-# INLINE vEmpty    #-}
@@ -78,6 +84,7 @@ instance VectorLike BS.ByteString where
   {-# INLINE vTake     #-}
   {-# INLINE vIndex    #-}
   {-# INLINE vSlice    #-}
+  {-# INLINE vUncons   #-}
 
 instance VectorLike (DV.Vector Word8) where
   type Elem (DV.Vector Word8) = Word8
@@ -93,6 +100,7 @@ instance VectorLike (DV.Vector Word8) where
   vTake = DV.take . fromIntegral
   vIndex v (Position i) = DV.unsafeIndex v (fromIntegral i)
   vSlice (Position i) (Position j) = DV.unsafeSlice (fromIntegral i) (fromIntegral j)
+  vUncons s = if DV.length s == 0 then Nothing else Just (s !!! 0, vDrop 1 s)
   {-# INLINE (!!!)     #-}
   {-# INLINE vConcat   #-}
   {-# INLINE vEmpty    #-}
@@ -104,6 +112,7 @@ instance VectorLike (DV.Vector Word8) where
   {-# INLINE vTake     #-}
   {-# INLINE vIndex    #-}
   {-# INLINE vSlice    #-}
+  {-# INLINE vUncons   #-}
 
 instance VectorLike (DV.Vector Word16) where
   type Elem (DV.Vector Word16) = Word16
@@ -119,6 +128,7 @@ instance VectorLike (DV.Vector Word16) where
   vTake = DV.take . fromIntegral
   vIndex v (Position i) = DV.unsafeIndex v (fromIntegral i)
   vSlice (Position i) (Position j) = DV.unsafeSlice (fromIntegral i) (fromIntegral j)
+  vUncons s = if DV.length s == 0 then Nothing else Just (s !!! 0, vDrop 1 s)
   {-# INLINE (!!!)     #-}
   {-# INLINE vConcat   #-}
   {-# INLINE vEmpty    #-}
@@ -130,6 +140,7 @@ instance VectorLike (DV.Vector Word16) where
   {-# INLINE vTake     #-}
   {-# INLINE vIndex    #-}
   {-# INLINE vSlice    #-}
+  {-# INLINE vUncons   #-}
 
 instance VectorLike (DV.Vector Word32) where
   type Elem (DV.Vector Word32) = Word32
@@ -145,6 +156,7 @@ instance VectorLike (DV.Vector Word32) where
   vTake = DV.take . fromIntegral
   vIndex v (Position i) = DV.unsafeIndex v (fromIntegral i)
   vSlice (Position i) (Position j) = DV.unsafeSlice (fromIntegral i) (fromIntegral j)
+  vUncons s = if DV.length s == 0 then Nothing else Just (s !!! 0, vDrop 1 s)
   {-# INLINE (!!!)     #-}
   {-# INLINE vConcat   #-}
   {-# INLINE vEmpty    #-}
@@ -156,6 +168,7 @@ instance VectorLike (DV.Vector Word32) where
   {-# INLINE vTake     #-}
   {-# INLINE vIndex    #-}
   {-# INLINE vSlice    #-}
+  {-# INLINE vUncons   #-}
 
 instance VectorLike (DV.Vector Word64) where
   type Elem (DV.Vector Word64) = Word64
@@ -171,6 +184,7 @@ instance VectorLike (DV.Vector Word64) where
   vTake = DV.take . fromIntegral
   vIndex v (Position i) = DV.unsafeIndex v (fromIntegral i)
   vSlice (Position i) (Position j) = DV.unsafeSlice (fromIntegral i) (fromIntegral j)
+  vUncons s = if DV.length s == 0 then Nothing else Just (s !!! 0, vDrop 1 s)
   {-# INLINE (!!!)     #-}
   {-# INLINE vConcat   #-}
   {-# INLINE vEmpty    #-}
@@ -182,6 +196,7 @@ instance VectorLike (DV.Vector Word64) where
   {-# INLINE vTake     #-}
   {-# INLINE vIndex    #-}
   {-# INLINE vSlice    #-}
+  {-# INLINE vUncons   #-}
 
 instance VectorLike (DVS.Vector Word8) where
   type Elem (DVS.Vector Word8) = Word8
@@ -197,6 +212,7 @@ instance VectorLike (DVS.Vector Word8) where
   vTake = DVS.take . fromIntegral
   vIndex v (Position i) = DVS.unsafeIndex v (fromIntegral i)
   vSlice (Position i) (Position j) = DVS.unsafeSlice (fromIntegral i) (fromIntegral j)
+  vUncons s = if DVS.length s == 0 then Nothing else Just (s !!! 0, vDrop 1 s)
   {-# INLINE (!!!)     #-}
   {-# INLINE vConcat   #-}
   {-# INLINE vEmpty    #-}
@@ -208,6 +224,7 @@ instance VectorLike (DVS.Vector Word8) where
   {-# INLINE vTake     #-}
   {-# INLINE vIndex    #-}
   {-# INLINE vSlice    #-}
+  {-# INLINE vUncons   #-}
 
 instance VectorLike (DVS.Vector Word16) where
   type Elem (DVS.Vector Word16) = Word16
@@ -223,6 +240,7 @@ instance VectorLike (DVS.Vector Word16) where
   vTake = DVS.take . fromIntegral
   vIndex v (Position i) = DVS.unsafeIndex v (fromIntegral i)
   vSlice (Position i) (Position j) = DVS.unsafeSlice (fromIntegral i) (fromIntegral j)
+  vUncons s = if DVS.length s == 0 then Nothing else Just (s !!! 0, vDrop 1 s)
   {-# INLINE (!!!)     #-}
   {-# INLINE vConcat   #-}
   {-# INLINE vEmpty    #-}
@@ -234,6 +252,7 @@ instance VectorLike (DVS.Vector Word16) where
   {-# INLINE vTake     #-}
   {-# INLINE vIndex    #-}
   {-# INLINE vSlice    #-}
+  {-# INLINE vUncons   #-}
 
 instance VectorLike (DVS.Vector Word32) where
   type Elem (DVS.Vector Word32) = Word32
@@ -249,6 +268,7 @@ instance VectorLike (DVS.Vector Word32) where
   vTake = DVS.take . fromIntegral
   vIndex v (Position i) = DVS.unsafeIndex v (fromIntegral i)
   vSlice (Position i) (Position j) = DVS.unsafeSlice (fromIntegral i) (fromIntegral j)
+  vUncons s = if DVS.length s == 0 then Nothing else Just (s !!! 0, vDrop 1 s)
   {-# INLINE (!!!)     #-}
   {-# INLINE vConcat   #-}
   {-# INLINE vEmpty    #-}
@@ -260,6 +280,7 @@ instance VectorLike (DVS.Vector Word32) where
   {-# INLINE vTake     #-}
   {-# INLINE vIndex    #-}
   {-# INLINE vSlice    #-}
+  {-# INLINE vUncons   #-}
 
 instance VectorLike (DVS.Vector Word64) where
   type Elem (DVS.Vector Word64) = Word64
@@ -275,6 +296,7 @@ instance VectorLike (DVS.Vector Word64) where
   vTake = DVS.take . fromIntegral
   vIndex v (Position i) = DVS.unsafeIndex v (fromIntegral i)
   vSlice (Position i) (Position j) = DVS.unsafeSlice (fromIntegral i) (fromIntegral j)
+  vUncons s = if DVS.length s == 0 then Nothing else Just (s !!! 0, vDrop 1 s)
   {-# INLINE (!!!)     #-}
   {-# INLINE vConcat   #-}
   {-# INLINE vEmpty    #-}
@@ -286,3 +308,4 @@ instance VectorLike (DVS.Vector Word64) where
   {-# INLINE vTake     #-}
   {-# INLINE vIndex    #-}
   {-# INLINE vSlice    #-}
+  {-# INLINE vUncons   #-}

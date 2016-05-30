@@ -5,7 +5,7 @@ module HaskellWorks.Data.Decode
   , DecodeError(..)
   ) where
 
-data DecodeError = DecodeError String
+data DecodeError = DecodeError String deriving (Eq, Show)
 
 class Decode s t where
   decode :: s -> Either DecodeError t

@@ -21,6 +21,8 @@ class VectorLike v where
   vFilter :: (Elem v -> Bool) -> v -> v
   vGenerate :: Int -> (Int -> Elem v) -> v
   vLength :: v -> Count
+  vEnd :: v -> Position
+  vEnd = fromIntegral . vLength
   vSnoc :: v -> Elem v -> v
   vDrop :: Count -> v -> v
   vTake :: Count -> v -> v
@@ -36,6 +38,7 @@ instance VectorLike String where
   vFilter = filter
   vGenerate n f = f `fmap` [0 .. (n - 1)]
   vLength = Count . fromIntegral . length
+  vEnd = Position . fromIntegral . length
   vSnoc v c = v ++ [c]
   vDrop = drop . fromIntegral
   vTake = take . fromIntegral
@@ -50,6 +53,7 @@ instance VectorLike String where
   {-# INLINE vFilter   #-}
   {-# INLINE vGenerate #-}
   {-# INLINE vLength   #-}
+  {-# INLINE vEnd      #-}
   {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
@@ -67,6 +71,7 @@ instance VectorLike BS.ByteString where
   vGenerate n f = fst (BS.unfoldrN n go 0)
     where go i = if i /= n then Just (f i, i + 1) else Nothing
   vLength = Count . fromIntegral . BS.length
+  vEnd = Position . fromIntegral . BS.length
   vSnoc = BS.snoc
   vDrop = BS.drop . fromIntegral
   vTake = BS.take . fromIntegral
@@ -79,6 +84,7 @@ instance VectorLike BS.ByteString where
   {-# INLINE vFilter   #-}
   {-# INLINE vGenerate #-}
   {-# INLINE vLength   #-}
+  {-# INLINE vEnd      #-}
   {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
@@ -95,6 +101,7 @@ instance VectorLike (DV.Vector Word8) where
   vFilter = DV.filter
   vGenerate = DV.generate
   vLength = Count . fromIntegral . DV.length
+  vEnd = Position . fromIntegral . DV.length
   vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
@@ -107,6 +114,7 @@ instance VectorLike (DV.Vector Word8) where
   {-# INLINE vFilter   #-}
   {-# INLINE vGenerate #-}
   {-# INLINE vLength   #-}
+  {-# INLINE vEnd      #-}
   {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
@@ -123,6 +131,7 @@ instance VectorLike (DV.Vector Word16) where
   vFilter = DV.filter
   vGenerate = DV.generate
   vLength = Count . fromIntegral . DV.length
+  vEnd = Position . fromIntegral . DV.length
   vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
@@ -135,6 +144,7 @@ instance VectorLike (DV.Vector Word16) where
   {-# INLINE vFilter   #-}
   {-# INLINE vGenerate #-}
   {-# INLINE vLength   #-}
+  {-# INLINE vEnd      #-}
   {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
@@ -151,6 +161,7 @@ instance VectorLike (DV.Vector Word32) where
   vFilter = DV.filter
   vGenerate = DV.generate
   vLength = Count . fromIntegral . DV.length
+  vEnd = Position . fromIntegral . DV.length
   vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
@@ -163,6 +174,7 @@ instance VectorLike (DV.Vector Word32) where
   {-# INLINE vFilter   #-}
   {-# INLINE vGenerate #-}
   {-# INLINE vLength   #-}
+  {-# INLINE vEnd      #-}
   {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
@@ -179,6 +191,7 @@ instance VectorLike (DV.Vector Word64) where
   vFilter = DV.filter
   vGenerate = DV.generate
   vLength = Count . fromIntegral . DV.length
+  vEnd = Position . fromIntegral . DV.length
   vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
@@ -191,6 +204,7 @@ instance VectorLike (DV.Vector Word64) where
   {-# INLINE vFilter   #-}
   {-# INLINE vGenerate #-}
   {-# INLINE vLength   #-}
+  {-# INLINE vEnd      #-}
   {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
@@ -207,6 +221,7 @@ instance VectorLike (DVS.Vector Word8) where
   vFilter = DVS.filter
   vGenerate = DVS.generate
   vLength = Count . fromIntegral . DVS.length
+  vEnd = Position . fromIntegral . DVS.length
   vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
@@ -219,6 +234,7 @@ instance VectorLike (DVS.Vector Word8) where
   {-# INLINE vFilter   #-}
   {-# INLINE vGenerate #-}
   {-# INLINE vLength   #-}
+  {-# INLINE vEnd      #-}
   {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
@@ -235,6 +251,7 @@ instance VectorLike (DVS.Vector Word16) where
   vFilter = DVS.filter
   vGenerate = DVS.generate
   vLength = Count . fromIntegral . DVS.length
+  vEnd = Position . fromIntegral . DVS.length
   vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
@@ -247,6 +264,7 @@ instance VectorLike (DVS.Vector Word16) where
   {-# INLINE vFilter   #-}
   {-# INLINE vGenerate #-}
   {-# INLINE vLength   #-}
+  {-# INLINE vEnd      #-}
   {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
@@ -263,6 +281,7 @@ instance VectorLike (DVS.Vector Word32) where
   vFilter = DVS.filter
   vGenerate = DVS.generate
   vLength = Count . fromIntegral . DVS.length
+  vEnd = Position . fromIntegral . DVS.length
   vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
@@ -275,6 +294,7 @@ instance VectorLike (DVS.Vector Word32) where
   {-# INLINE vFilter   #-}
   {-# INLINE vGenerate #-}
   {-# INLINE vLength   #-}
+  {-# INLINE vEnd      #-}
   {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
@@ -291,6 +311,7 @@ instance VectorLike (DVS.Vector Word64) where
   vFilter = DVS.filter
   vGenerate = DVS.generate
   vLength = Count . fromIntegral . DVS.length
+  vEnd = Position . fromIntegral . DVS.length
   vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
@@ -303,6 +324,7 @@ instance VectorLike (DVS.Vector Word64) where
   {-# INLINE vFilter   #-}
   {-# INLINE vGenerate #-}
   {-# INLINE vLength   #-}
+  {-# INLINE vEnd      #-}
   {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}

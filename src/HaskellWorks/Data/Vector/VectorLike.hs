@@ -7,6 +7,7 @@ module HaskellWorks.Data.Vector.VectorLike
   ) where
 
 import qualified Data.ByteString               as BS
+import           Data.Int
 import qualified Data.Vector                   as DV
 import qualified Data.Vector.Storable          as DVS
 import           Data.Word
@@ -318,6 +319,126 @@ instance VectorLike (DVS.Vector Word64) where
   vIndex v (Position i) = DVS.unsafeIndex v (fromIntegral i)
   vSlice (Position i) (Position j) = DVS.unsafeSlice (fromIntegral i) (fromIntegral j)
   vUncons s = if DVS.length s == 0 then Nothing else Just (s !!! 0, vDrop 1 s)
+  {-# INLINE (!!!)     #-}
+  {-# INLINE vConcat   #-}
+  {-# INLINE vEmpty    #-}
+  {-# INLINE vFilter   #-}
+  {-# INLINE vGenerate #-}
+  {-# INLINE vLength   #-}
+  {-# INLINE vEnd      #-}
+  {-# INLINE vSnoc     #-}
+  {-# INLINE vDrop     #-}
+  {-# INLINE vTake     #-}
+  {-# INLINE vIndex    #-}
+  {-# INLINE vSlice    #-}
+  {-# INLINE vUncons   #-}
+
+instance VectorLike (DV.Vector Int8) where
+  type Elem (DV.Vector Int8) = Int8
+
+  (!!!) v (Position i) = v DV.! fromIntegral i
+  vConcat = DV.concat
+  vEmpty = DV.empty
+  vFilter = DV.filter
+  vGenerate = DV.generate
+  vLength = Count . fromIntegral . DV.length
+  vEnd = Position . fromIntegral . DV.length
+  vSnoc = DV.snoc
+  vDrop = DV.drop . fromIntegral
+  vTake = DV.take . fromIntegral
+  vIndex v (Position i) = DV.unsafeIndex v (fromIntegral i)
+  vSlice (Position i) (Position j) = DV.unsafeSlice (fromIntegral i) (fromIntegral j)
+  vUncons s = if DV.length s == 0 then Nothing else Just (s !!! 0, vDrop 1 s)
+  {-# INLINE (!!!)     #-}
+  {-# INLINE vConcat   #-}
+  {-# INLINE vEmpty    #-}
+  {-# INLINE vFilter   #-}
+  {-# INLINE vGenerate #-}
+  {-# INLINE vLength   #-}
+  {-# INLINE vEnd      #-}
+  {-# INLINE vSnoc     #-}
+  {-# INLINE vDrop     #-}
+  {-# INLINE vTake     #-}
+  {-# INLINE vIndex    #-}
+  {-# INLINE vSlice    #-}
+  {-# INLINE vUncons   #-}
+
+instance VectorLike (DV.Vector Int16) where
+  type Elem (DV.Vector Int16) = Int16
+
+  (!!!) v (Position i) = v DV.! fromIntegral i
+  vConcat = DV.concat
+  vEmpty = DV.empty
+  vFilter = DV.filter
+  vGenerate = DV.generate
+  vLength = Count . fromIntegral . DV.length
+  vEnd = Position . fromIntegral . DV.length
+  vSnoc = DV.snoc
+  vDrop = DV.drop . fromIntegral
+  vTake = DV.take . fromIntegral
+  vIndex v (Position i) = DV.unsafeIndex v (fromIntegral i)
+  vSlice (Position i) (Position j) = DV.unsafeSlice (fromIntegral i) (fromIntegral j)
+  vUncons s = if DV.length s == 0 then Nothing else Just (s !!! 0, vDrop 1 s)
+  {-# INLINE (!!!)     #-}
+  {-# INLINE vConcat   #-}
+  {-# INLINE vEmpty    #-}
+  {-# INLINE vFilter   #-}
+  {-# INLINE vGenerate #-}
+  {-# INLINE vLength   #-}
+  {-# INLINE vEnd      #-}
+  {-# INLINE vSnoc     #-}
+  {-# INLINE vDrop     #-}
+  {-# INLINE vTake     #-}
+  {-# INLINE vIndex    #-}
+  {-# INLINE vSlice    #-}
+  {-# INLINE vUncons   #-}
+
+instance VectorLike (DV.Vector Int32) where
+  type Elem (DV.Vector Int32) = Int32
+
+  (!!!) v (Position i) = v DV.! fromIntegral i
+  vConcat = DV.concat
+  vEmpty = DV.empty
+  vFilter = DV.filter
+  vGenerate = DV.generate
+  vLength = Count . fromIntegral . DV.length
+  vEnd = Position . fromIntegral . DV.length
+  vSnoc = DV.snoc
+  vDrop = DV.drop . fromIntegral
+  vTake = DV.take . fromIntegral
+  vIndex v (Position i) = DV.unsafeIndex v (fromIntegral i)
+  vSlice (Position i) (Position j) = DV.unsafeSlice (fromIntegral i) (fromIntegral j)
+  vUncons s = if DV.length s == 0 then Nothing else Just (s !!! 0, vDrop 1 s)
+  {-# INLINE (!!!)     #-}
+  {-# INLINE vConcat   #-}
+  {-# INLINE vEmpty    #-}
+  {-# INLINE vFilter   #-}
+  {-# INLINE vGenerate #-}
+  {-# INLINE vLength   #-}
+  {-# INLINE vEnd      #-}
+  {-# INLINE vSnoc     #-}
+  {-# INLINE vDrop     #-}
+  {-# INLINE vTake     #-}
+  {-# INLINE vIndex    #-}
+  {-# INLINE vSlice    #-}
+  {-# INLINE vUncons   #-}
+
+instance VectorLike (DV.Vector Int64) where
+  type Elem (DV.Vector Int64) = Int64
+
+  (!!!) v (Position i) = v DV.! fromIntegral i
+  vConcat = DV.concat
+  vEmpty = DV.empty
+  vFilter = DV.filter
+  vGenerate = DV.generate
+  vLength = Count . fromIntegral . DV.length
+  vEnd = Position . fromIntegral . DV.length
+  vSnoc = DV.snoc
+  vDrop = DV.drop . fromIntegral
+  vTake = DV.take . fromIntegral
+  vIndex v (Position i) = DV.unsafeIndex v (fromIntegral i)
+  vSlice (Position i) (Position j) = DV.unsafeSlice (fromIntegral i) (fromIntegral j)
+  vUncons s = if DV.length s == 0 then Nothing else Just (s !!! 0, vDrop 1 s)
   {-# INLINE (!!!)     #-}
   {-# INLINE vConcat   #-}
   {-# INLINE vEmpty    #-}

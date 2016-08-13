@@ -11,4 +11,4 @@ binarySearch w f p q = if p + 1 >= q
     if w <= f m
       then binarySearch w f p m
       else binarySearch w f m q
-{-# INLINABLE binarySearch #-}
+{-# INLINE binarySearch #-}

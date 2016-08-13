@@ -10,8 +10,8 @@ class IsChar c where
 
 instance IsChar Word8 where
   toChar = BI.w2c
-  {-# INLINABLE toChar #-}
+  {-# INLINE toChar #-}
 
 instance IsChar Char where
   toChar = id
-  {-# INLINABLE toChar #-}
+  {-# INLINE toChar #-}

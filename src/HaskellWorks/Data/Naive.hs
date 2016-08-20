@@ -1,10 +1,10 @@
 module HaskellWorks.Data.Naive
     ( Naive(..)
-    , getNaive
+    , naive
     ) where
 
 newtype Naive a = Naive a deriving (Eq, Show)
 
-getNaive :: Naive a -> a
-getNaive (Naive a) = a
-{-# INLINE getNaive #-}
+naive :: Naive a -> a
+naive (Naive a) = a
+{-# INLINE naive #-}

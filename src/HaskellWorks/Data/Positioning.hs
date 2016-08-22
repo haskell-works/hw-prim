@@ -8,6 +8,7 @@ module HaskellWorks.Data.Positioning
   , toPosition
   ) where
 
+import           Control.DeepSeq
 import           Data.Int
 import           Data.Word
 import           System.Random
@@ -25,6 +26,14 @@ newtype Position = Position { getPosition :: Int64 }
 
 instance Show Position where
     show (Position n) = show n
+
+instance NFData Count where
+  rnf = rnf . getCount
+  {-# INLINE rnf #-}
+
+instance NFData Position where
+  rnf = rnf . getPosition
+  {-# INLINE rnf #-}
 
 -- | Convert a count to a position
 toPosition :: Count -> Position

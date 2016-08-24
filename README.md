@@ -1,5 +1,5 @@
 # hw-prim
-[![0.0-branch](https://circleci.com/gh/haskell-works/hw-prim/tree/0.0-branch.svg?style=svg)](https://circleci.com/gh/haskell-works/hw-prim/tree/0.0-branch)
+[![CircleCI](https://circleci.com/gh/haskell-works/hw-prim/tree/0-branch.svg?style=svg)](https://circleci.com/gh/haskell-works/hw-prim/tree/0-branch)
 
 Primitive types library.
 

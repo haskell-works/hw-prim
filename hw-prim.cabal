@@ -29,9 +29,11 @@ library
                       , HaskellWorks.Data.Decode
                       , HaskellWorks.Data.FromByteString
                       , HaskellWorks.Data.FromForeignRegion
+                      , HaskellWorks.Data.IndexedSeq
                       , HaskellWorks.Data.Naive
                       , HaskellWorks.Data.Positioning
                       , HaskellWorks.Data.Search
+                      , HaskellWorks.Data.Seq
                       , HaskellWorks.Data.TreeCursor
                       , HaskellWorks.Data.Vector.BoxedVectorLike
                       , HaskellWorks.Data.Vector.StorableVectorLike

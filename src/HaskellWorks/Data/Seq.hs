@@ -28,6 +28,7 @@ instance Seq String where
   type Elem String = Char
   vEmpty = ""
   vLength = Count . fromIntegral . length
+  vEnd = fromIntegral . vLength
   vSnoc v c = v ++ [c]
   vDrop = drop . fromIntegral
   vTake = take . fromIntegral
@@ -48,6 +49,7 @@ instance Seq BS.ByteString where
 
   vEmpty = BS.empty
   vLength = Count . fromIntegral . BS.length
+  vEnd = fromIntegral . vLength
   vSnoc = BS.snoc
   vDrop = BS.drop . fromIntegral
   vTake = BS.take . fromIntegral
@@ -66,6 +68,7 @@ instance Seq (DV.Vector Word8) where
 
   vEmpty = DV.empty
   vLength = Count . fromIntegral . DV.length
+  vEnd = fromIntegral . vLength
   vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
@@ -84,6 +87,7 @@ instance Seq (DV.Vector Word16) where
 
   vEmpty = DV.empty
   vLength = Count . fromIntegral . DV.length
+  vEnd = fromIntegral . vLength
   vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
@@ -102,6 +106,7 @@ instance Seq (DV.Vector Word32) where
 
   vEmpty = DV.empty
   vLength = Count . fromIntegral . DV.length
+  vEnd = fromIntegral . vLength
   vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
@@ -120,6 +125,7 @@ instance Seq (DV.Vector Word64) where
 
   vEmpty = DV.empty
   vLength = Count . fromIntegral . DV.length
+  vEnd = fromIntegral . vLength
   vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
@@ -138,6 +144,7 @@ instance Seq (DVS.Vector Word8) where
 
   vEmpty = DVS.empty
   vLength = Count . fromIntegral . DVS.length
+  vEnd = fromIntegral . vLength
   vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
@@ -156,6 +163,7 @@ instance Seq (DVS.Vector Word16) where
 
   vEmpty = DVS.empty
   vLength = Count . fromIntegral . DVS.length
+  vEnd = fromIntegral . vLength
   vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
@@ -174,6 +182,7 @@ instance Seq (DVS.Vector Word32) where
 
   vEmpty = DVS.empty
   vLength = Count . fromIntegral . DVS.length
+  vEnd = fromIntegral . vLength
   vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
@@ -192,6 +201,7 @@ instance Seq (DVS.Vector Word64) where
 
   vEmpty = DVS.empty
   vLength = Count . fromIntegral . DVS.length
+  vEnd = fromIntegral . vLength
   vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
@@ -210,6 +220,7 @@ instance Seq (DV.Vector Int8) where
 
   vEmpty = DV.empty
   vLength = Count . fromIntegral . DV.length
+  vEnd = fromIntegral . vLength
   vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
@@ -228,6 +239,7 @@ instance Seq (DV.Vector Int16) where
 
   vEmpty = DV.empty
   vLength = Count . fromIntegral . DV.length
+  vEnd = fromIntegral . vLength
   vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
@@ -246,6 +258,7 @@ instance Seq (DV.Vector Int32) where
 
   vEmpty = DV.empty
   vLength = Count . fromIntegral . DV.length
+  vEnd = fromIntegral . vLength
   vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
@@ -264,6 +277,7 @@ instance Seq (DV.Vector Int64) where
 
   vEmpty = DV.empty
   vLength = Count . fromIntegral . DV.length
+  vEnd = fromIntegral . vLength
   vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
@@ -282,6 +296,7 @@ instance Seq (DVS.Vector Int8) where
 
   vEmpty = DVS.empty
   vLength = Count . fromIntegral . DVS.length
+  vEnd = fromIntegral . vLength
   vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
@@ -300,6 +315,7 @@ instance Seq (DVS.Vector Int16) where
 
   vEmpty = DVS.empty
   vLength = Count . fromIntegral . DVS.length
+  vEnd = fromIntegral . vLength
   vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
@@ -318,6 +334,7 @@ instance Seq (DVS.Vector Int32) where
 
   vEmpty = DVS.empty
   vLength = Count . fromIntegral . DVS.length
+  vEnd = fromIntegral . vLength
   vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
@@ -336,6 +353,7 @@ instance Seq (DVS.Vector Int64) where
 
   vEmpty = DVS.empty
   vLength = Count . fromIntegral . DVS.length
+  vEnd = fromIntegral . vLength
   vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
@@ -354,6 +372,7 @@ instance Seq (DVS.Vector Int) where
 
   vEmpty = DVS.empty
   vLength = Count . fromIntegral . DVS.length
+  vEnd = fromIntegral . vLength
   vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral

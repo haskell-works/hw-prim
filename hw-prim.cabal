@@ -27,6 +27,7 @@ library
   exposed-modules:      HaskellWorks.Data.ByteString
                       , HaskellWorks.Data.Char.IsChar
                       , HaskellWorks.Data.Decode
+                      , HaskellWorks.Data.Drop
                       , HaskellWorks.Data.FromByteString
                       , HaskellWorks.Data.FromForeignRegion
                       , HaskellWorks.Data.IndexedSeq

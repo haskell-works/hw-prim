@@ -26,6 +26,7 @@ library
   hs-source-dirs:       src
   exposed-modules:      HaskellWorks.Data.ByteString
                       , HaskellWorks.Data.Char.IsChar
+                      , HaskellWorks.Data.Container
                       , HaskellWorks.Data.Decode
                       , HaskellWorks.Data.Drop
                       , HaskellWorks.Data.FromByteString
@@ -36,6 +37,7 @@ library
                       , HaskellWorks.Data.Search
                       , HaskellWorks.Data.Seq
                       , HaskellWorks.Data.Snoc
+                      , HaskellWorks.Data.Take
                       , HaskellWorks.Data.TreeCursor
                       , HaskellWorks.Data.Vector.BoxedVectorLike
                       , HaskellWorks.Data.Vector.StorableVectorLike

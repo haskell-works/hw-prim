@@ -5,7 +5,7 @@
 module HaskellWorks.Data.IndexedSeq
     ( Container(..)
     , IndexedSeq(..)
-    , Seq(..)
+    , Length(..)
     ) where
 
 import qualified Data.ByteString               as BS
@@ -13,10 +13,10 @@ import           Data.Int
 import qualified Data.Vector                   as DV
 import qualified Data.Vector.Storable          as DVS
 import           Data.Word
+import           HaskellWorks.Data.Length
 import           HaskellWorks.Data.Positioning
-import           HaskellWorks.Data.Seq
 
-class Seq v => IndexedSeq v where
+class Length v => IndexedSeq v where
   (!!!)   :: v -> Position -> Elem v
   vIndex  :: v -> Position -> Elem v
 

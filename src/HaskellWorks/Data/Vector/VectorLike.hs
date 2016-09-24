@@ -5,7 +5,7 @@
 module HaskellWorks.Data.Vector.VectorLike
   ( Container(..)
   , IndexedSeq(..)
-  , Seq(..)
+  , Length(..)
   , VectorLike(..)
   ) where
 

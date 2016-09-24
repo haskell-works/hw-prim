@@ -19,7 +19,6 @@ class Seq v where
   vLength :: v -> Count
   vEnd :: v -> Position
   vEnd = fromIntegral . vLength
-  vSnoc :: v -> Elem v -> v
   vDrop :: Count -> v -> v
   vTake :: Count -> v -> v
   vUncons :: v -> Maybe (Elem v, v)
@@ -29,7 +28,6 @@ instance Seq String where
   vEmpty = ""
   vLength = Count . fromIntegral . length
   vEnd = fromIntegral . vLength
-  vSnoc v c = v ++ [c]
   vDrop = drop . fromIntegral
   vTake = take . fromIntegral
   vUncons s = case s of
@@ -39,7 +37,6 @@ instance Seq String where
   {-# INLINE vEmpty    #-}
   {-# INLINE vLength   #-}
   {-# INLINE vEnd      #-}
-  {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
   {-# INLINE vUncons   #-}
@@ -50,7 +47,6 @@ instance Seq BS.ByteString where
   vEmpty = BS.empty
   vLength = Count . fromIntegral . BS.length
   vEnd = fromIntegral . vLength
-  vSnoc = BS.snoc
   vDrop = BS.drop . fromIntegral
   vTake = BS.take . fromIntegral
   vUncons = BS.uncons
@@ -58,7 +54,6 @@ instance Seq BS.ByteString where
   {-# INLINE vEmpty    #-}
   {-# INLINE vLength   #-}
   {-# INLINE vEnd      #-}
-  {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
   {-# INLINE vUncons   #-}
@@ -69,7 +64,6 @@ instance Seq (DV.Vector Word8) where
   vEmpty = DV.empty
   vLength = Count . fromIntegral . DV.length
   vEnd = fromIntegral . vLength
-  vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
   vUncons s = if DV.length s == 0 then Nothing else Just (DV.head s, vDrop 1 s)
@@ -77,7 +71,6 @@ instance Seq (DV.Vector Word8) where
   {-# INLINE vEmpty    #-}
   {-# INLINE vLength   #-}
   {-# INLINE vEnd      #-}
-  {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
   {-# INLINE vUncons   #-}
@@ -88,7 +81,6 @@ instance Seq (DV.Vector Word16) where
   vEmpty = DV.empty
   vLength = Count . fromIntegral . DV.length
   vEnd = fromIntegral . vLength
-  vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
   vUncons s = if DV.length s == 0 then Nothing else Just (DV.head s, vDrop 1 s)
@@ -96,7 +88,6 @@ instance Seq (DV.Vector Word16) where
   {-# INLINE vEmpty    #-}
   {-# INLINE vLength   #-}
   {-# INLINE vEnd      #-}
-  {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
   {-# INLINE vUncons   #-}
@@ -107,7 +98,6 @@ instance Seq (DV.Vector Word32) where
   vEmpty = DV.empty
   vLength = Count . fromIntegral . DV.length
   vEnd = fromIntegral . vLength
-  vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
   vUncons s = if DV.length s == 0 then Nothing else Just (DV.head s, vDrop 1 s)
@@ -115,7 +105,6 @@ instance Seq (DV.Vector Word32) where
   {-# INLINE vEmpty    #-}
   {-# INLINE vLength   #-}
   {-# INLINE vEnd      #-}
-  {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
   {-# INLINE vUncons   #-}
@@ -126,7 +115,6 @@ instance Seq (DV.Vector Word64) where
   vEmpty = DV.empty
   vLength = Count . fromIntegral . DV.length
   vEnd = fromIntegral . vLength
-  vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
   vUncons s = if DV.length s == 0 then Nothing else Just (DV.head s, vDrop 1 s)
@@ -134,7 +122,6 @@ instance Seq (DV.Vector Word64) where
   {-# INLINE vEmpty    #-}
   {-# INLINE vLength   #-}
   {-# INLINE vEnd      #-}
-  {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
   {-# INLINE vUncons   #-}
@@ -145,7 +132,6 @@ instance Seq (DVS.Vector Word8) where
   vEmpty = DVS.empty
   vLength = Count . fromIntegral . DVS.length
   vEnd = fromIntegral . vLength
-  vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
   vUncons s = if DVS.length s == 0 then Nothing else Just (DVS.head s, vDrop 1 s)
@@ -153,7 +139,6 @@ instance Seq (DVS.Vector Word8) where
   {-# INLINE vEmpty    #-}
   {-# INLINE vLength   #-}
   {-# INLINE vEnd      #-}
-  {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
   {-# INLINE vUncons   #-}
@@ -164,7 +149,6 @@ instance Seq (DVS.Vector Word16) where
   vEmpty = DVS.empty
   vLength = Count . fromIntegral . DVS.length
   vEnd = fromIntegral . vLength
-  vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
   vUncons s = if DVS.length s == 0 then Nothing else Just (DVS.head s, vDrop 1 s)
@@ -172,7 +156,6 @@ instance Seq (DVS.Vector Word16) where
   {-# INLINE vEmpty    #-}
   {-# INLINE vLength   #-}
   {-# INLINE vEnd      #-}
-  {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
   {-# INLINE vUncons   #-}
@@ -183,7 +166,6 @@ instance Seq (DVS.Vector Word32) where
   vEmpty = DVS.empty
   vLength = Count . fromIntegral . DVS.length
   vEnd = fromIntegral . vLength
-  vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
   vUncons s = if DVS.length s == 0 then Nothing else Just (DVS.head s, vDrop 1 s)
@@ -191,7 +173,6 @@ instance Seq (DVS.Vector Word32) where
   {-# INLINE vEmpty    #-}
   {-# INLINE vLength   #-}
   {-# INLINE vEnd      #-}
-  {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
   {-# INLINE vUncons   #-}
@@ -202,7 +183,6 @@ instance Seq (DVS.Vector Word64) where
   vEmpty = DVS.empty
   vLength = Count . fromIntegral . DVS.length
   vEnd = fromIntegral . vLength
-  vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
   vUncons s = if DVS.length s == 0 then Nothing else Just (DVS.head s, vDrop 1 s)
@@ -210,7 +190,6 @@ instance Seq (DVS.Vector Word64) where
   {-# INLINE vEmpty    #-}
   {-# INLINE vLength   #-}
   {-# INLINE vEnd      #-}
-  {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
   {-# INLINE vUncons   #-}
@@ -221,7 +200,6 @@ instance Seq (DV.Vector Int8) where
   vEmpty = DV.empty
   vLength = Count . fromIntegral . DV.length
   vEnd = fromIntegral . vLength
-  vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
   vUncons s = if DV.length s == 0 then Nothing else Just (DV.head s, vDrop 1 s)
@@ -229,7 +207,6 @@ instance Seq (DV.Vector Int8) where
   {-# INLINE vEmpty    #-}
   {-# INLINE vLength   #-}
   {-# INLINE vEnd      #-}
-  {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
   {-# INLINE vUncons   #-}
@@ -240,7 +217,6 @@ instance Seq (DV.Vector Int16) where
   vEmpty = DV.empty
   vLength = Count . fromIntegral . DV.length
   vEnd = fromIntegral . vLength
-  vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
   vUncons s = if DV.length s == 0 then Nothing else Just (DV.head s, vDrop 1 s)
@@ -248,7 +224,6 @@ instance Seq (DV.Vector Int16) where
   {-# INLINE vEmpty    #-}
   {-# INLINE vLength   #-}
   {-# INLINE vEnd      #-}
-  {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
   {-# INLINE vUncons   #-}
@@ -259,7 +234,6 @@ instance Seq (DV.Vector Int32) where
   vEmpty = DV.empty
   vLength = Count . fromIntegral . DV.length
   vEnd = fromIntegral . vLength
-  vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
   vUncons s = if DV.length s == 0 then Nothing else Just (DV.head s, vDrop 1 s)
@@ -267,7 +241,6 @@ instance Seq (DV.Vector Int32) where
   {-# INLINE vEmpty    #-}
   {-# INLINE vLength   #-}
   {-# INLINE vEnd      #-}
-  {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
   {-# INLINE vUncons   #-}
@@ -278,7 +251,6 @@ instance Seq (DV.Vector Int64) where
   vEmpty = DV.empty
   vLength = Count . fromIntegral . DV.length
   vEnd = fromIntegral . vLength
-  vSnoc = DV.snoc
   vDrop = DV.drop . fromIntegral
   vTake = DV.take . fromIntegral
   vUncons s = if DV.length s == 0 then Nothing else Just (DV.head s, vDrop 1 s)
@@ -286,7 +258,6 @@ instance Seq (DV.Vector Int64) where
   {-# INLINE vEmpty    #-}
   {-# INLINE vLength   #-}
   {-# INLINE vEnd      #-}
-  {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
   {-# INLINE vUncons   #-}
@@ -297,7 +268,6 @@ instance Seq (DVS.Vector Int8) where
   vEmpty = DVS.empty
   vLength = Count . fromIntegral . DVS.length
   vEnd = fromIntegral . vLength
-  vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
   vUncons s = if DVS.length s == 0 then Nothing else Just (DVS.head s, vDrop 1 s)
@@ -305,7 +275,6 @@ instance Seq (DVS.Vector Int8) where
   {-# INLINE vEmpty    #-}
   {-# INLINE vLength   #-}
   {-# INLINE vEnd      #-}
-  {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
   {-# INLINE vUncons   #-}
@@ -316,7 +285,6 @@ instance Seq (DVS.Vector Int16) where
   vEmpty = DVS.empty
   vLength = Count . fromIntegral . DVS.length
   vEnd = fromIntegral . vLength
-  vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
   vUncons s = if DVS.length s == 0 then Nothing else Just (DVS.head s, vDrop 1 s)
@@ -324,7 +292,6 @@ instance Seq (DVS.Vector Int16) where
   {-# INLINE vEmpty    #-}
   {-# INLINE vLength   #-}
   {-# INLINE vEnd      #-}
-  {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
   {-# INLINE vUncons   #-}
@@ -335,7 +302,6 @@ instance Seq (DVS.Vector Int32) where
   vEmpty = DVS.empty
   vLength = Count . fromIntegral . DVS.length
   vEnd = fromIntegral . vLength
-  vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
   vUncons s = if DVS.length s == 0 then Nothing else Just (DVS.head s, vDrop 1 s)
@@ -343,7 +309,6 @@ instance Seq (DVS.Vector Int32) where
   {-# INLINE vEmpty    #-}
   {-# INLINE vLength   #-}
   {-# INLINE vEnd      #-}
-  {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
   {-# INLINE vUncons   #-}
@@ -354,7 +319,6 @@ instance Seq (DVS.Vector Int64) where
   vEmpty = DVS.empty
   vLength = Count . fromIntegral . DVS.length
   vEnd = fromIntegral . vLength
-  vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
   vUncons s = if DVS.length s == 0 then Nothing else Just (DVS.head s, vDrop 1 s)
@@ -362,7 +326,6 @@ instance Seq (DVS.Vector Int64) where
   {-# INLINE vEmpty    #-}
   {-# INLINE vLength   #-}
   {-# INLINE vEnd      #-}
-  {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
   {-# INLINE vUncons   #-}
@@ -373,7 +336,6 @@ instance Seq (DVS.Vector Int) where
   vEmpty = DVS.empty
   vLength = Count . fromIntegral . DVS.length
   vEnd = fromIntegral . vLength
-  vSnoc = DVS.snoc
   vDrop = DVS.drop . fromIntegral
   vTake = DVS.take . fromIntegral
   vUncons s = if DVS.length s == 0 then Nothing else Just (DVS.head s, vDrop 1 s)
@@ -381,7 +343,6 @@ instance Seq (DVS.Vector Int) where
   {-# INLINE vEmpty    #-}
   {-# INLINE vLength   #-}
   {-# INLINE vEnd      #-}
-  {-# INLINE vSnoc     #-}
   {-# INLINE vDrop     #-}
   {-# INLINE vTake     #-}
   {-# INLINE vUncons   #-}

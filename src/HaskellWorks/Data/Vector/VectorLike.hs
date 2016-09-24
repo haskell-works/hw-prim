@@ -14,9 +14,10 @@ import qualified Data.Vector                   as DV
 import qualified Data.Vector.Storable          as DVS
 import           Data.Word
 import           HaskellWorks.Data.IndexedSeq
+import           HaskellWorks.Data.Snoc
 
 -- | Class of values that support vector like operations
-class IndexedSeq v => VectorLike v where
+class (IndexedSeq v, Snoc v) => VectorLike v where
   vConcat :: [v] -> v
   vFilter :: (Elem v -> Bool) -> v -> v
   vGenerate :: Int -> (Int -> Elem v) -> v

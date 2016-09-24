@@ -1,5 +1,5 @@
 name:                   hw-prim
-version:                0.1.0.3
+version:                0.2.0.0
 synopsis:               Primitive functions and data types
 description:            Please see README.md
 homepage:               http://github.com/haskell-works/hw-prim#readme
@@ -26,11 +26,14 @@ library
   hs-source-dirs:       src
   exposed-modules:      HaskellWorks.Data.ByteString
                       , HaskellWorks.Data.Char.IsChar
+                      , HaskellWorks.Data.Concat
                       , HaskellWorks.Data.Container
                       , HaskellWorks.Data.Decode
                       , HaskellWorks.Data.Drop
+                      , HaskellWorks.Data.Filter
                       , HaskellWorks.Data.FromByteString
                       , HaskellWorks.Data.FromForeignRegion
+                      , HaskellWorks.Data.Generate
                       , HaskellWorks.Data.IndexedSeq
                       , HaskellWorks.Data.Length
                       , HaskellWorks.Data.Naive
@@ -41,7 +44,6 @@ library
                       , HaskellWorks.Data.TreeCursor
                       , HaskellWorks.Data.Vector.BoxedVectorLike
                       , HaskellWorks.Data.Vector.StorableVectorLike
-                      , HaskellWorks.Data.Vector.VectorLike
   build-depends:        base                          >= 4          && < 5
                       , bytestring
                       , deepseq

@@ -15,80 +15,80 @@ import           Data.Word
 import           HaskellWorks.Data.Container
 
 class Container a => Empty a where
-  vEmpty :: a
+  empty :: a
 
-instance Empty String where
-  vEmpty = ""
-  {-# INLINE vEmpty #-}
+instance Empty [a] where
+  empty = []
+  {-# INLINE empty #-}
 
 instance Empty BS.ByteString where
-  vEmpty = BS.empty
-  {-# INLINE vEmpty #-}
+  empty = BS.empty
+  {-# INLINE empty #-}
 
 instance Empty (DV.Vector Word8) where
-  vEmpty = DV.empty
-  {-# INLINE vEmpty #-}
+  empty = DV.empty
+  {-# INLINE empty #-}
 
 instance Empty (DV.Vector Word16) where
-  vEmpty = DV.empty
-  {-# INLINE vEmpty #-}
+  empty = DV.empty
+  {-# INLINE empty #-}
 
 instance Empty (DV.Vector Word32) where
-  vEmpty = DV.empty
-  {-# INLINE vEmpty #-}
+  empty = DV.empty
+  {-# INLINE empty #-}
 
 instance Empty (DV.Vector Word64) where
-  vEmpty = DV.empty
-  {-# INLINE vEmpty #-}
+  empty = DV.empty
+  {-# INLINE empty #-}
 
 instance Empty (DVS.Vector Word8) where
-  vEmpty = DVS.empty
-  {-# INLINE vEmpty #-}
+  empty = DVS.empty
+  {-# INLINE empty #-}
 
 instance Empty (DVS.Vector Word16) where
-  vEmpty = DVS.empty
-  {-# INLINE vEmpty #-}
+  empty = DVS.empty
+  {-# INLINE empty #-}
 
 instance Empty (DVS.Vector Word32) where
-  vEmpty = DVS.empty
-  {-# INLINE vEmpty #-}
+  empty = DVS.empty
+  {-# INLINE empty #-}
 
 instance Empty (DVS.Vector Word64) where
-  vEmpty = DVS.empty
-  {-# INLINE vEmpty #-}
+  empty = DVS.empty
+  {-# INLINE empty #-}
 
 instance Empty (DV.Vector Int8) where
-  vEmpty = DV.empty
-  {-# INLINE vEmpty #-}
+  empty = DV.empty
+  {-# INLINE empty #-}
 
 instance Empty (DV.Vector Int16) where
-  vEmpty = DV.empty
-  {-# INLINE vEmpty #-}
+  empty = DV.empty
+  {-# INLINE empty #-}
 
 instance Empty (DV.Vector Int32) where
-  vEmpty = DV.empty
-  {-# INLINE vEmpty #-}
+  empty = DV.empty
+  {-# INLINE empty #-}
 
 instance Empty (DV.Vector Int64) where
-  vEmpty = DV.empty
-  {-# INLINE vEmpty #-}
+  empty = DV.empty
+  {-# INLINE empty #-}
 
 instance Empty (DVS.Vector Int8) where
-  vEmpty = DVS.empty
-  {-# INLINE vEmpty #-}
+  empty = DVS.empty
+  {-# INLINE empty #-}
 
 instance Empty (DVS.Vector Int16) where
-  vEmpty = DVS.empty
-  {-# INLINE vEmpty #-}
+  empty = DVS.empty
+  {-# INLINE empty #-}
 
 instance Empty (DVS.Vector Int32) where
-  vEmpty = DVS.empty
-  {-# INLINE vEmpty #-}
+  empty = DVS.empty
+  {-# INLINE empty #-}
 
 instance Empty (DVS.Vector Int64) where
-  vEmpty = DVS.empty
-  {-# INLINE vEmpty #-}
+  empty = DVS.empty
+  {-# INLINE empty #-}
 
 instance Empty (DVS.Vector Int) where
-  vEmpty = DVS.empty
-  {-# INLINE vEmpty #-}
+  empty = DVS.empty
+  {-# INLINE empty #-}

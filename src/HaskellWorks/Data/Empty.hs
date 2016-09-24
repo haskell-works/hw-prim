@@ -17,8 +17,8 @@ import           HaskellWorks.Data.Container
 class Container a => Empty a where
   empty :: a
 
-instance Empty String where
-  empty = ""
+instance Empty [a] where
+  empty = []
   {-# INLINE empty #-}
 
 instance Empty BS.ByteString where

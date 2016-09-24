@@ -9,6 +9,7 @@ module HaskellWorks.Data.Take
 
 import qualified Data.ByteString               as BS
 import           Data.Int
+import qualified Data.List                     as L
 import qualified Data.Vector                   as DV
 import qualified Data.Vector.Storable          as DVS
 import           Data.Word
@@ -18,8 +19,8 @@ import           HaskellWorks.Data.Positioning
 class Container v => Take v where
   vTake :: Count -> v -> v
 
-instance Take String where
-  vTake = take . fromIntegral
+instance Take [a] where
+  vTake = L.take . fromIntegral
   {-# INLINE vTake #-}
 
 instance Take BS.ByteString where

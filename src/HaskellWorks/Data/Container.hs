@@ -12,11 +12,11 @@ import qualified Data.Vector                   as DV
 import qualified Data.Vector.Storable          as DVS
 import           Data.Word
 
-class Container v where
-  type Elem v
+class Container a where
+  type Elem a
 
-instance Container String where
-  type Elem String = Char
+instance Container [a] where
+  type Elem [a] = a
 
 instance Container BS.ByteString where
   type Elem BS.ByteString = Word8

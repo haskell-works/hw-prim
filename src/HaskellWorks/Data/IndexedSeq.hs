@@ -20,7 +20,7 @@ class Length v => IndexedSeq v where
   (!!!) :: v -> Position -> Elem v
   index :: v -> Position -> Elem v
 
-instance IndexedSeq String where
+instance IndexedSeq [a] where
   (!!!) v (Position i) = v !! fromIntegral i
   index v (Position i) = v !! fromIntegral i
   {-# INLINE (!!!) #-}

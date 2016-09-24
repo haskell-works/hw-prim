@@ -8,6 +8,7 @@ module HaskellWorks.Data.Length
 
 import qualified Data.ByteString               as BS
 import           Data.Int
+import qualified Data.List                     as L
 import qualified Data.Vector                   as DV
 import qualified Data.Vector.Storable          as DVS
 import           Data.Word
@@ -21,8 +22,8 @@ class Container v => Length v where
   end = fromIntegral . length
   {-# INLINE end #-}
 
-instance Length String where
-  length = Count . fromIntegral . length
+instance Length [a] where
+  length = Count . fromIntegral . L.length
   {-# INLINE length #-}
 
 instance Length BS.ByteString where

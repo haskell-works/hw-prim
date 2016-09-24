@@ -16,8 +16,8 @@ import           HaskellWorks.Data.Container
 class Container v => Snoc v where
   snoc :: v -> Elem v -> v
 
-instance Snoc String where
-  snoc v c = v ++ [c]
+instance Snoc [a] where
+  snoc v a = v ++ [a]
   {-# INLINE snoc #-}
 
 instance Snoc BS.ByteString where

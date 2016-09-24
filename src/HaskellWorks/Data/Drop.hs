@@ -9,6 +9,7 @@ module HaskellWorks.Data.Drop
 
 import qualified Data.ByteString               as BS
 import           Data.Int
+import qualified Data.List                     as L
 import qualified Data.Vector                   as DV
 import qualified Data.Vector.Storable          as DVS
 import           Data.Word
@@ -19,8 +20,8 @@ import           Prelude hiding (drop)
 class Container v => Drop v where
   drop :: Count -> v -> v
 
-instance Drop String where
-  drop = drop . fromIntegral
+instance Drop [a] where
+  drop = L.drop . fromIntegral
   {-# INLINE drop #-}
 
 instance Drop BS.ByteString where

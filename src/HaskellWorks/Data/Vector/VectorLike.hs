@@ -3,9 +3,10 @@
 {-# LANGUAGE TypeFamilies          #-}
 
 module HaskellWorks.Data.Vector.VectorLike
-  ( VectorLike(..)
+  ( Container(..)
   , IndexedSeq(..)
   , Seq(..)
+  , VectorLike(..)
   ) where
 
 import qualified Data.ByteString               as BS

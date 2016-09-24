@@ -3,7 +3,8 @@
 {-# LANGUAGE TypeFamilies          #-}
 
 module HaskellWorks.Data.IndexedSeq
-    ( IndexedSeq(..)
+    ( Container(..)
+    , IndexedSeq(..)
     , Seq(..)
     ) where
 

@@ -1,0 +1,94 @@
+{-# LANGUAGE FlexibleContexts      #-}
+{-# LANGUAGE FlexibleInstances     #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE TypeFamilies          #-}
+
+module HaskellWorks.Data.Empty
+    ( Empty(..)
+    ) where
+
+import qualified Data.ByteString               as BS
+import           Data.Int
+import qualified Data.Vector                   as DV
+import qualified Data.Vector.Storable          as DVS
+import           Data.Word
+import           HaskellWorks.Data.Container
+
+class Container a => Empty a where
+  vEmpty :: a
+
+instance Empty String where
+  vEmpty = ""
+  {-# INLINE vEmpty #-}
+
+instance Empty BS.ByteString where
+  vEmpty = BS.empty
+  {-# INLINE vEmpty #-}
+
+instance Empty (DV.Vector Word8) where
+  vEmpty = DV.empty
+  {-# INLINE vEmpty #-}
+
+instance Empty (DV.Vector Word16) where
+  vEmpty = DV.empty
+  {-# INLINE vEmpty #-}
+
+instance Empty (DV.Vector Word32) where
+  vEmpty = DV.empty
+  {-# INLINE vEmpty #-}
+
+instance Empty (DV.Vector Word64) where
+  vEmpty = DV.empty
+  {-# INLINE vEmpty #-}
+
+instance Empty (DVS.Vector Word8) where
+  vEmpty = DVS.empty
+  {-# INLINE vEmpty #-}
+
+instance Empty (DVS.Vector Word16) where
+  vEmpty = DVS.empty
+  {-# INLINE vEmpty #-}
+
+instance Empty (DVS.Vector Word32) where
+  vEmpty = DVS.empty
+  {-# INLINE vEmpty #-}
+
+instance Empty (DVS.Vector Word64) where
+  vEmpty = DVS.empty
+  {-# INLINE vEmpty #-}
+
+instance Empty (DV.Vector Int8) where
+  vEmpty = DV.empty
+  {-# INLINE vEmpty #-}
+
+instance Empty (DV.Vector Int16) where
+  vEmpty = DV.empty
+  {-# INLINE vEmpty #-}
+
+instance Empty (DV.Vector Int32) where
+  vEmpty = DV.empty
+  {-# INLINE vEmpty #-}
+
+instance Empty (DV.Vector Int64) where
+  vEmpty = DV.empty
+  {-# INLINE vEmpty #-}
+
+instance Empty (DVS.Vector Int8) where
+  vEmpty = DVS.empty
+  {-# INLINE vEmpty #-}
+
+instance Empty (DVS.Vector Int16) where
+  vEmpty = DVS.empty
+  {-# INLINE vEmpty #-}
+
+instance Empty (DVS.Vector Int32) where
+  vEmpty = DVS.empty
+  {-# INLINE vEmpty #-}
+
+instance Empty (DVS.Vector Int64) where
+  vEmpty = DVS.empty
+  {-# INLINE vEmpty #-}
+
+instance Empty (DVS.Vector Int) where
+  vEmpty = DVS.empty
+  {-# INLINE vEmpty #-}

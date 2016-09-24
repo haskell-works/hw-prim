@@ -11,9 +11,9 @@ import           Data.Int
 import qualified Data.Vector                   as DV
 import qualified Data.Vector.Storable          as DVS
 import           Data.Word
-import           HaskellWorks.Data.Seq
+import           HaskellWorks.Data.Container
 
-class Seq v => Snoc v where
+class Container v => Snoc v where
   vSnoc :: v -> Elem v -> v
 
 instance Snoc String where

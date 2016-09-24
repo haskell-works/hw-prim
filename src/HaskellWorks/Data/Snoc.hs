@@ -14,80 +14,80 @@ import           Data.Word
 import           HaskellWorks.Data.Container
 
 class Container v => Snoc v where
-  vSnoc :: v -> Elem v -> v
+  snoc :: v -> Elem v -> v
 
 instance Snoc String where
-  vSnoc v c = v ++ [c]
-  {-# INLINE vSnoc #-}
+  snoc v c = v ++ [c]
+  {-# INLINE snoc #-}
 
 instance Snoc BS.ByteString where
-  vSnoc = BS.snoc
-  {-# INLINE vSnoc #-}
+  snoc = BS.snoc
+  {-# INLINE snoc #-}
 
 instance Snoc (DV.Vector Word8) where
-  vSnoc = DV.snoc
-  {-# INLINE vSnoc #-}
+  snoc = DV.snoc
+  {-# INLINE snoc #-}
 
 instance Snoc (DV.Vector Word16) where
-  vSnoc = DV.snoc
-  {-# INLINE vSnoc #-}
+  snoc = DV.snoc
+  {-# INLINE snoc #-}
 
 instance Snoc (DV.Vector Word32) where
-  vSnoc = DV.snoc
-  {-# INLINE vSnoc #-}
+  snoc = DV.snoc
+  {-# INLINE snoc #-}
 
 instance Snoc (DV.Vector Word64) where
-  vSnoc = DV.snoc
-  {-# INLINE vSnoc #-}
+  snoc = DV.snoc
+  {-# INLINE snoc #-}
 
 instance Snoc (DVS.Vector Word8) where
-  vSnoc = DVS.snoc
-  {-# INLINE vSnoc #-}
+  snoc = DVS.snoc
+  {-# INLINE snoc #-}
 
 instance Snoc (DVS.Vector Word16) where
-  vSnoc = DVS.snoc
-  {-# INLINE vSnoc #-}
+  snoc = DVS.snoc
+  {-# INLINE snoc #-}
 
 instance Snoc (DVS.Vector Word32) where
-  vSnoc = DVS.snoc
-  {-# INLINE vSnoc #-}
+  snoc = DVS.snoc
+  {-# INLINE snoc #-}
 
 instance Snoc (DVS.Vector Word64) where
-  vSnoc = DVS.snoc
-  {-# INLINE vSnoc #-}
+  snoc = DVS.snoc
+  {-# INLINE snoc #-}
 
 instance Snoc (DV.Vector Int8) where
-  vSnoc = DV.snoc
-  {-# INLINE vSnoc #-}
+  snoc = DV.snoc
+  {-# INLINE snoc #-}
 
 instance Snoc (DV.Vector Int16) where
-  vSnoc = DV.snoc
-  {-# INLINE vSnoc #-}
+  snoc = DV.snoc
+  {-# INLINE snoc #-}
 
 instance Snoc (DV.Vector Int32) where
-  vSnoc = DV.snoc
-  {-# INLINE vSnoc #-}
+  snoc = DV.snoc
+  {-# INLINE snoc #-}
 
 instance Snoc (DV.Vector Int64) where
-  vSnoc = DV.snoc
-  {-# INLINE vSnoc #-}
+  snoc = DV.snoc
+  {-# INLINE snoc #-}
 
 instance Snoc (DVS.Vector Int8) where
-  vSnoc = DVS.snoc
-  {-# INLINE vSnoc #-}
+  snoc = DVS.snoc
+  {-# INLINE snoc #-}
 
 instance Snoc (DVS.Vector Int16) where
-  vSnoc = DVS.snoc
-  {-# INLINE vSnoc #-}
+  snoc = DVS.snoc
+  {-# INLINE snoc #-}
 
 instance Snoc (DVS.Vector Int32) where
-  vSnoc = DVS.snoc
-  {-# INLINE vSnoc #-}
+  snoc = DVS.snoc
+  {-# INLINE snoc #-}
 
 instance Snoc (DVS.Vector Int64) where
-  vSnoc = DVS.snoc
-  {-# INLINE vSnoc #-}
+  snoc = DVS.snoc
+  {-# INLINE snoc #-}
 
 instance Snoc (DVS.Vector Int) where
-  vSnoc = DVS.snoc
-  {-# INLINE vSnoc #-}
+  snoc = DVS.snoc
+  {-# INLINE snoc #-}

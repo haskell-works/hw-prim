@@ -35,13 +35,21 @@ instance NFData Position where
   rnf = rnf . getPosition
   {-# INLINE rnf #-}
 
--- | Convert a count to a position
-toPosition :: Count -> Position
-toPosition (Count n) = Position (fromIntegral n)
+class ToPosition a where
+  -- | Convert to a position
+  toPosition :: a -> Position
 
--- | Convert a count to a count
-toCount :: Position -> Count
-toCount (Position n) = Count (fromIntegral n)
+instance ToPosition Count where
+  toPosition (Count n) = Position (fromIntegral n)
+  {-# INLINE toPosition #-}
+
+class ToCount a where
+  -- | Convert a count to a count
+  toCount :: a -> Count
+
+instance ToCount Position where
+  toCount (Position n) = Count (fromIntegral n)
+  {-# INLINE toCount #-}
 
 -- | Get largest position in a sequenced container of size count.
 lastPositionOf :: Count -> Position

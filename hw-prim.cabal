@@ -44,10 +44,12 @@ library
                       , HaskellWorks.Data.Narrow.Narrow64
                       , HaskellWorks.Data.Positioning
                       , HaskellWorks.Data.Search
+                      , HaskellWorks.Data.Sign
                       , HaskellWorks.Data.Snoc
                       , HaskellWorks.Data.Take
                       , HaskellWorks.Data.TreeCursor
                       , HaskellWorks.Data.Uncons
+                      , HaskellWorks.Data.Unsign
                       , HaskellWorks.Data.Vector.BoxedVectorLike
                       , HaskellWorks.Data.Vector.StorableVectorLike
                       , HaskellWorks.Data.Widen

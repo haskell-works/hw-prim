@@ -24,7 +24,8 @@ executable hw-prim-example
 
 library
   hs-source-dirs:       src
-  exposed-modules:      HaskellWorks.Data.ByteString
+  exposed-modules:      HaskellWorks.Data.AtIndex
+                      , HaskellWorks.Data.ByteString
                       , HaskellWorks.Data.Char.IsChar
                       , HaskellWorks.Data.Concat
                       , HaskellWorks.Data.Container
@@ -34,7 +35,6 @@ library
                       , HaskellWorks.Data.FromByteString
                       , HaskellWorks.Data.FromForeignRegion
                       , HaskellWorks.Data.Generate
-                      , HaskellWorks.Data.IndexedSeq
                       , HaskellWorks.Data.Length
                       , HaskellWorks.Data.Naive
                       , HaskellWorks.Data.Positioning
@@ -42,6 +42,7 @@ library
                       , HaskellWorks.Data.Snoc
                       , HaskellWorks.Data.Take
                       , HaskellWorks.Data.TreeCursor
+                      , HaskellWorks.Data.Uncons
                       , HaskellWorks.Data.Vector.BoxedVectorLike
                       , HaskellWorks.Data.Vector.StorableVectorLike
   build-depends:        base                          >= 4          && < 5

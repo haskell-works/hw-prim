@@ -1,4 +1,3 @@
-{-# LANGUAGE TypeFamilies #-}
 module HaskellWorks.Data.Narrow
   ( module X
   ) where

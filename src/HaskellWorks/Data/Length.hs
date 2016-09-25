@@ -23,77 +23,77 @@ class Container v => Length v where
   {-# INLINE end #-}
 
 instance Length [a] where
-  length = Count . fromIntegral . L.length
+  length = fromIntegral . L.length
   {-# INLINE length #-}
 
 instance Length BS.ByteString where
-  length = Count . fromIntegral . BS.length
+  length = fromIntegral . BS.length
   {-# INLINE length #-}
 
 instance Length (DV.Vector Word8) where
-  length = Count . fromIntegral . DV.length
+  length = fromIntegral . DV.length
   {-# INLINE length #-}
 
 instance Length (DV.Vector Word16) where
-  length = Count . fromIntegral . DV.length
+  length = fromIntegral . DV.length
   {-# INLINE length #-}
 
 instance Length (DV.Vector Word32) where
-  length = Count . fromIntegral . DV.length
+  length = fromIntegral . DV.length
   {-# INLINE length #-}
 
 instance Length (DV.Vector Word64) where
-  length = Count . fromIntegral . DV.length
+  length = fromIntegral . DV.length
   {-# INLINE length #-}
 
 instance Length (DVS.Vector Word8) where
-  length = Count . fromIntegral . DVS.length
+  length = fromIntegral . DVS.length
   {-# INLINE length #-}
 
 instance Length (DVS.Vector Word16) where
-  length = Count . fromIntegral . DVS.length
+  length = fromIntegral . DVS.length
   {-# INLINE length #-}
 
 instance Length (DVS.Vector Word32) where
-  length = Count . fromIntegral . DVS.length
+  length = fromIntegral . DVS.length
   {-# INLINE length #-}
 
 instance Length (DVS.Vector Word64) where
-  length = Count . fromIntegral . DVS.length
+  length = fromIntegral . DVS.length
   {-# INLINE length #-}
 
 instance Length (DV.Vector Int8) where
-  length = Count . fromIntegral . DV.length
+  length = fromIntegral . DV.length
   {-# INLINE length #-}
 
 instance Length (DV.Vector Int16) where
-  length = Count . fromIntegral . DV.length
+  length = fromIntegral . DV.length
   {-# INLINE length #-}
 
 instance Length (DV.Vector Int32) where
-  length = Count . fromIntegral . DV.length
+  length = fromIntegral . DV.length
   {-# INLINE length #-}
 
 instance Length (DV.Vector Int64) where
-  length = Count . fromIntegral . DV.length
+  length = fromIntegral . DV.length
   {-# INLINE length #-}
 
 instance Length (DVS.Vector Int8) where
-  length = Count . fromIntegral . DVS.length
+  length = fromIntegral . DVS.length
   {-# INLINE length #-}
 
 instance Length (DVS.Vector Int16) where
-  length = Count . fromIntegral . DVS.length
+  length = fromIntegral . DVS.length
   {-# INLINE length #-}
 
 instance Length (DVS.Vector Int32) where
-  length = Count . fromIntegral . DVS.length
+  length = fromIntegral . DVS.length
   {-# INLINE length #-}
 
 instance Length (DVS.Vector Int64) where
-  length = Count . fromIntegral . DVS.length
+  length = fromIntegral . DVS.length
   {-# INLINE length #-}
 
 instance Length (DVS.Vector Int) where
-  length = Count . fromIntegral . DVS.length
+  length = fromIntegral . DVS.length
   {-# INLINE length #-}

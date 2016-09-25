@@ -21,115 +21,115 @@ class Length v => AtIndex v where
   atIndex :: v -> Position -> Elem v
 
 instance AtIndex [a] where
-  (!!!) v (Position i) = v !! fromIntegral i
-  atIndex v (Position i) = v !! fromIntegral i
+  (!!!) v i = v !! fromIntegral i
+  atIndex v i = v !! fromIntegral i
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 
 instance AtIndex BS.ByteString where
-  (!!!) v (Position i) = v `BS.index` fromIntegral i
-  atIndex v (Position i) = BS.index v (fromIntegral i)
+  (!!!) v i = v `BS.index` fromIntegral i
+  atIndex v i = BS.index v (fromIntegral i)
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 
 instance AtIndex (DV.Vector Word8) where
-  (!!!) v (Position i) = v DV.! fromIntegral i
-  atIndex v (Position i) = DV.unsafeIndex v (fromIntegral i)
+  (!!!) v i = v DV.! fromIntegral i
+  atIndex v i = DV.unsafeIndex v (fromIntegral i)
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 
 instance AtIndex (DV.Vector Word16) where
-  (!!!) v (Position i) = v DV.! fromIntegral i
-  atIndex v (Position i) = DV.unsafeIndex v (fromIntegral i)
+  (!!!) v i = v DV.! fromIntegral i
+  atIndex v i = DV.unsafeIndex v (fromIntegral i)
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 
 instance AtIndex (DV.Vector Word32) where
-  (!!!) v (Position i) = v DV.! fromIntegral i
-  atIndex v (Position i) = DV.unsafeIndex v (fromIntegral i)
+  (!!!) v i = v DV.! fromIntegral i
+  atIndex v i = DV.unsafeIndex v (fromIntegral i)
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 
 instance AtIndex (DV.Vector Word64) where
-  (!!!) v (Position i) = v DV.! fromIntegral i
-  atIndex v (Position i) = DV.unsafeIndex v (fromIntegral i)
+  (!!!) v i = v DV.! fromIntegral i
+  atIndex v i = DV.unsafeIndex v (fromIntegral i)
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 
 instance AtIndex (DVS.Vector Word8) where
-  (!!!) v (Position i) = v DVS.! fromIntegral i
-  atIndex v (Position i) = DVS.unsafeIndex v (fromIntegral i)
+  (!!!) v i = v DVS.! fromIntegral i
+  atIndex v i = DVS.unsafeIndex v (fromIntegral i)
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 
 instance AtIndex (DVS.Vector Word16) where
-  (!!!) v (Position i) = v DVS.! fromIntegral i
-  atIndex v (Position i) = DVS.unsafeIndex v (fromIntegral i)
+  (!!!) v i = v DVS.! fromIntegral i
+  atIndex v i = DVS.unsafeIndex v (fromIntegral i)
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 
 instance AtIndex (DVS.Vector Word32) where
-  (!!!) v (Position i) = v DVS.! fromIntegral i
-  atIndex v (Position i) = DVS.unsafeIndex v (fromIntegral i)
+  (!!!) v i = v DVS.! fromIntegral i
+  atIndex v i = DVS.unsafeIndex v (fromIntegral i)
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 
 instance AtIndex (DVS.Vector Word64) where
-  (!!!) v (Position i) = v DVS.! fromIntegral i
-  atIndex v (Position i) = DVS.unsafeIndex v (fromIntegral i)
+  (!!!) v i = v DVS.! fromIntegral i
+  atIndex v i = DVS.unsafeIndex v (fromIntegral i)
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 
 instance AtIndex (DV.Vector Int8) where
-  (!!!) v (Position i) = v DV.! fromIntegral i
-  atIndex v (Position i) = DV.unsafeIndex v (fromIntegral i)
+  (!!!) v i = v DV.! fromIntegral i
+  atIndex v i = DV.unsafeIndex v (fromIntegral i)
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 
 instance AtIndex (DV.Vector Int16) where
-  (!!!) v (Position i) = v DV.! fromIntegral i
-  atIndex v (Position i) = DV.unsafeIndex v (fromIntegral i)
+  (!!!) v i = v DV.! fromIntegral i
+  atIndex v i = DV.unsafeIndex v (fromIntegral i)
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 
 instance AtIndex (DV.Vector Int32) where
-  (!!!) v (Position i) = v DV.! fromIntegral i
-  atIndex v (Position i) = DV.unsafeIndex v (fromIntegral i)
+  (!!!) v i = v DV.! fromIntegral i
+  atIndex v i = DV.unsafeIndex v (fromIntegral i)
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 
 instance AtIndex (DV.Vector Int64) where
-  (!!!) v (Position i) = v DV.! fromIntegral i
-  atIndex v (Position i) = DV.unsafeIndex v (fromIntegral i)
+  (!!!) v i = v DV.! fromIntegral i
+  atIndex v i = DV.unsafeIndex v (fromIntegral i)
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 
 instance AtIndex (DVS.Vector Int8) where
-  (!!!) v (Position i) = v DVS.! fromIntegral i
-  atIndex v (Position i) = DVS.unsafeIndex v (fromIntegral i)
+  (!!!) v i = v DVS.! fromIntegral i
+  atIndex v i = DVS.unsafeIndex v (fromIntegral i)
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 
 instance AtIndex (DVS.Vector Int16) where
-  (!!!) v (Position i) = v DVS.! fromIntegral i
-  atIndex v (Position i) = DVS.unsafeIndex v (fromIntegral i)
+  (!!!) v i = v DVS.! fromIntegral i
+  atIndex v i = DVS.unsafeIndex v (fromIntegral i)
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 
 instance AtIndex (DVS.Vector Int32) where
-  (!!!) v (Position i) = v DVS.! fromIntegral i
-  atIndex v (Position i) = DVS.unsafeIndex v (fromIntegral i)
+  (!!!) v i = v DVS.! fromIntegral i
+  atIndex v i = DVS.unsafeIndex v (fromIntegral i)
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 
 instance AtIndex (DVS.Vector Int64) where
-  (!!!) v (Position i) = v DVS.! fromIntegral i
-  atIndex v (Position i) = DVS.unsafeIndex v (fromIntegral i)
+  (!!!) v i = v DVS.! fromIntegral i
+  atIndex v i = DVS.unsafeIndex v (fromIntegral i)
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 
 instance AtIndex (DVS.Vector Int) where
-  (!!!) v (Position i) = v DVS.! fromIntegral i
-  atIndex v (Position i) = DVS.unsafeIndex v (fromIntegral i)
+  (!!!) v i = v DVS.! fromIntegral i
+  atIndex v i = DVS.unsafeIndex v (fromIntegral i)
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}

@@ -3,7 +3,7 @@ version:                0.3.0.5
 synopsis:               Primitive functions and data types
 description:            Please see README.md
 homepage:               http://github.com/haskell-works/hw-prim#readme
-license:                MIT
+license:                BSD3
 license-file:           LICENSE
 author:                 John Ky
 maintainer:             newhoggy@gmail.com

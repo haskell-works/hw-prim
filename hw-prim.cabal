@@ -37,11 +37,6 @@ library
                       , HaskellWorks.Data.Generate
                       , HaskellWorks.Data.Length
                       , HaskellWorks.Data.Naive
-                      , HaskellWorks.Data.Narrow
-                      , HaskellWorks.Data.Narrow.Narrow8
-                      , HaskellWorks.Data.Narrow.Narrow16
-                      , HaskellWorks.Data.Narrow.Narrow32
-                      , HaskellWorks.Data.Narrow.Narrow64
                       , HaskellWorks.Data.Positioning
                       , HaskellWorks.Data.Search
                       , HaskellWorks.Data.Sign
@@ -53,11 +48,6 @@ library
                       , HaskellWorks.Data.Vector.AsVector64
                       , HaskellWorks.Data.Vector.BoxedVectorLike
                       , HaskellWorks.Data.Vector.StorableVectorLike
-                      , HaskellWorks.Data.Widen
-                      , HaskellWorks.Data.Widen.Widen8
-                      , HaskellWorks.Data.Widen.Widen16
-                      , HaskellWorks.Data.Widen.Widen32
-                      , HaskellWorks.Data.Widen.Widen64
   build-depends:        base                          >= 4          && < 5
                       , bytestring
                       , vector

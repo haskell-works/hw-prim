@@ -3,6 +3,4 @@
 
 Primitive types library.
 
-To build with GHC 8: `nix-build --arg compiler \"ghc801\"`
-
 Report dependency build errors: https://github.com/haskell-infra/hackage-trustees

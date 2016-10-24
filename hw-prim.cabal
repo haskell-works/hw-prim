@@ -14,14 +14,6 @@ build-type:             Simple
 extra-source-files:     README.md
 cabal-version:          >= 1.22
 
-executable hw-prim-example
-  hs-source-dirs:       app
-  main-is:              Main.hs
-  ghc-options:          -threaded -rtsopts -with-rtsopts=-N -Wall -msse4.2
-  build-depends:        base                          >= 4          && < 5
-                      , hw-prim
-  default-language:     Haskell2010
-
 library
   hs-source-dirs:       src
   exposed-modules:      HaskellWorks.Data.AtIndex
@@ -65,7 +57,6 @@ test-suite hw-prim-test
                       , hspec
                       , hw-prim
                       , QuickCheck
-                      , random
                       , vector
   ghc-options:          -threaded -rtsopts -with-rtsopts=-N -Wall
   default-language:     Haskell2010
@@ -73,14 +64,3 @@ test-suite hw-prim-test
 source-repository head
   type:     git
   location: https://github.com/haskell-works/hw-prim
-
-benchmark bench
-    Type: exitcode-stdio-1.0
-    HS-Source-Dirs: bench
-    Main-Is: Main.hs
-    GHC-Options: -Wall -O2 -msse4.2
-    Default-Language: Haskell2010
-    Build-Depends:      base                          >= 4          && < 5
-                      , criterion
-                      , hw-prim
-                      , vector

@@ -1,5 +1,5 @@
 name:                   hw-prim
-version:                0.4.0.1
+version:                0.4.0.2
 synopsis:               Primitive functions and data types
 description:            Please see README.md
 homepage:               http://github.com/haskell-works/hw-prim#readme
@@ -28,6 +28,7 @@ library
                       , HaskellWorks.Data.FromByteString
                       , HaskellWorks.Data.FromForeignRegion
                       , HaskellWorks.Data.Generate
+                      , HaskellWorks.Data.Head
                       , HaskellWorks.Data.Length
                       , HaskellWorks.Data.Naive
                       , HaskellWorks.Data.Positioning

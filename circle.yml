@@ -62,10 +62,15 @@ jobs:
 
       - deploy:
           command: |
-            if [ "$CIRCLE_USERNAME" == "haskell-works" ]; then
-              if [ "$CIRCLE_BRANCH" =~ .*-branch ]; then
+            if [ "$CIRCLE_PROJECT_USERNAME" == "haskell-works" ]; then
+              if [[ "$CIRCLE_BRANCH" =~ .*-branch ]]; then
                 when tag autotag
-              elif [ "$CIRCLE_BRANCH" == "v.*" ]; then
+              elif [[ "$CIRCLE_TAG" =~ v.* ]]; then
                 publish
               fi
             fi
+deployment:
+  tagged_builds:
+    tag: /v.*/
+    commands:
+      - echo "Make tags run in 2.0"

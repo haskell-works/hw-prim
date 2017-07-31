@@ -53,7 +53,8 @@ test-suite hw-prim-test
   type:                 exitcode-stdio-1.0
   hs-source-dirs:       test
   main-is:              Spec.hs
-  other-modules:        HaskellWorks.Data.SearchSpec
+  other-modules:        HaskellWorks.Data.FromByteStringSpec
+                      , HaskellWorks.Data.SearchSpec
   build-depends:        base                          >= 4          && < 5
                       , bytestring
                       , hspec

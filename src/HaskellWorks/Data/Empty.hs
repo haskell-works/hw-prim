@@ -7,14 +7,16 @@ module HaskellWorks.Data.Empty
     ( Empty(..)
     ) where
 
-import qualified Data.ByteString               as BS
-import           Data.Int
-import qualified Data.Vector                   as DV
-import qualified Data.Vector.Storable          as DVS
-import           Data.Word
-import           HaskellWorks.Data.Container
+import Data.Int
+import Data.Word
+import HaskellWorks.Data.Container
+
+import qualified Data.ByteString      as BS
+import qualified Data.Vector          as DV
+import qualified Data.Vector.Storable as DVS
 
 class Container a => Empty a where
+  -- | Empty container
   empty :: a
 
 instance Empty [a] where

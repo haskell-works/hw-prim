@@ -8,7 +8,10 @@ import Data.Int
 import Data.Word
 
 class Unsign a where
+  -- | The correspond unsigned version of a type
   type UnsignOf a
+
+  -- | Convert to an unsigned type
   unsign :: a -> UnsignOf a
 
 instance Unsign Int where

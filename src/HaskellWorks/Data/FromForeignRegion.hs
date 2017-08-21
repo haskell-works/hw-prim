@@ -2,16 +2,16 @@
 
 module HaskellWorks.Data.FromForeignRegion where
 
+import Data.Word
+import Foreign.ForeignPtr
+import HaskellWorks.Data.FromByteString
+
 import qualified Data.ByteString          as BS
 import qualified Data.ByteString.Internal as BSI
 import qualified Data.Vector.Storable     as DVS
-import           Data.Word
-import           Foreign.ForeignPtr
-import           HaskellWorks.Data.FromByteString
 
 type ForeignRegion = (ForeignPtr Word8, Int, Int)
 
--- | Class for datastructures that can be created from a foreign region
 class FromForeignRegion a where
   -- | Create a value of type @a from a foreign region.
   fromForeignRegion :: ForeignRegion -> a

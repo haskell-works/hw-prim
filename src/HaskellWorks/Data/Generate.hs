@@ -7,15 +7,17 @@ module HaskellWorks.Data.Generate
   , Generate(..)
   ) where
 
-import qualified Data.ByteString               as BS
 import           Data.Int
-import qualified Data.Vector                   as DV
-import qualified Data.Vector.Storable          as DVS
 import           Data.Word
 import           HaskellWorks.Data.Container
 
--- | Class of values that support vector like operations
+import qualified Data.ByteString               as BS
+import qualified Data.Vector                   as DV
+import qualified Data.Vector.Storable          as DVS
+
 class Container v => Generate v where
+  -- | Generate a container of the given size using element produced by the
+  -- provided function.
   generate :: Int -> (Int -> Elem v) -> v
 
 instance Generate String where

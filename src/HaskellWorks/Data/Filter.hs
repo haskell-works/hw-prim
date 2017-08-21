@@ -15,8 +15,8 @@ import qualified Data.Vector.Storable          as DVS
 import           Data.Word
 import           HaskellWorks.Data.Container
 
--- | Class of values that support vector like operations
 class Container v => Filter v where
+  -- | Filter the element of a container with the given predicate
   filter :: (Elem v -> Bool) -> v -> v
 
 instance Filter String where

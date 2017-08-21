@@ -7,23 +7,25 @@ module HaskellWorks.Data.Uncons
     , Uncons(..)
     ) where
 
-import qualified Data.ByteString               as BS
-import           Data.Int
-import           Data.Maybe
-import qualified Data.Vector                   as DV
-import qualified Data.Vector.Storable          as DVS
-import           Data.Word
-import           HaskellWorks.Data.Container
-import           HaskellWorks.Data.Drop
-import           Prelude hiding (drop)
+import Data.Int
+import Data.Maybe
+import Data.Word
+import HaskellWorks.Data.Container
+import HaskellWorks.Data.Drop
+import Prelude                     hiding (drop)
+
+import qualified Data.ByteString      as BS
+import qualified Data.Vector          as DV
+import qualified Data.Vector.Storable as DVS
 
 class Drop v => Uncons v where
+  -- | Uncons the head from the container
   uncons :: v -> Maybe (Elem v, v)
 
 instance Uncons String where
   uncons s = case s of
-    (x:xs)  -> Just (x, xs)
-    _       -> Nothing
+    (x:xs) -> Just (x, xs)
+    _      -> Nothing
   {-# INLINE uncons   #-}
 
 instance Uncons BS.ByteString where

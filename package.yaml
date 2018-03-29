@@ -1,0 +1,63 @@
+name: hw-prim
+version: '0.4.0.5'
+synopsis: Primitive functions and data types
+description: Please see README.md
+category: Data
+author: John Ky
+maintainer: newhoggy@gmail.com
+copyright: 2016 John Ky
+license: BSD3
+github: haskell-works/hw-prim
+homepage: http://github.com/haskell-works/hw-prim#readme
+extra-source-files:
+- README.md
+ghc-options: -Wall
+dependencies:
+- base >=4 && <5
+- bytestring
+- vector
+library:
+  source-dirs: src
+  ghc-options:
+  - -O2
+  - -msse4.2
+  exposed-modules:
+  - HaskellWorks.Data.AtIndex
+  - HaskellWorks.Data.ByteString
+  - HaskellWorks.Data.Char.IsChar
+  - HaskellWorks.Data.Concat
+  - HaskellWorks.Data.Container
+  - HaskellWorks.Data.Decode
+  - HaskellWorks.Data.Drop
+  - HaskellWorks.Data.Empty
+  - HaskellWorks.Data.Filter
+  - HaskellWorks.Data.FromByteString
+  - HaskellWorks.Data.FromForeignRegion
+  - HaskellWorks.Data.Generate
+  - HaskellWorks.Data.Head
+  - HaskellWorks.Data.Length
+  - HaskellWorks.Data.Naive
+  - HaskellWorks.Data.Positioning
+  - HaskellWorks.Data.Search
+  - HaskellWorks.Data.Sign
+  - HaskellWorks.Data.Snoc
+  - HaskellWorks.Data.Take
+  - HaskellWorks.Data.TreeCursor
+  - HaskellWorks.Data.Uncons
+  - HaskellWorks.Data.Unsign
+  - HaskellWorks.Data.Vector.AsVector64
+  - HaskellWorks.Data.Vector.BoxedVectorLike
+  - HaskellWorks.Data.Vector.StorableVectorLike
+tests:
+  hw-prim-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - hspec
+    - hw-prim
+    - QuickCheck
+stability: Experimental

@@ -5,7 +5,7 @@ description: Please see README.md
 category: Data
 author: John Ky
 maintainer: newhoggy@gmail.com
-copyright: 2016 John Ky
+copyright: 2016-2018 John Ky
 license: BSD3
 github: haskell-works/hw-prim
 homepage: http://github.com/haskell-works/hw-prim#readme
@@ -16,6 +16,7 @@ dependencies:
 - base >=4 && <5
 - bytestring
 - vector
+
 library:
   source-dirs: src
   ghc-options:
@@ -48,6 +49,7 @@ library:
   - HaskellWorks.Data.Vector.AsVector64
   - HaskellWorks.Data.Vector.BoxedVectorLike
   - HaskellWorks.Data.Vector.StorableVectorLike
+
 tests:
   hw-prim-test:
     main: Spec.hs
@@ -60,4 +62,17 @@ tests:
     - hspec
     - hw-prim
     - QuickCheck
+
+benchmarks:
+  bench:
+    main: Main.hs
+    source-dirs: bench
+    ghc-options:
+    - -O2
+    - -msse4.2
+    dependencies:
+    - criterion
+    - hw-prim
+    - mmap
+
 stability: Experimental

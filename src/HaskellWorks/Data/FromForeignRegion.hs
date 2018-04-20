@@ -1,6 +1,11 @@
+{-# LANGUAGE BangPatterns      #-}
 {-# LANGUAGE FlexibleInstances #-}
 
-module HaskellWorks.Data.FromForeignRegion where
+module HaskellWorks.Data.FromForeignRegion
+  ( FromForeignRegion(..)
+  , ForeignRegion
+  , mmapFromForeignRegion
+  ) where
 
 import Data.Word
 import Foreign.ForeignPtr
@@ -8,6 +13,7 @@ import Foreign.ForeignPtr
 import qualified Data.ByteString          as BS
 import qualified Data.ByteString.Internal as BSI
 import qualified Data.Vector.Storable     as DVS
+import qualified System.IO.MMap           as IO
 
 type ForeignRegion = (ForeignPtr Word8, Int, Int)
 
@@ -30,3 +36,9 @@ instance FromForeignRegion (DVS.Vector Word32) where
 
 instance FromForeignRegion (DVS.Vector Word64) where
   fromForeignRegion (fptr, offset, size) = DVS.unsafeFromForeignPtr (castForeignPtr fptr) offset ((size + 7) `div` 8)
+
+mmapFromForeignRegion :: FromForeignRegion a => FilePath -> IO a
+mmapFromForeignRegion filePath = do
+  region <- IO.mmapFileForeignPtr filePath IO.ReadOnly Nothing
+  let !bs = fromForeignRegion region
+  return bs

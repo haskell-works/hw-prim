@@ -6,11 +6,12 @@ module HaskellWorks.Data.Container
     ( Container(..)
     ) where
 
-import qualified Data.ByteString               as BS
-import           Data.Int
-import qualified Data.Vector                   as DV
-import qualified Data.Vector.Storable          as DVS
-import           Data.Word
+import Data.Int
+import Data.Word
+
+import qualified Data.ByteString      as BS
+import qualified Data.Vector          as DV
+import qualified Data.Vector.Storable as DVS
 
 class Container a where
   type Elem a

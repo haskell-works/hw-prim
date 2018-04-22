@@ -2,8 +2,8 @@
 
 module HaskellWorks.Data.SearchSpec (spec) where
 
-import           HaskellWorks.Data.Search
-import           Test.Hspec
+import HaskellWorks.Data.Search
+import Test.Hspec
 
 {-# ANN module ("HLint: Ignore Redundant do" :: String) #-}
 

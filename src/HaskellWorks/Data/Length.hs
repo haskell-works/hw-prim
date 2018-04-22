@@ -1,20 +1,21 @@
-{-# LANGUAGE FlexibleInstances     #-}
-{-# LANGUAGE TypeFamilies          #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE TypeFamilies      #-}
 
 module HaskellWorks.Data.Length
     ( Container(..)
     , Length(..)
     ) where
 
-import qualified Data.ByteString               as BS
-import           Data.Int
-import qualified Data.List                     as L
-import qualified Data.Vector                   as DV
-import qualified Data.Vector.Storable          as DVS
-import           Data.Word
-import           HaskellWorks.Data.Container
-import           HaskellWorks.Data.Positioning
-import           Prelude hiding (length)
+import Data.Int
+import Data.Word
+import HaskellWorks.Data.Container
+import HaskellWorks.Data.Positioning
+import Prelude                       hiding (length)
+
+import qualified Data.ByteString      as BS
+import qualified Data.List            as L
+import qualified Data.Vector          as DV
+import qualified Data.Vector.Storable as DVS
 
 class Container v => Length v where
   length :: v -> Count

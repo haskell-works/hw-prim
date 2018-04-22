@@ -6,9 +6,10 @@ module HaskellWorks.Data.Vector.StorableVectorLike
   ( StorableVectorLike(..)
   ) where
 
+import Data.Word
+import Foreign.Storable
+
 import qualified Data.Vector.Storable as DVS
-import           Data.Word
-import           Foreign.Storable
 
 -- | Class of values that support storable vector like operations
 class StorableVectorLike v e where

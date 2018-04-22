@@ -6,12 +6,13 @@ module HaskellWorks.Data.Snoc
     ( Snoc(..)
     ) where
 
-import qualified Data.ByteString               as BS
-import           Data.Int
-import qualified Data.Vector                   as DV
-import qualified Data.Vector.Storable          as DVS
-import           Data.Word
-import           HaskellWorks.Data.Container
+import Data.Int
+import Data.Word
+import HaskellWorks.Data.Container
+
+import qualified Data.ByteString      as BS
+import qualified Data.Vector          as DV
+import qualified Data.Vector.Storable as DVS
 
 class Container v => Snoc v where
   snoc :: v -> Elem v -> v

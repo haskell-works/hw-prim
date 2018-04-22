@@ -7,14 +7,15 @@ module HaskellWorks.Data.Take
     , Take(..)
     ) where
 
-import qualified Data.ByteString               as BS
-import           Data.Int
-import qualified Data.List                     as L
-import qualified Data.Vector                   as DV
-import qualified Data.Vector.Storable          as DVS
-import           Data.Word
-import           HaskellWorks.Data.Container
-import           HaskellWorks.Data.Positioning
+import Data.Int
+import Data.Word
+import HaskellWorks.Data.Container
+import HaskellWorks.Data.Positioning
+
+import qualified Data.ByteString      as BS
+import qualified Data.List            as L
+import qualified Data.Vector          as DV
+import qualified Data.Vector.Storable as DVS
 
 class Container v => Take v where
   take :: Count -> v -> v

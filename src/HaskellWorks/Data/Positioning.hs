@@ -9,8 +9,8 @@ module HaskellWorks.Data.Positioning
   , toPosition
   ) where
 
-import           Data.Int
-import           Data.Word
+import Data.Int
+import Data.Word
 
 -- | A value representing a count
 type Count = Word64

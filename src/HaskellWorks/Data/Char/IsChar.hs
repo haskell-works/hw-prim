@@ -2,8 +2,9 @@ module HaskellWorks.Data.Char.IsChar
     ( IsChar(..)
     ) where
 
+import Data.Word
+
 import qualified Data.ByteString.Internal as BI
-import           Data.Word
 
 class IsChar c where
   toChar :: c -> Char

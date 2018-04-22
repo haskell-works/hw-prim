@@ -6,9 +6,10 @@ module HaskellWorks.Data.Vector.BoxedVectorLike
   ( BoxedVectorLike(..)
   ) where
 
-import qualified Data.Vector      as DV
-import           Data.Word
-import           Foreign.Storable
+import Data.Word
+import Foreign.Storable
+
+import qualified Data.Vector as DV
 
 -- | Class of values that support boxed vector like operations
 class BoxedVectorLike v e where

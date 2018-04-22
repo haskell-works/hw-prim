@@ -7,15 +7,16 @@ module HaskellWorks.Data.Drop
     , Drop(..)
     ) where
 
-import qualified Data.ByteString               as BS
-import           Data.Int
-import qualified Data.List                     as L
-import qualified Data.Vector                   as DV
-import qualified Data.Vector.Storable          as DVS
-import           Data.Word
-import           HaskellWorks.Data.Container
-import           HaskellWorks.Data.Positioning
-import           Prelude hiding (drop)
+import Data.Int
+import Data.Word
+import HaskellWorks.Data.Container
+import HaskellWorks.Data.Positioning
+import Prelude                       hiding (drop)
+
+import qualified Data.ByteString      as BS
+import qualified Data.List            as L
+import qualified Data.Vector          as DV
+import qualified Data.Vector.Storable as DVS
 
 class Container v => Drop v where
   drop :: Count -> v -> v

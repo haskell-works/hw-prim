@@ -1,24 +1,27 @@
-{-# LANGUAGE FlexibleInstances   #-}
+{-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE TypeFamilies        #-}
+{-# LANGUAGE TypeFamilies          #-}
 
 module HaskellWorks.Data.AtIndex
     ( Container(..)
     , AtIndex(..)
     , Length(..)
+    , atIndexOr
     ) where
 
-import qualified Data.ByteString               as BS
-import           Data.Int
-import qualified Data.Vector                   as DV
-import qualified Data.Vector.Storable          as DVS
-import           Data.Word
-import           HaskellWorks.Data.Length
-import           HaskellWorks.Data.Positioning
+import Data.Int
+import Data.Word
+import HaskellWorks.Data.Length
+import HaskellWorks.Data.Positioning
+
+import qualified Data.ByteString          as BS
+import qualified Data.Vector              as DV
+import qualified Data.Vector.Storable     as DVS
+import qualified HaskellWorks.Data.Length as HW
 
 class Length v => AtIndex v where
-  (!!!)   :: v -> Position -> Elem v
-  atIndex :: v -> Position -> Elem v
+  (!!!)     :: v -> Position -> Elem v
+  atIndex   :: v -> Position -> Elem v
 
 instance AtIndex [a] where
   (!!!)   v i = v !! fromIntegral i
@@ -133,3 +136,7 @@ instance AtIndex (DVS.Vector Int) where
   atIndex v i = DVS.unsafeIndex v (fromIntegral i)
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
+
+atIndexOr :: AtIndex v => Elem v -> v -> Position -> Elem v
+atIndexOr d v p = if p < fromIntegral (HW.length v) then v !!! p else d
+{-# INLINE atIndexOr #-}

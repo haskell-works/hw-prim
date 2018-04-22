@@ -3,8 +3,9 @@ module HaskellWorks.Data.Vector.AsVector64
   ( AsVector64(..)
   ) where
 
+import Data.Word
+
 import qualified Data.Vector.Storable as DVS
-import           Data.Word
 
 class AsVector64 a where
   asVector64 :: a -> DVS.Vector Word64

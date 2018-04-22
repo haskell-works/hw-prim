@@ -1,14 +1,15 @@
 {-# OPTIONS_GHC -fno-warn-incomplete-patterns #-}
-{-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE OverloadedLists     #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 module HaskellWorks.Data.FromByteStringSpec (spec) where
 
-import qualified Data.ByteString                  as BS
-import qualified Data.Vector.Storable             as DVS
-import           Data.Word
-import           HaskellWorks.Data.FromByteString
-import           Test.Hspec
+import Data.Word
+import HaskellWorks.Data.FromByteString
+import Test.Hspec
+
+import qualified Data.ByteString      as BS
+import qualified Data.Vector.Storable as DVS
 
 {-# ANN module ("HLint: Ignore Redundant do" :: String) #-}
 

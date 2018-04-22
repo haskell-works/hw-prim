@@ -9,12 +9,8 @@ module HaskellWorks.Data.FromForeignRegionSpec (spec) where
 
 import Control.Monad.IO.Class
 import Data.Word
-import Data.Word
-import HaskellWorks.Data.FromByteString
-import HaskellWorks.Data.FromForeignRegion
 import HaskellWorks.Hspec.Hedgehog
 import Hedgehog
-import Hedgehog.Internal.Gen
 import Test.Hspec
 
 import qualified Data.ByteString                     as BS

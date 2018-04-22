@@ -1,6 +1,6 @@
 module HaskellWorks.Data.Search
-    ( binarySearch
-    ) where
+  ( binarySearch
+  ) where
 
 -- | Perform a binary search in the domain of function @f, bounded by the values @p and @q
 -- to find the least value @v such that: @w <= (f v)

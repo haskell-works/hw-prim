@@ -7,14 +7,15 @@ module HaskellWorks.Data.Head
     , Head(..)
     ) where
 
-import qualified Data.ByteString               as BS
-import           Data.Int
-import qualified Data.List                     as L
-import qualified Data.Vector                   as DV
-import qualified Data.Vector.Storable          as DVS
-import           Data.Word
-import           HaskellWorks.Data.Container
-import           Prelude hiding (head)
+import Data.Int
+import Data.Word
+import HaskellWorks.Data.Container
+import Prelude                     hiding (head)
+
+import qualified Data.ByteString      as BS
+import qualified Data.List            as L
+import qualified Data.Vector          as DV
+import qualified Data.Vector.Storable as DVS
 
 class Container v => Head v where
   head :: v -> Elem v

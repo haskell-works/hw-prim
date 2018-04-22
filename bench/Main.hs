@@ -4,7 +4,6 @@
 module Main where
 
 import Criterion.Main
-import Data.Monoid
 import Data.Word
 import Foreign
 import HaskellWorks.Data.FromForeignRegion

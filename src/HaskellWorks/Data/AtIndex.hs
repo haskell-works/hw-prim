@@ -7,6 +7,7 @@ module HaskellWorks.Data.AtIndex
     , AtIndex(..)
     , Length(..)
     , atIndexOr
+    , atIndexOrLastOr
     ) where
 
 import Data.Int
@@ -138,5 +139,15 @@ instance AtIndex (DVS.Vector Int) where
   {-# INLINE atIndex #-}
 
 atIndexOr :: AtIndex v => Elem v -> v -> Position -> Elem v
-atIndexOr d v p = if p < fromIntegral (HW.length v) then v !!! p else d
+atIndexOr d v vi = if vi >= 0 && vi < end v
+  then v !!! vi
+  else d
 {-# INLINE atIndexOr #-}
+
+atIndexOrLastOr :: AtIndex v => Elem v -> v -> Position -> Elem v
+atIndexOrLastOr d v vi = if vi >= 0 && HW.length v > 0
+  then if vi < end v
+    then v !!! vi
+    else v !!! (end v - 1)
+  else d
+{-# INLINE atIndexOrLastOr #-}

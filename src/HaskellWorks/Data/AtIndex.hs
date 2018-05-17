@@ -7,10 +7,9 @@ module HaskellWorks.Data.AtIndex
     ( Container(..)
     , AtIndex(..)
     , Length(..)
-    , (?!?)
-    , (?!$)
     , atIndexOr
-    , atIndexOrLastOr
+    , atIndexOrBeforeOrAfter
+    , atIndexOrBeforeOrLast
     ) where
 
 import Data.Int
@@ -18,10 +17,9 @@ import Data.Word
 import HaskellWorks.Data.Length
 import HaskellWorks.Data.Positioning
 
-import qualified Data.ByteString          as BS
-import qualified Data.Vector              as DV
-import qualified Data.Vector.Storable     as DVS
-import qualified HaskellWorks.Data.Length as HW
+import qualified Data.ByteString      as BS
+import qualified Data.Vector          as DV
+import qualified Data.Vector.Storable as DVS
 
 class Length v => AtIndex v where
   (!!!)     :: v -> Position -> Elem v
@@ -226,40 +224,34 @@ instance AtIndex (DVS.Vector Int) where
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 
--- | Get the element of the container at the specified position, but return the  default value
--- `d` if the position is out of bounds.
-(?!?) :: AtIndex v => Elem v -> Elem v -> v -> Position -> Elem v
-(?!?) d e v vi = if vi >= 0
-  then if vi < end v
-    then v !!! vi
-    else e
-  else d
-{-# INLINE (?!?) #-}
-
--- | Get the element of the container at the specified position, but return the last element
--- if the position is past the end of the container or the default value `d` if the position
--- is before the beginning of the vector.
--- In the case when the container is empty, then the default value `d` is used.
-(?!$) :: (AtIndex v, Length v) => Elem v -> v -> Position -> Elem v
-(?!$) d v vi = if vi >= 0
-  then if vi < end v
-    then v !!! vi
-    else if end v == 0
-      then d
-      else v !!! (end v - 1)
-  else d
-{-# INLINE (?!$) #-}
-
+-- | Get the element of the container at the specified position, but return 'd' if position
+-- is out of bounds.
 atIndexOr :: AtIndex v => Elem v -> v -> Position -> Elem v
 atIndexOr d v vi = if vi >= 0 && vi < end v
   then v !!! vi
   else d
 {-# INLINE atIndexOr #-}
 
-atIndexOrLastOr :: AtIndex v => Elem v -> v -> Position -> Elem v
-atIndexOrLastOr d v vi = if vi >= 0 && HW.length v > 0
+-- | Get the element of the container at the specified position, but return 'before' if position
+-- before the first element or 'after' if the position is beyond the last element.
+atIndexOrBeforeOrAfter :: AtIndex v => Elem v -> Elem v -> v -> Position -> Elem v
+atIndexOrBeforeOrAfter before after v vi = if vi < end v
+  then if vi >= 0
+    then v !!! vi
+    else before
+  else after
+{-# INLINE atIndexOrBeforeOrAfter #-}
+
+-- | Get the element of the container at the specified position, but return the last element
+-- if the position is past the end of the container or the default value 'before'' if the position
+-- is before the beginning of the vector.
+-- In the case when the container is empty, then the default value 'before'' is used.
+atIndexOrBeforeOrLast :: (AtIndex v, Length v) => Elem v -> v -> Position -> Elem v
+atIndexOrBeforeOrLast before v vi = if vi >= 0
   then if vi < end v
     then v !!! vi
-    else v !!! (end v - 1)
-  else d
-{-# INLINE atIndexOrLastOr #-}
+    else if end v /= 0
+      then v !!! (end v - 1)
+      else before
+  else before
+{-# INLINE atIndexOrBeforeOrLast #-}

@@ -83,3 +83,14 @@ benchmarks:
     - mmap
 
 stability: Experimental
+
+when:
+- condition: flag(bounds-checking-enabled)
+  cpp-options:
+  - -DBOUNDS_CHECKING_ENABLED
+
+flags:
+  bounds-checking-enabled:
+    description: Enable bmi2 instruction set
+    manual: false
+    default: false

@@ -7,9 +7,11 @@ import Criterion.Main
 import Data.Word
 import Foreign
 import HaskellWorks.Data.FromForeignRegion
+import HaskellWorks.Data.Vector.AsVector64s
 
 import qualified Data.ByteString          as BS
 import qualified Data.ByteString.Internal as BSI
+import qualified Data.ByteString.Lazy     as LBS
 import qualified Data.Vector.Storable     as DVS
 import qualified System.IO.MMap           as IO
 
@@ -31,17 +33,25 @@ sumFileByteString filePath = do
   let !_ = BS.foldl' (+) 0 bs
   return ()
 
-sumFileVectorWord64 :: FilePath -> IO ()
-sumFileVectorWord64 filePath = do
+sumFileVector64 :: FilePath -> IO ()
+sumFileVector64 filePath = do
   !(v :: DVS.Vector Word64) <- mmapVectorLike filePath
   let !_ = DVS.foldl' (+) 0 v
+  return ()
+
+sumFileLazyByteStringViaVector64 :: FilePath -> IO ()
+sumFileLazyByteStringViaVector64 filePath = do
+  !bs <- LBS.readFile filePath
+  let wss = asVector64s 64 bs
+  let !_ = sum (DVS.foldl' (+) 0 <$> wss)
   return ()
 
 benchRankJson40Conduits :: [Benchmark]
 benchRankJson40Conduits =
   [ env (return ()) $ \_ -> bgroup "medium.csv"
-    [ bench "Foldl' over ByteString"    (whnfIO (sumFileByteString   "corpus/medium.csv"))
-    , bench "Foldl' over Vector Word64" (whnfIO (sumFileVectorWord64 "corpus/medium.csv"))
+    [ bench "Foldl' over ByteString"                        (whnfIO (sumFileByteString                "corpus/medium.csv"))
+    , bench "Foldl' over Vector Word64"                     (whnfIO (sumFileVector64                  "corpus/medium.csv"))
+    , bench "Foldl' over Lazy ByteString via Vector Word64" (whnfIO (sumFileLazyByteStringViaVector64 "corpus/medium.csv"))
     ]
   ]
 

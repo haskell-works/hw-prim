@@ -7,9 +7,12 @@ module HaskellWorks.Data.FromByteString
 
 import Data.Bits
 import Data.Word
+import Foreign.ForeignPtr
 
-import qualified Data.ByteString      as BS
-import qualified Data.Vector.Storable as DVS
+import qualified Data.ByteString              as BS
+import qualified Data.ByteString.Internal     as BS
+import qualified Data.Vector.Storable         as DVS
+import qualified Data.Vector.Storable.Mutable as DVSM
 
 -- | Class for byte-string-like datastructures
 class FromByteString a where
@@ -65,3 +68,7 @@ instance FromByteString (DVS.Vector Word64) where
             | otherwise = case BS.uncons cs of
                 Just (d, ds) -> gen' (n + 8) (w .|. (fromIntegral d `shiftL` fromIntegral n)) ds
                 Nothing      -> Just (w, cs)
+
+instance FromByteString (DVSM.MVector s Word8) where
+  fromByteString bs = case BS.toForeignPtr bs of
+    (fptr, off, len) -> DVSM.unsafeFromForeignPtr (castForeignPtr fptr) off len

@@ -49,6 +49,7 @@ library:
   - HaskellWorks.Data.Uncons
   - HaskellWorks.Data.Unsign
   - HaskellWorks.Data.Vector.AsVector64
+  - HaskellWorks.Data.Vector.AsVector64s
   - HaskellWorks.Data.Vector.BoxedVectorLike
   - HaskellWorks.Data.Vector.StorableVectorLike
 

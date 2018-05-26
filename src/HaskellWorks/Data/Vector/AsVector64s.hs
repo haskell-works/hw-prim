@@ -30,35 +30,35 @@ instance AsVector64s [BS.ByteString] where
   {-# INLINE asVector64s #-}
 
 bytestringsToVectors :: Int -> [BS.ByteString] -> [DVS.Vector Word64]
-bytestringsToVectors n bss = DVS.createT $ go (byteStringToVector8 <$> bss)
-  where go :: [DVSM.MVector s Word8] -> ST s [DVSM.MVector s Word64]
-        go ts = do
-          (us, v) <- buildOneVector n ts
+bytestringsToVectors n bss = DVS.createT $ go bss
+  where go :: [BS.ByteString] -> ST s [DVSM.MVector s Word64]
+        go bs = do
+          (us, v) <- buildOneVector n bs
           if DVSM.length v > 0
             then (v:) <$> go us
             else return []
 {-# INLINE bytestringsToVectors #-}
 
-buildOneVector :: forall s. Int -> [DVSM.MVector s Word8] -> ST s ([DVSM.MVector s Word8], DVSM.MVector s Word64)
-buildOneVector n ss = case dropWhile ((== 0) . DVSM.length) ss of
+buildOneVector :: forall s. Int -> [BS.ByteString] -> ST s ([BS.ByteString], DVSM.MVector s Word64)
+buildOneVector n ss = case dropWhile ((== 0) . BS.length) ss of
   [] -> ([],) <$> DVSM.new 0
   cs -> do
     v64 <- DVSM.unsafeNew n
     let v8 = DVSM.unsafeCast v64
     rs  <- go cs v8
     return (rs, v64)
-  where go :: [DVSM.MVector s Word8] -> DVSM.MVector s Word8 -> ST s [DVSM.MVector s Word8]
+  where go :: [BS.ByteString] -> DVSM.MVector s Word8 -> ST s [BS.ByteString]
         go ts v = if DVSM.length v > 0
           then case ts of
             (u:us) -> do
-              if DVSM.length u <= DVSM.length v
-                then case DVSM.splitAt (DVSM.length u) v of
+              if BS.length u <= DVSM.length v
+                then case DVSM.splitAt (BS.length u) v of
                   (va, vb) -> do
-                    DVSM.copy va u
+                    DVSM.copy va (byteStringToVector8 u)
                     go us vb
-                else case DVSM.splitAt (DVSM.length v) u of
+                else case BS.splitAt (DVSM.length v) u of
                   (ua, ub) -> do
-                    DVSM.copy v ua
+                    DVSM.copy v (byteStringToVector8 ua)
                     return (ub:us)
             [] -> do
               DVSM.set v 0

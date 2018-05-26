@@ -1,5 +1,6 @@
 {-# LANGUAGE FlexibleInstances   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TupleSections       #-}
 
 module HaskellWorks.Data.Vector.AsVector64s
   ( AsVector64s(..)
@@ -32,20 +33,20 @@ bytestringsToVectors :: Int -> [BS.ByteString] -> [DVS.Vector Word64]
 bytestringsToVectors n bss = DVS.createT $ go (byteStringToVector8 <$> bss)
   where go :: [DVSM.MVector s Word8] -> ST s [DVSM.MVector s Word64]
         go ts = do
-          result <- buildOneVector n ts
-          case result of
-            Just (us, v) -> (v:) <$> go us
-            Nothing      -> return []
+          (us, v) <- buildOneVector n ts
+          if DVSM.length v > 0
+            then (v:) <$> go us
+            else return []
 {-# INLINE bytestringsToVectors #-}
 
-buildOneVector :: forall s. Int -> [DVSM.MVector s Word8] -> ST s (Maybe ([DVSM.MVector s Word8], DVSM.MVector s Word64))
+buildOneVector :: forall s. Int -> [DVSM.MVector s Word8] -> ST s ([DVSM.MVector s Word8], DVSM.MVector s Word64)
 buildOneVector n ss = case dropWhile ((== 0) . DVSM.length) ss of
-  [] -> return Nothing
+  [] -> ([],) <$> DVSM.new 0
   cs -> do
     v64 <- DVSM.unsafeNew n
     let v8 = DVSM.unsafeCast v64
     rs  <- go cs v8
-    return (Just (rs, v64))
+    return (rs, v64)
   where go :: [DVSM.MVector s Word8] -> DVSM.MVector s Word8 -> ST s [DVSM.MVector s Word8]
         go ts v = if DVSM.length v > 0
           then case ts of

@@ -1,4 +1,6 @@
+{-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
+{-# LANGUAGE Rank2Types          #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TupleSections       #-}
 
@@ -30,16 +32,15 @@ instance AsVector64s [BS.ByteString] where
   {-# INLINE asVector64s #-}
 
 bytestringsToVectors :: Int -> [BS.ByteString] -> [DVS.Vector Word64]
-bytestringsToVectors n bss = DVS.createT $ go bss
-  where go :: [BS.ByteString] -> ST s [DVSM.MVector s Word64]
-        go bs = do
-          (us, v) <- buildOneVector n bs
-          if DVSM.length v > 0
-            then (v:) <$> go us
-            else return []
+bytestringsToVectors n bss = go bss
+  where go :: [BS.ByteString] -> [DVS.Vector Word64]
+        go bs = case DVS.createT (buildOneVector n bs) of
+          (cs, ws) -> if DVS.length ws > 0
+            then ws:go cs
+            else []
 {-# INLINE bytestringsToVectors #-}
 
-buildOneVector :: forall s. Int -> [BS.ByteString] -> ST s ([BS.ByteString], DVSM.MVector s Word64)
+buildOneVector :: forall s. Int -> [BS.ByteString] -> ST s ([BS.ByteString], DVS.MVector s Word64)
 buildOneVector n ss = case dropWhile ((== 0) . BS.length) ss of
   [] -> ([],) <$> DVSM.new 0
   cs -> do

@@ -11,6 +11,7 @@ github: haskell-works/hw-prim
 homepage: http://github.com/haskell-works/hw-prim#readme
 extra-source-files:
 - README.md
+other-extensions: AllowAmbiguousTypes
 ghc-options: -Wall
 dependencies:
 - base >=4 && <5

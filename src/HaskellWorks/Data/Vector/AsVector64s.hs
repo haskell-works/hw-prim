@@ -8,6 +8,7 @@ module HaskellWorks.Data.Vector.AsVector64s
   ( AsVector64s(..)
   ) where
 
+import Control.Applicative ((<$>))
 import Control.Monad.ST
 import Data.Word
 import Foreign.ForeignPtr

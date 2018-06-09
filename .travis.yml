@@ -52,6 +52,7 @@ before_install:
   - echo $HCNUMVER
 
 install:
+  - hpack
   - cabal --version
   - echo "$(${HC} --version) [$(${HC} --print-project-git-commit-id 2> /dev/null || echo '?')]"
   - BENCH=${BENCH---enable-benchmarks}

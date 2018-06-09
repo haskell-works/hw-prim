@@ -1,15 +1,9 @@
--- This file has been generated from package.yaml by hpack version 0.27.0.
---
--- see: https://github.com/sol/hpack
---
--- hash: a3e5dbe4fed1a90273e8cb6c1051c194be700d6c07f5b3cd1757ae15f2746c5a
-
 name:           hw-prim
 version:        0.6.2.0
 synopsis:       Primitive functions and data types
 description:    Primitive functions and data types.
 category:       Data
-stability:      Experimental
+stability:      Stable
 homepage:       http://github.com/haskell-works/hw-prim#readme
 bug-reports:    https://github.com/haskell-works/hw-prim/issues
 author:         John Ky
@@ -20,7 +14,6 @@ license-file:   LICENSE
 tested-with:    GHC == 8.4.2, GHC == 8.2.2, GHC == 8.0.2, GHC == 7.10.3
 build-type:     Simple
 cabal-version:  >= 1.10
-
 extra-source-files:
     README.md
 

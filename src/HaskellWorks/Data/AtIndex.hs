@@ -17,9 +17,10 @@ import Data.Word
 import HaskellWorks.Data.Length
 import HaskellWorks.Data.Positioning
 
-import qualified Data.ByteString      as BS
-import qualified Data.Vector          as DV
-import qualified Data.Vector.Storable as DVS
+import qualified Data.ByteString        as BS
+import qualified Data.ByteString.Unsafe as BS
+import qualified Data.Vector            as DV
+import qualified Data.Vector.Storable   as DVS
 
 class Length v => AtIndex v where
   (!!!)     :: v -> Position -> Elem v
@@ -32,8 +33,13 @@ instance AtIndex [a] where
   {-# INLINE atIndex #-}
 
 instance AtIndex BS.ByteString where
+#if !defined(BOUNDS_CHECKING_ENABLED)
+  (!!!)   v i = BS.unsafeIndex v (fromIntegral i)
+  atIndex v i = BS.unsafeIndex v (fromIntegral i)
+#else
   (!!!)   v i = BS.index v (fromIntegral i)
   atIndex v i = BS.index v (fromIntegral i)
+#endif
   {-# INLINE (!!!)   #-}
   {-# INLINE atIndex #-}
 

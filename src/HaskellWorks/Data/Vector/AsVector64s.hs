@@ -33,7 +33,7 @@ instance AsVector64s [BS.ByteString] where
   {-# INLINE asVector64s #-}
 
 bytestringsToVectors :: Int -> [BS.ByteString] -> [DVS.Vector Word64]
-bytestringsToVectors n bss = go bss
+bytestringsToVectors n = go
   where go :: [BS.ByteString] -> [DVS.Vector Word64]
         go bs = case DVS.createT (buildOneVector n bs) of
           (cs, ws) -> if DVS.length ws > 0
@@ -52,16 +52,15 @@ buildOneVector n ss = case dropWhile ((== 0) . BS.length) ss of
   where go :: [BS.ByteString] -> DVSM.MVector s Word8 -> ST s [BS.ByteString]
         go ts v = if DVSM.length v > 0
           then case ts of
-            (u:us) -> do
-              if BS.length u <= DVSM.length v
-                then case DVSM.splitAt (BS.length u) v of
-                  (va, vb) -> do
-                    DVSM.copy va (byteStringToVector8 u)
-                    go us vb
-                else case BS.splitAt (DVSM.length v) u of
-                  (ua, ub) -> do
-                    DVSM.copy v (byteStringToVector8 ua)
-                    return (ub:us)
+            (u:us) -> if BS.length u <= DVSM.length v
+              then case DVSM.splitAt (BS.length u) v of
+                (va, vb) -> do
+                  DVSM.copy va (byteStringToVector8 u)
+                  go us vb
+              else case BS.splitAt (DVSM.length v) u of
+                (ua, ub) -> do
+                  DVSM.copy v (byteStringToVector8 ua)
+                  return (ub:us)
             [] -> do
               DVSM.set v 0
               return []

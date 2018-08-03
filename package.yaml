@@ -1,5 +1,5 @@
 name: hw-prim
-version: '0.6.2.2'
+version: '0.6.2.3'
 synopsis: Primitive functions and data types
 description: Primitive functions and data types.
 category: Data
@@ -15,11 +15,11 @@ other-extensions: AllowAmbiguousTypes
 ghc-options: -Wall
 tested-with: GHC == 8.4.2, GHC == 8.2.2, GHC == 8.0.2, GHC == 7.10.3
 dependencies:
-- base >=4.8 && <5
-- bytestring >= 0.9 && < 0.11
-- mmap >= 0.5 && < 0.6
-- vector >= 0.12 && < 0.13
-- transformers >= 0.4 && < 0.6
+- base            >= 4.8        && < 5
+- bytestring      >= 0.9        && < 0.11
+- mmap            >= 0.5        && < 0.6
+- vector          >= 0.12       && < 0.13
+- transformers    >= 0.4        && < 0.6
 
 library:
   source-dirs: src
@@ -36,12 +36,12 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - QuickCheck >= 2.10 && < 2.12
-    - directory >= 1.2 && < 1.4
-    - exceptions >= 0.8 && < 0.11
-    - hedgehog >= 0.5 && < 0.7
-    - hspec >= 2.4 && <2.6
-    - hw-hspec-hedgehog >= 0.1 && < 0.2
+    - QuickCheck          >= 2.10       && < 2.12
+    - directory           >= 1.2        && < 1.4
+    - exceptions          >= 0.8        && < 0.11
+    - hedgehog            >= 0.5        && < 0.7
+    - hspec               >= 2.4        && <2.6
+    - hw-hspec-hedgehog   >= 0.1        && < 0.2
     - hw-prim
     verbatim:
       build-tool-depends: hspec-discover:hspec-discover

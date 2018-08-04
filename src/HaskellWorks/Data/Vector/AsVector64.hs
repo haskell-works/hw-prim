@@ -1,4 +1,5 @@
 {-# LANGUAGE FlexibleInstances #-}
+
 module HaskellWorks.Data.Vector.AsVector64
   ( AsVector64(..)
   ) where

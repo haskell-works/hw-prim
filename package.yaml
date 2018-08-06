@@ -54,9 +54,9 @@ benchmarks:
     - -O2
     - -msse4.2
     dependencies:
-    - criterion >= 1.2 && < 1.5
+    - criterion     >= 1.2      && < 1.6
     - hw-prim
-    - mmap >= 0.5 && < 0.6
+    - mmap          >= 0.5      && < 0.6
 
 stability: Experimental
 

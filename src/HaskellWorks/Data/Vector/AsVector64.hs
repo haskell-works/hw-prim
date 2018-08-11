@@ -15,6 +15,7 @@ class AsVector64 a where
 
 instance AsVector64 (DVS.Vector Word64) where
   asVector64 = id
+  {-# INLINE asVector64 #-}
 
 instance AsVector64 BS.ByteString where
   asVector64 bs = DVS.constructN ((BS.length bs + 7) `div` 8) go
@@ -53,4 +54,4 @@ instance AsVector64 BS.ByteString where
                         (w5 `shiftL` 40) .|.
                         (w6 `shiftL` 48) .|.
                         (w7 `shiftL` 56)
-
+  {-# INLINE asVector64 #-}

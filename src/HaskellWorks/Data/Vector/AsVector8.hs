@@ -15,16 +15,21 @@ class AsVector8 a where
 
 instance AsVector8 (DVS.Vector Word8) where
   asVector8 = id
+  {-# INLINE asVector8 #-}
 
 instance AsVector8 (DVS.Vector Word16) where
   asVector8 = DVS.unsafeCast
+  {-# INLINE asVector8 #-}
 
 instance AsVector8 (DVS.Vector Word32) where
   asVector8 = DVS.unsafeCast
+  {-# INLINE asVector8 #-}
 
 instance AsVector8 (DVS.Vector Word64) where
   asVector8 = DVS.unsafeCast
+  {-# INLINE asVector8 #-}
 
 instance AsVector8 BS.ByteString where
   asVector8 bs = case BSI.toForeignPtr bs of
     (fptr, start, offset) -> DVS.unsafeFromForeignPtr fptr start offset
+  {-# INLINE asVector8 #-}

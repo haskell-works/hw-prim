@@ -26,6 +26,7 @@ instance FromByteString (DVS.Vector Word8) where
           gen cs = case BS.uncons cs of
             Just (d, ds) -> Just (d, ds)
             Nothing      -> Nothing
+  {-# INLINE fromByteString #-}
 
 instance FromByteString (DVS.Vector Word16) where
   fromByteString :: BS.ByteString -> DVS.Vector Word16
@@ -40,6 +41,7 @@ instance FromByteString (DVS.Vector Word16) where
             | otherwise = case BS.uncons cs of
                 Just (d, ds) -> gen' (n + 8) (w .|. (fromIntegral d `shiftL` fromIntegral n)) ds
                 Nothing      -> Just (w, cs)
+  {-# INLINE fromByteString #-}
 
 instance FromByteString (DVS.Vector Word32) where
   fromByteString :: BS.ByteString -> DVS.Vector Word32
@@ -54,6 +56,7 @@ instance FromByteString (DVS.Vector Word32) where
             | otherwise = case BS.uncons cs of
                 Just (d, ds) -> gen' (n + 8) (w .|. (fromIntegral d `shiftL` fromIntegral n)) ds
                 Nothing      -> Just (w, cs)
+  {-# INLINE fromByteString #-}
 
 instance FromByteString (DVS.Vector Word64) where
   fromByteString :: BS.ByteString -> DVS.Vector Word64
@@ -68,7 +71,9 @@ instance FromByteString (DVS.Vector Word64) where
             | otherwise = case BS.uncons cs of
                 Just (d, ds) -> gen' (n + 8) (w .|. (fromIntegral d `shiftL` fromIntegral n)) ds
                 Nothing      -> Just (w, cs)
+  {-# INLINE fromByteString #-}
 
 instance FromByteString (DVSM.MVector s Word8) where
   fromByteString bs = case BS.toForeignPtr bs of
     (fptr, off, len) -> DVSM.unsafeFromForeignPtr (castForeignPtr fptr) off len
+  {-# INLINE fromByteString #-}

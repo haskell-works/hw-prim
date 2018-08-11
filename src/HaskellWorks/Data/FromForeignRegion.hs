@@ -26,26 +26,33 @@ class FromForeignRegion a where
 
 instance FromForeignRegion BS.ByteString where
   fromForeignRegion (fptr, offset, size) = BSI.fromForeignPtr (castForeignPtr fptr) offset size
+  {-# INLINE fromForeignRegion #-}
 
 instance FromForeignRegion (DVS.Vector Word8) where
   fromForeignRegion (fptr, offset, size) = DVS.unsafeFromForeignPtr (castForeignPtr fptr) offset size
+  {-# INLINE fromForeignRegion #-}
 
 instance FromForeignRegion (DVS.Vector Word16) where
   fromForeignRegion (fptr, offset, size) = DVS.unsafeFromForeignPtr (castForeignPtr fptr) offset ((size + 1) `div` 2)
+  {-# INLINE fromForeignRegion #-}
 
 instance FromForeignRegion (DVS.Vector Word32) where
   fromForeignRegion (fptr, offset, size) = DVS.unsafeFromForeignPtr (castForeignPtr fptr) offset ((size + 3) `div` 4)
+  {-# INLINE fromForeignRegion #-}
 
 instance FromForeignRegion (DVS.Vector Word64) where
   fromForeignRegion (fptr, offset, size) = DVS.unsafeFromForeignPtr (castForeignPtr fptr) offset ((size + 7) `div` 8)
+  {-# INLINE fromForeignRegion #-}
 
 instance  ( FromForeignRegion a
           , FromForeignRegion b
           ) => FromForeignRegion (a :*: b) where
   fromForeignRegion r = fromForeignRegion r :*: fromForeignRegion r
+  {-# INLINE fromForeignRegion #-}
 
 mmapFromForeignRegion :: FromForeignRegion a => FilePath -> IO a
 mmapFromForeignRegion filePath = do
   region <- IO.mmapFileForeignPtr filePath IO.ReadOnly Nothing
   let !bs = fromForeignRegion region
   return bs
+{-# INLINE mmapFromForeignRegion #-}

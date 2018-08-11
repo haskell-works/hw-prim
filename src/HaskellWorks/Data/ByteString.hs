@@ -16,6 +16,7 @@ class ToByteString a where
 
 instance ToByteString BS.ByteString where
   toByteString = id
+  {-# INLINE toByteString #-}
 
 instance ToByteString (DVS.Vector Word8) where
   toByteString v = case DVS.unsafeToForeignPtr v of
@@ -43,3 +44,4 @@ chunkedBy n bs = if BS.length bs == 0
   then []
   else case BS.splitAt n bs of
     (as, zs) -> as : chunkedBy n zs
+{-# INLINE chunkedBy #-}

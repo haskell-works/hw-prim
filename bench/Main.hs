@@ -39,19 +39,22 @@ sumFileVector64 filePath = do
   let !_ = DVS.foldl' (+) 0 v
   return ()
 
-sumFileLazyByteStringViaVector64 :: FilePath -> IO ()
-sumFileLazyByteStringViaVector64 filePath = do
+sumFileLazyByteStringViaVector64 :: Int -> FilePath -> IO ()
+sumFileLazyByteStringViaVector64 multiple filePath = do
   !bs <- LBS.readFile filePath
-  let wss = asVector64s 64 bs
+  let wss = asVector64s multiple bs
   let !_ = sum (DVS.foldl' (+) 0 <$> wss)
   return ()
 
 benchRankJson40Conduits :: [Benchmark]
 benchRankJson40Conduits =
   [ env (return ()) $ \_ -> bgroup "medium.csv"
-    [ bench "Foldl' over ByteString"                        (whnfIO (sumFileByteString                "corpus/medium.csv"))
-    , bench "Foldl' over Vector Word64"                     (whnfIO (sumFileVector64                  "corpus/medium.csv"))
-    , bench "Foldl' over Lazy ByteString via Vector Word64" (whnfIO (sumFileLazyByteStringViaVector64 "corpus/medium.csv"))
+    -- [ bench "Foldl' over ByteString"                        (whnfIO (sumFileByteString                "corpus/medium.csv"))
+    -- , bench "Foldl' over Vector Word64"                     (whnfIO (sumFileVector64                  "corpus/medium.csv"))
+    [ bench "Foldl' over Lazy ByteString via Vector Word64" (whnfIO (sumFileLazyByteStringViaVector64 512 "corpus/medium.csv"))
+    , bench "Foldl' over Lazy ByteString via Vector Word64" (whnfIO (sumFileLazyByteStringViaVector64 256 "corpus/medium.csv"))
+    , bench "Foldl' over Lazy ByteString via Vector Word64" (whnfIO (sumFileLazyByteStringViaVector64 128 "corpus/medium.csv"))
+    , bench "Foldl' over Lazy ByteString via Vector Word64" (whnfIO (sumFileLazyByteStringViaVector64 64  "corpus/medium.csv"))
     ]
   ]
 

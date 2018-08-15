@@ -15,24 +15,23 @@ import qualified Hedgehog.Range               as R
 
 spec :: Spec
 spec = describe "HaskellWorks.Data.ByteStringSpec" $ do
-  it "rechunkSegments does not modify data" $ requireProperty $ do
+  it "resegment does not modify data" $ requireProperty $ do
     bss       <- forAll $ (BS.pack <$>) <$> G.list (R.linear 0 8) (G.list (R.linear 0 24) (G.word8 R.constantBounded))
     chunkSize <- forAll $ G.int (R.linear 1 4)
-    mconcat (BS.rechunkSegments chunkSize bss) === mconcat bss
-  it "rechunkSegments creates correctly sized segments" $ requireProperty $ do
+    mconcat (BS.resegment chunkSize bss) === mconcat bss
+  it "resegment creates correctly sized segments" $ requireProperty $ do
     bss       <- forAll $ (BS.pack <$>) <$> G.list (R.linear 0 8) (G.list (R.linear 0 24) (G.word8 R.constantBounded))
     chunkSize <- forAll $ G.int (R.linear 1 4)
-    forM_ (drop 1 (reverse (BS.rechunkSegments chunkSize bss))) $ \bs -> do
+    forM_ (drop 1 (reverse (BS.resegment chunkSize bss))) $ \bs -> do
       (BS.length bs) `mod` chunkSize === 0
-  it "rechunkSegmentsPadded does not modify data" $ requireProperty $ do
+  it "resegmentPadded does not modify data" $ requireProperty $ do
     bss       <- forAll $ (BS.pack <$>) <$> G.list (R.linear 0 8) (G.list (R.linear 0 24) (G.word8 R.constantBounded))
     chunkSize <- forAll $ G.int (R.linear 1 4)
     elbs      <- forAll $ pure $ LBS.fromChunks bss
-    albs      <- forAll $ pure $ LBS.take (LBS.length elbs) (LBS.fromChunks (BS.rechunkSegmentsPadded chunkSize bss))
+    albs      <- forAll $ pure $ LBS.take (LBS.length elbs) (LBS.fromChunks (BS.resegmentPadded chunkSize bss))
     albs === elbs
-  it "rechunkSegmentsPadded creates correctly sized segments" $ requireProperty $ do
+  it "resegmentPadded creates correctly sized segments" $ requireProperty $ do
     bss       <- forAll $ (BS.pack <$>) <$> G.list (R.linear 0 8) (G.list (R.linear 0 24) (G.word8 R.constantBounded))
     chunkSize <- forAll $ G.int (R.linear 1 4)
-    forM_ (reverse (BS.rechunkSegmentsPadded chunkSize bss)) $ \bs -> do
+    forM_ (reverse (BS.resegmentPadded chunkSize bss)) $ \bs -> do
       (BS.length bs) `mod` chunkSize === 0
-

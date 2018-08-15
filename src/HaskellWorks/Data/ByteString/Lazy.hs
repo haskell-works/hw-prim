@@ -2,8 +2,8 @@
 
 module HaskellWorks.Data.ByteString.Lazy
   ( ToLazyByteString(..)
-  , rechunkSegments
-  , rechunkSegmentsPadded
+  , resegment
+  , resegmentPadded
   ) where
 
 import Data.Word
@@ -52,8 +52,8 @@ instance ToLazyByteString [DVS.Vector Word64] where
   toLazyByteString vs = LBS.fromChunks (toByteString <$> vs)
   {-# INLINE toLazyByteString #-}
 
-rechunkSegments :: Int -> LBS.ByteString -> LBS.ByteString
-rechunkSegments multiple = LBS.fromChunks . BS.rechunkSegments multiple . LBS.toChunks
+resegment :: Int -> LBS.ByteString -> LBS.ByteString
+resegment multiple = LBS.fromChunks . BS.resegment multiple . LBS.toChunks
 
-rechunkSegmentsPadded :: Int -> LBS.ByteString -> LBS.ByteString
-rechunkSegmentsPadded multiple = LBS.fromChunks . BS.rechunkSegmentsPadded multiple . LBS.toChunks
+resegmentPadded :: Int -> LBS.ByteString -> LBS.ByteString
+resegmentPadded multiple = LBS.fromChunks . BS.resegmentPadded multiple . LBS.toChunks

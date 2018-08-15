@@ -3,8 +3,8 @@
 module HaskellWorks.Data.ByteString
   ( chunkedBy
   , ToByteString(..)
-  , rechunkSegments
-  , rechunkSegmentsPadded
+  , resegment
+  , resegmentPadded
   ) where
 
 import Data.Semigroup ((<>))
@@ -49,8 +49,8 @@ chunkedBy n bs = if BS.length bs == 0
     (as, zs) -> as : chunkedBy n zs
 {-# INLINE chunkedBy #-}
 
-rechunkSegments :: Int -> [BS.ByteString] -> [BS.ByteString]
-rechunkSegments multiple = go
+resegment :: Int -> [BS.ByteString] -> [BS.ByteString]
+resegment multiple = go
   where go (bs:bss) = case BS.length bs of
               bsLen -> if bsLen < multiple
                 then case multiple - bsLen of
@@ -66,8 +66,8 @@ rechunkSegments multiple = go
                     else BS.take bsCroppedLen bs:go (BS.drop bsCroppedLen bs:bss)
         go [] = []
 
-rechunkSegmentsPadded :: Int -> [BS.ByteString] -> [BS.ByteString]
-rechunkSegmentsPadded multiple = go
+resegmentPadded :: Int -> [BS.ByteString] -> [BS.ByteString]
+resegmentPadded multiple = go
   where go (bs:bss) = case BS.length bs of
               bsLen -> if bsLen < multiple
                 then case multiple - bsLen of
@@ -82,4 +82,3 @@ rechunkSegmentsPadded multiple = go
                     then bs:go bss
                     else BS.take bsCroppedLen bs:go (BS.drop bsCroppedLen bs:bss)
         go [] = []
-

@@ -35,3 +35,13 @@ spec = describe "HaskellWorks.Data.ByteStringSpec" $ do
     chunkSize <- forAll $ G.int (R.linear 1 4)
     forM_ (reverse (BS.resegmentPadded chunkSize bss)) $ \bs -> do
       (BS.length bs) `mod` chunkSize === 0
+  it "rechunk does not modify data" $ requireProperty $ do
+    bss       <- forAll $ (BS.pack <$>) <$> G.list (R.linear 0 8) (G.list (R.linear 0 24) (G.word8 R.constantBounded))
+    chunkSize <- forAll $ G.int (R.linear 1 4)
+    mconcat (BS.rechunk chunkSize bss) === mconcat bss
+  it "rechunk creates correctly sized segments" $ requireProperty $ do
+    bss       <- forAll $ (BS.pack <$>) <$> G.list (R.linear 0 8) (G.list (R.linear 0 24) (G.word8 R.constantBounded))
+    chunkSize <- forAll $ G.int (R.linear 1 4)
+    forM_ (drop 1 (reverse (BS.rechunk chunkSize bss))) $ \bs -> do
+      (BS.length bs) `mod` chunkSize === 0
+

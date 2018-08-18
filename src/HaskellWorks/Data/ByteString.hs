@@ -3,6 +3,7 @@
 module HaskellWorks.Data.ByteString
   ( chunkedBy
   , ToByteString(..)
+  , ToByteStrings(..)
   , resegment
   , resegmentPadded
   , rechunk
@@ -13,6 +14,7 @@ import Data.Word
 
 import qualified Data.ByteString          as BS
 import qualified Data.ByteString.Internal as BSI
+import qualified Data.ByteString.Lazy     as LBS
 import qualified Data.Vector.Storable     as DVS
 
 class ToByteString a where
@@ -41,6 +43,53 @@ instance ToByteString (DVS.Vector Word64) where
   toByteString v = case DVS.unsafeToForeignPtr (DVS.unsafeCast v :: DVS.Vector Word8) of
     (fptr, start, offset) -> BSI.fromForeignPtr fptr start offset
   {-# INLINE toByteString #-}
+
+class ToByteStrings a where
+  toByteStrings :: a -> [BS.ByteString]
+
+instance ToByteStrings [BS.ByteString] where
+  toByteStrings = id
+  {-# INLINE toByteStrings #-}
+
+instance ToByteStrings LBS.ByteString where
+  toByteStrings = LBS.toChunks
+  {-# INLINE toByteStrings #-}
+
+instance ToByteStrings BS.ByteString where
+  toByteStrings = (:[])
+  {-# INLINE toByteStrings #-}
+
+instance ToByteStrings (DVS.Vector Word8) where
+  toByteStrings = (:[]) . toByteString
+  {-# INLINE toByteStrings #-}
+
+instance ToByteStrings (DVS.Vector Word16) where
+  toByteStrings = (:[]) . toByteString
+  {-# INLINE toByteStrings #-}
+
+instance ToByteStrings (DVS.Vector Word32) where
+  toByteStrings = (:[]) . toByteString
+  {-# INLINE toByteStrings #-}
+
+instance ToByteStrings (DVS.Vector Word64) where
+  toByteStrings = (:[]) . toByteString
+  {-# INLINE toByteStrings #-}
+
+instance ToByteStrings [DVS.Vector Word8] where
+  toByteStrings = (toByteString <$>)
+  {-# INLINE toByteStrings #-}
+
+instance ToByteStrings [DVS.Vector Word16] where
+  toByteStrings = (toByteString <$>)
+  {-# INLINE toByteStrings #-}
+
+instance ToByteStrings [DVS.Vector Word32] where
+  toByteStrings = (toByteString <$>)
+  {-# INLINE toByteStrings #-}
+
+instance ToByteStrings [DVS.Vector Word64] where
+  toByteStrings = (toByteString <$>)
+  {-# INLINE toByteStrings #-}
 
 -- | Chunk a @bs into list of smaller byte strings of no more than @n elements
 chunkedBy :: Int -> BS.ByteString -> [BS.ByteString]

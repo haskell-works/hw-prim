@@ -1,5 +1,6 @@
 module HaskellWorks.Data.Vector.Storable where
 
+import Data.Semigroup ((<>))
 import Data.Word
 
 import qualified Data.Vector.Storable as DVS

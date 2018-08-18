@@ -7,6 +7,7 @@ module HaskellWorks.Data.ByteString
   , resegment
   , resegmentPadded
   , rechunk
+  , hGetContentsChunkedBy
   ) where
 
 import Data.Semigroup ((<>))
@@ -16,6 +17,8 @@ import qualified Data.ByteString          as BS
 import qualified Data.ByteString.Internal as BSI
 import qualified Data.ByteString.Lazy     as LBS
 import qualified Data.Vector.Storable     as DVS
+import qualified System.IO                as IO
+import qualified System.IO.Unsafe         as IO
 
 class ToByteString a where
   toByteString :: a -> BS.ByteString
@@ -148,3 +151,12 @@ resegmentPadded multiple = go
                     then bs:go bss
                     else BS.take bsCroppedLen bs:go (BS.drop bsCroppedLen bs:bss)
         go [] = []
+
+hGetContentsChunkedBy :: Int -> IO.Handle -> IO [BS.ByteString]
+hGetContentsChunkedBy k h = lazyRead
+  where lazyRead = IO.unsafeInterleaveIO loop
+        loop = do
+            c <- BSI.createAndTrim k $ \p -> IO.hGetBuf h p k
+            if BS.null c
+              then IO.hClose h >> return []
+              else (c:) <$> lazyRead

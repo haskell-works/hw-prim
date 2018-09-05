@@ -105,17 +105,19 @@ chunkedBy n bs = if BS.length bs == 0
 rechunk :: Int -> [BS.ByteString] -> [BS.ByteString]
 rechunk size = go
   where go (bs:bss) = let bsLen = BS.length bs in
-          if bsLen < size
-            then case size - bsLen of
-              bsNeed -> case bss of
-                (cs:css) -> case BS.length cs of
-                  csLen | csLen >  bsNeed -> (bs <> BS.take bsNeed cs ):go (BS.drop bsNeed cs:css)
-                  csLen | csLen == bsNeed -> (bs <> cs                ):go                    css
-                  _     | otherwise       ->                            go ((bs <> cs)       :css)
-                [] -> [bs]
-            else if size == bsLen
-              then bs:go bss
-              else BS.take size bs:go (BS.drop size bs:bss)
+          if bsLen > 0
+            then if bsLen < size
+              then case size - bsLen of
+                bsNeed -> case bss of
+                  (cs:css) -> case BS.length cs of
+                    csLen | csLen >  bsNeed -> (bs <> BS.take bsNeed cs ):go (BS.drop bsNeed cs:css)
+                    csLen | csLen == bsNeed -> (bs <> cs                ):go                    css
+                    _     | otherwise       ->                            go ((bs <> cs)       :css)
+                  [] -> [bs]
+              else if size == bsLen
+                then bs:go bss
+                else BS.take size bs:go (BS.drop size bs:bss)
+            else go bss
         go [] = []
 
 resegment :: Int -> [BS.ByteString] -> [BS.ByteString]

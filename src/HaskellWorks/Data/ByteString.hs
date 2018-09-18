@@ -121,37 +121,41 @@ rechunk size = go
         go [] = []
 
 resegment :: Int -> [BS.ByteString] -> [BS.ByteString]
-resegment multiple = go
-  where go (bs:bss) = case BS.length bs of
-              bsLen -> if bsLen < multiple
-                then case multiple - bsLen of
-                  bsNeed -> case bss of
-                    (cs:css) -> case BS.length cs of
-                      csLen | csLen >  bsNeed -> (bs <> BS.take bsNeed cs ):go (BS.drop bsNeed cs:css)
-                      csLen | csLen == bsNeed -> (bs <> cs                ):go                    css
-                      _                       ->                            go ((bs <> cs)       :css)
-                    [] -> [bs]
-                else case (bsLen `div` multiple) * multiple of
-                  bsCroppedLen -> if bsCroppedLen == bsLen
-                    then bs:go bss
-                    else BS.take bsCroppedLen bs:go (BS.drop bsCroppedLen bs:bss)
+resegment size = go
+  where go (bs:bss) = let bsLen = BS.length bs in
+          if bsLen > 0
+            then if bsLen < size
+              then case size - bsLen of
+                bsNeed -> case bss of
+                  (cs:css) -> case BS.length cs of
+                    csLen | csLen >  bsNeed -> (bs <> BS.take bsNeed cs ):go (BS.drop bsNeed cs:css)
+                    csLen | csLen == bsNeed -> (bs <> cs                ):go                    css
+                    _                       ->                            go ((bs <> cs)       :css)
+                  [] -> [bs]
+              else case (bsLen `div` size) * size of
+                bsCroppedLen -> if bsCroppedLen == bsLen
+                  then bs:go bss
+                  else BS.take bsCroppedLen bs:go (BS.drop bsCroppedLen bs:bss)
+            else go bss
         go [] = []
 
 resegmentPadded :: Int -> [BS.ByteString] -> [BS.ByteString]
-resegmentPadded multiple = go
-  where go (bs:bss) = case BS.length bs of
-              bsLen -> if bsLen < multiple
-                then case multiple - bsLen of
-                  bsNeed -> case bss of
-                    (cs:css) -> case BS.length cs of
-                      csLen | csLen >  bsNeed -> (bs <> BS.take bsNeed cs ):go (BS.drop bsNeed cs:css)
-                      csLen | csLen == bsNeed -> (bs <> cs                ):go                    css
-                      _                       ->                            go ((bs <> cs)       :css)
-                    [] -> [bs <> BS.replicate bsNeed 0]
-                else case (bsLen `div` multiple) * multiple of
-                  bsCroppedLen -> if bsCroppedLen == bsLen
-                    then bs:go bss
-                    else BS.take bsCroppedLen bs:go (BS.drop bsCroppedLen bs:bss)
+resegmentPadded size = go
+  where go (bs:bss) = let bsLen = BS.length bs in
+          if bsLen > 0
+            then if bsLen < size
+              then case size - bsLen of
+                bsNeed -> case bss of
+                  (cs:css) -> case BS.length cs of
+                    csLen | csLen >  bsNeed -> (bs <> BS.take bsNeed cs ):go (BS.drop bsNeed cs:css)
+                    csLen | csLen == bsNeed -> (bs <> cs                ):go                    css
+                    _                       ->                            go ((bs <> cs)       :css)
+                  [] -> [bs <> BS.replicate bsNeed 0]
+              else case (bsLen `div` size) * size of
+                bsCroppedLen -> if bsCroppedLen == bsLen
+                  then bs:go bss
+                  else BS.take bsCroppedLen bs:go (BS.drop bsCroppedLen bs:bss)
+            else go bss
         go [] = []
 
 hGetContentsChunkedBy :: Int -> IO.Handle -> IO [BS.ByteString]

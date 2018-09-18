@@ -112,7 +112,7 @@ rechunk size = go
                   (cs:css) -> case BS.length cs of
                     csLen | csLen >  bsNeed -> (bs <> BS.take bsNeed cs ):go (BS.drop bsNeed cs:css)
                     csLen | csLen == bsNeed -> (bs <> cs                ):go                    css
-                    _     | otherwise       ->                            go ((bs <> cs)       :css)
+                    _                       ->                            go ((bs <> cs)       :css)
                   [] -> [bs]
               else if size == bsLen
                 then bs:go bss
@@ -129,7 +129,7 @@ resegment multiple = go
                     (cs:css) -> case BS.length cs of
                       csLen | csLen >  bsNeed -> (bs <> BS.take bsNeed cs ):go (BS.drop bsNeed cs:css)
                       csLen | csLen == bsNeed -> (bs <> cs                ):go                    css
-                      _     | otherwise       ->                            go ((bs <> cs)       :css)
+                      _                       ->                            go ((bs <> cs)       :css)
                     [] -> [bs]
                 else case (bsLen `div` multiple) * multiple of
                   bsCroppedLen -> if bsCroppedLen == bsLen
@@ -146,7 +146,7 @@ resegmentPadded multiple = go
                     (cs:css) -> case BS.length cs of
                       csLen | csLen >  bsNeed -> (bs <> BS.take bsNeed cs ):go (BS.drop bsNeed cs:css)
                       csLen | csLen == bsNeed -> (bs <> cs                ):go                    css
-                      _     | otherwise       ->                            go ((bs <> cs)       :css)
+                      _                       ->                            go ((bs <> cs)       :css)
                     [] -> [bs <> BS.replicate bsNeed 0]
                 else case (bsLen `div` multiple) * multiple of
                   bsCroppedLen -> if bsCroppedLen == bsLen

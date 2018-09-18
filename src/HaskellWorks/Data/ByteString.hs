@@ -7,10 +7,10 @@ module HaskellWorks.Data.ByteString
   , resegment
   , resegmentPadded
   , rechunk
+  , rechunkPadded
   , hGetContentsChunkedBy
   ) where
 
-import Data.Semigroup ((<>))
 import Data.Word
 
 import qualified Data.ByteString          as BS
@@ -102,57 +102,59 @@ chunkedBy n bs = if BS.length bs == 0
     (as, zs) -> as : chunkedBy n zs
 {-# INLINE chunkedBy #-}
 
-rechunk :: Int -> [BS.ByteString] -> [BS.ByteString]
-rechunk size = go
-  where go (bs:bss) = let bsLen = BS.length bs in
-          if bsLen > 0
-            then if bsLen < size
-              then case size - bsLen of
-                bsNeed -> case bss of
-                  (cs:css) -> case BS.length cs of
-                    csLen | csLen >  bsNeed -> (bs <> BS.take bsNeed cs ):go (BS.drop bsNeed cs:css)
-                    csLen | csLen == bsNeed -> (bs <> cs                ):go                    css
-                    _     | otherwise       ->                            go ((bs <> cs)       :css)
-                  [] -> [bs]
-              else if size == bsLen
-                then bs:go bss
-                else BS.take size bs:go (BS.drop size bs:bss)
-            else go bss
-        go [] = []
-
 resegment :: Int -> [BS.ByteString] -> [BS.ByteString]
-resegment multiple = go
-  where go (bs:bss) = case BS.length bs of
-              bsLen -> if bsLen < multiple
-                then case multiple - bsLen of
-                  bsNeed -> case bss of
-                    (cs:css) -> case BS.length cs of
-                      csLen | csLen >  bsNeed -> (bs <> BS.take bsNeed cs ):go (BS.drop bsNeed cs:css)
-                      csLen | csLen == bsNeed -> (bs <> cs                ):go                    css
-                      _     | otherwise       ->                            go ((bs <> cs)       :css)
-                    [] -> [bs]
-                else case (bsLen `div` multiple) * multiple of
-                  bsCroppedLen -> if bsCroppedLen == bsLen
-                    then bs:go bss
-                    else BS.take bsCroppedLen bs:go (BS.drop bsCroppedLen bs:bss)
-        go [] = []
+resegment size = repartition $ begin
+  where begin :: [BS.ByteString] -> ([BS.ByteString], [BS.ByteString])
+        begin ass@(bs:bss) = if BS.length bs >= size
+          then let (ds, es) = BS.splitAt ((BS.length bs `div` size) * size) bs in ([ds], es:bss)
+          else go size ass
+        begin [] = ([], [])
+        go :: Int -> [BS.ByteString] -> ([BS.ByteString], [BS.ByteString])
+        go n (bs:bss) = let len = BS.length bs in if len >= n
+          then let (ds , es ) = BS.splitAt n bs           in ([ds]  , es:bss)
+          else let (css, dss) = go (n - BS.length bs) bss in (bs:css,    dss)
+        go _ []       = ([], [])
+
+rechunk :: Int -> [BS.ByteString] -> [BS.ByteString]
+rechunk size = repartition (go size)
+  where go :: Int -> [BS.ByteString] -> ([BS.ByteString], [BS.ByteString])
+        go n bss =
+          case bss of
+          cs:css | BS.length cs == 0 -> go n css
+          cs:css | BS.length cs >= n -> let (ds , es ) = BS.splitAt n cs           in ([ds]  , es:css)
+          cs:css                     -> let (dss, ess) = go (n - BS.length cs) css in (cs:dss,    ess)
+          []                         -> ([]                 , [])
+
+rechunkPadded :: Int -> [BS.ByteString] -> [BS.ByteString]
+rechunkPadded size = repartition (go size)
+  where go :: Int -> [BS.ByteString] -> ([BS.ByteString], [BS.ByteString])
+        go n bss =
+          case bss of
+          cs:css | BS.length cs == 0 -> go n css
+          cs:css | BS.length cs >= n -> let (ds , es ) = BS.splitAt n cs           in ([ds]  , es:css)
+          cs:css                     -> let (dss, ess) = go (n - BS.length cs) css in (cs:dss,    ess)
+          [] | n < size              -> ([BS.replicate n 0] , [])
+          []                         -> ([]                 , [])
 
 resegmentPadded :: Int -> [BS.ByteString] -> [BS.ByteString]
-resegmentPadded multiple = go
-  where go (bs:bss) = case BS.length bs of
-              bsLen -> if bsLen < multiple
-                then case multiple - bsLen of
-                  bsNeed -> case bss of
-                    (cs:css) -> case BS.length cs of
-                      csLen | csLen >  bsNeed -> (bs <> BS.take bsNeed cs ):go (BS.drop bsNeed cs:css)
-                      csLen | csLen == bsNeed -> (bs <> cs                ):go                    css
-                      _     | otherwise       ->                            go ((bs <> cs)       :css)
-                    [] -> [bs <> BS.replicate bsNeed 0]
-                else case (bsLen `div` multiple) * multiple of
-                  bsCroppedLen -> if bsCroppedLen == bsLen
-                    then bs:go bss
-                    else BS.take bsCroppedLen bs:go (BS.drop bsCroppedLen bs:bss)
-        go [] = []
+resegmentPadded size = repartition $ begin
+  where begin :: [BS.ByteString] -> ([BS.ByteString], [BS.ByteString])
+        begin ass@(bs:bss) = if BS.length bs >= size
+          then let (ds, es) = BS.splitAt ((BS.length bs `div` size) * size) bs in ([ds], es:bss)
+          else go size ass
+        begin [] = ([], [])
+        go :: Int -> [BS.ByteString] -> ([BS.ByteString], [BS.ByteString])
+        go n (bs:bss) = let len = BS.length bs in if len >= n
+          then let (ds , es ) = BS.splitAt n bs           in ([ds]  , es:bss)
+          else let (css, dss) = go (n - BS.length bs) bss in (bs:css,    dss)
+        go n []       = ([BS.replicate n 0], [])
+
+repartition :: ([BS.ByteString] -> ([BS.ByteString], [BS.ByteString])) -> [BS.ByteString] -> [BS.ByteString]
+repartition f = go
+  where go []  = []
+        go bss@(cs:css) = if BS.length cs > 0
+          then let (dss, ess) = f bss in BS.concat dss:go ess
+          else go css
 
 hGetContentsChunkedBy :: Int -> IO.Handle -> IO [BS.ByteString]
 hGetContentsChunkedBy k h = lazyRead

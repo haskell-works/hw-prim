@@ -22,8 +22,9 @@ spec = describe "HaskellWorks.Data.ByteStringSpec" $ do
   it "resegment creates correctly sized segments" $ requireProperty $ do
     bss       <- forAll $ (BS.pack <$>) <$> G.list (R.linear 0 8) (G.list (R.linear 0 24) (G.word8 R.constantBounded))
     chunkSize <- forAll $ G.int (R.linear 1 4)
-    forM_ (drop 1 (reverse (BS.resegment chunkSize bss))) $ \bs -> do
-      (BS.length bs) `mod` chunkSize === 0
+    let withoutLast = reverse (drop 1 (reverse (BS.resegment chunkSize bss)))
+    let disalignments = (\n -> n - (n `div` chunkSize) * chunkSize) . BS.length <$> withoutLast
+    disalignments === replicate (length disalignments) 0
   it "resegmentPadded does not modify data" $ requireProperty $ do
     bss       <- forAll $ (BS.pack <$>) <$> G.list (R.linear 0 8) (G.list (R.linear 0 24) (G.word8 R.constantBounded))
     chunkSize <- forAll $ G.int (R.linear 1 4)

@@ -5,9 +5,10 @@ module HaskellWorks.Data.ByteString
   ( chunkedBy
   , ToByteString(..)
   , ToByteStrings(..)
+  , rechunk
+  , rechunkPadded
   , resegment
   , resegmentPadded
-  , rechunk
   , hGetContentsChunkedBy
   ) where
 
@@ -113,6 +114,22 @@ rechunk size = go
                 csLen | csLen == bsNeed -> (bs <> cs                ):go                    css
                 _                       ->                            go ((bs <> cs)       :css)
               [] -> [bs]
+            else if size == bsLen
+              then bs:go bss
+              else BS.take size bs:go (BS.drop size bs:bss)
+          else go bss
+        go [] = []
+
+rechunkPadded :: Int -> [BS.ByteString] -> [BS.ByteString]
+rechunkPadded size = go
+  where go (bs:bss) = let bsLen = BS.length bs in if bsLen > 0
+          then if bsLen < size
+            then let bsNeed = size - bsLen in case bss of
+              (cs:css) -> case BS.length cs of
+                csLen | csLen >  bsNeed -> (bs <> BS.take bsNeed cs ):go (BS.drop bsNeed cs:css)
+                csLen | csLen == bsNeed -> (bs <> cs                ):go                    css
+                _                       ->                            go ((bs <> cs)       :css)
+              [] -> [bs <> BS.replicate bsNeed 0]
             else if size == bsLen
               then bs:go bss
               else BS.take size bs:go (BS.drop size bs:bss)

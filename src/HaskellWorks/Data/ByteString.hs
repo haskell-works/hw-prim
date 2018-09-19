@@ -1,4 +1,5 @@
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE MultiWayIf        #-}
 
 module HaskellWorks.Data.ByteString
   ( chunkedBy
@@ -104,65 +105,58 @@ chunkedBy n bs = if BS.length bs == 0
 
 rechunk :: Int -> [BS.ByteString] -> [BS.ByteString]
 rechunk size = go
-  where go (bs:bss) = let bsLen = BS.length bs in
-          if bsLen > 0
-            then if bsLen < size
-              then case size - bsLen of
-                bsNeed -> case bss of
-                  (cs:css) -> case BS.length cs of
-                    csLen | csLen >  bsNeed -> (bs <> BS.take bsNeed cs ):go (BS.drop bsNeed cs:css)
-                    csLen | csLen == bsNeed -> (bs <> cs                ):go                    css
-                    _                       ->                            go ((bs <> cs)       :css)
-                  [] -> [bs]
-              else if size == bsLen
-                then bs:go bss
-                else BS.take size bs:go (BS.drop size bs:bss)
-            else go bss
+  where go (bs:bss) = let bsLen = BS.length bs in if bsLen > 0
+          then if bsLen < size
+            then let bsNeed = size - bsLen in case bss of
+              (cs:css) -> case BS.length cs of
+                csLen | csLen >  bsNeed -> (bs <> BS.take bsNeed cs ):go (BS.drop bsNeed cs:css)
+                csLen | csLen == bsNeed -> (bs <> cs                ):go                    css
+                _                       ->                            go ((bs <> cs)       :css)
+              [] -> [bs]
+            else if size == bsLen
+              then bs:go bss
+              else BS.take size bs:go (BS.drop size bs:bss)
+          else go bss
         go [] = []
 
 resegment :: Int -> [BS.ByteString] -> [BS.ByteString]
 resegment size = go
-  where go (bs:bss) = let bsLen = BS.length bs in
-          if bsLen > 0
-            then if bsLen < size
-              then case size - bsLen of
-                bsNeed -> case bss of
-                  (cs:css) -> case BS.length cs of
-                    csLen | csLen >  bsNeed -> (bs <> BS.take bsNeed cs ):go (BS.drop bsNeed cs:css)
-                    csLen | csLen == bsNeed -> (bs <> cs                ):go                    css
-                    _                       ->                            go ((bs <> cs)       :css)
-                  [] -> [bs]
-              else case (bsLen `div` size) * size of
-                bsCroppedLen -> if bsCroppedLen == bsLen
-                  then bs:go bss
-                  else BS.take bsCroppedLen bs:go (BS.drop bsCroppedLen bs:bss)
-            else go bss
+  where go (bs:bss) = let bsLen = BS.length bs in if bsLen > 0
+          then if bsLen < size
+            then case bss of
+              (cs:css) -> let bsNeed = size - bsLen; csLen = BS.length cs in if
+                | csLen >  bsNeed -> (bs <> BS.take bsNeed cs ):go (BS.drop bsNeed cs:css)
+                | csLen == bsNeed -> (bs <> cs                ):go                    css
+                | otherwise       ->                            go ((bs <> cs)       :css)
+              [] -> [bs]
+            else let bsCroppedLen = (bsLen `div` size) * size in if bsCroppedLen == bsLen
+              then bs:go bss
+              else BS.take bsCroppedLen bs:go (BS.drop bsCroppedLen bs:bss)
+          else go bss
         go [] = []
 
 resegmentPadded :: Int -> [BS.ByteString] -> [BS.ByteString]
 resegmentPadded size = go
-  where go (bs:bss) = let bsLen = BS.length bs in
-          if bsLen > 0
-            then if bsLen < size
-              then case size - bsLen of
-                bsNeed -> case bss of
-                  (cs:css) -> case BS.length cs of
-                    csLen | csLen >  bsNeed -> (bs <> BS.take bsNeed cs ):go (BS.drop bsNeed cs:css)
-                    csLen | csLen == bsNeed -> (bs <> cs                ):go                    css
-                    _                       ->                            go ((bs <> cs)       :css)
-                  [] -> [bs <> BS.replicate bsNeed 0]
-              else case (bsLen `div` size) * size of
-                bsCroppedLen -> if bsCroppedLen == bsLen
-                  then bs:go bss
-                  else BS.take bsCroppedLen bs:go (BS.drop bsCroppedLen bs:bss)
-            else go bss
+  where go (bs:bss) = let bsLen = BS.length bs in if bsLen > 0
+          then if bsLen < size
+            then let bsNeed = size - bsLen in case bss of
+              (cs:css) -> case BS.length cs of
+                csLen | csLen >  bsNeed -> (bs <> BS.take bsNeed cs ):go (BS.drop bsNeed cs:css)
+                csLen | csLen == bsNeed -> (bs <> cs                ):go                    css
+                _                       ->                            go ((bs <> cs)       :css)
+              [] -> [bs <> BS.replicate bsNeed 0]
+            else case (bsLen `div` size) * size of
+              bsCroppedLen -> if bsCroppedLen == bsLen
+                then bs:go bss
+                else BS.take bsCroppedLen bs:go (BS.drop bsCroppedLen bs:bss)
+          else go bss
         go [] = []
 
 hGetContentsChunkedBy :: Int -> IO.Handle -> IO [BS.ByteString]
 hGetContentsChunkedBy k h = lazyRead
   where lazyRead = IO.unsafeInterleaveIO loop
         loop = do
-            c <- BSI.createAndTrim k $ \p -> IO.hGetBuf h p k
-            if BS.null c
-              then IO.hClose h >> return []
-              else (c:) <$> lazyRead
+          c <- BSI.createAndTrim k $ \p -> IO.hGetBuf h p k
+          if BS.null c
+            then IO.hClose h >> return []
+            else (c:) <$> lazyRead

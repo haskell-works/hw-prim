@@ -5,6 +5,8 @@ module HaskellWorks.Data.ByteString.Lazy
   ( ToLazyByteString(..)
   , resegment
   , resegmentPadded
+  , rechunk
+  , rechunkPadded
   , hGetContentsChunkedBy
   ) where
 
@@ -64,6 +66,12 @@ resegment multiple = LBS.fromChunks . BS.resegment multiple . LBS.toChunks
 
 resegmentPadded :: Int -> LBS.ByteString -> LBS.ByteString
 resegmentPadded multiple = LBS.fromChunks . BS.resegmentPadded multiple . LBS.toChunks
+
+rechunk :: Int -> LBS.ByteString -> LBS.ByteString
+rechunk multiple = LBS.fromChunks . BS.rechunk multiple . LBS.toChunks
+
+rechunkPadded :: Int -> LBS.ByteString -> LBS.ByteString
+rechunkPadded multiple = LBS.fromChunks . BS.rechunkPadded multiple . LBS.toChunks
 
 hGetContentsChunkedBy :: Int -> IO.Handle -> IO LBS.ByteString
 hGetContentsChunkedBy k h = lazyRead

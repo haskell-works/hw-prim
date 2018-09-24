@@ -10,6 +10,7 @@ import Data.Int
 import Data.Word
 
 import qualified Data.ByteString      as BS
+import qualified Data.ByteString.Lazy as LBS
 import qualified Data.Vector          as DV
 import qualified Data.Vector.Storable as DVS
 
@@ -21,6 +22,9 @@ instance Container [a] where
 
 instance Container BS.ByteString where
   type Elem BS.ByteString = Word8
+
+instance Container LBS.ByteString where
+  type Elem LBS.ByteString = Word8
 
 instance Container (DV.Vector Word8) where
   type Elem (DV.Vector Word8) = Word8

@@ -15,6 +15,7 @@ import HaskellWorks.Data.Drop
 import Prelude                     hiding (drop)
 
 import qualified Data.ByteString      as BS
+import qualified Data.ByteString.Lazy as LBS
 import qualified Data.Vector          as DV
 import qualified Data.Vector.Storable as DVS
 
@@ -29,6 +30,10 @@ instance Uncons String where
 
 instance Uncons BS.ByteString where
   uncons = BS.uncons
+  {-# INLINE uncons   #-}
+
+instance Uncons LBS.ByteString where
+  uncons = LBS.uncons
   {-# INLINE uncons   #-}
 
 instance Uncons (DV.Vector Word8) where

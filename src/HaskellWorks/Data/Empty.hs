@@ -12,6 +12,7 @@ import Data.Word
 import HaskellWorks.Data.Container
 
 import qualified Data.ByteString      as BS
+import qualified Data.ByteString.Lazy as LBS
 import qualified Data.Vector          as DV
 import qualified Data.Vector.Storable as DVS
 
@@ -24,6 +25,10 @@ instance Empty [a] where
 
 instance Empty BS.ByteString where
   empty = BS.empty
+  {-# INLINE empty #-}
+
+instance Empty LBS.ByteString where
+  empty = LBS.empty
   {-# INLINE empty #-}
 
 instance Empty (DV.Vector Word8) where

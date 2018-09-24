@@ -14,6 +14,7 @@ import HaskellWorks.Data.Positioning
 import Prelude                       hiding (drop)
 
 import qualified Data.ByteString      as BS
+import qualified Data.ByteString.Lazy as LBS
 import qualified Data.List            as L
 import qualified Data.Vector          as DV
 import qualified Data.Vector.Storable as DVS
@@ -27,6 +28,10 @@ instance Drop [a] where
 
 instance Drop BS.ByteString where
   drop = BS.drop . fromIntegral
+  {-# INLINE drop #-}
+
+instance Drop LBS.ByteString where
+  drop = LBS.drop . fromIntegral
   {-# INLINE drop #-}
 
 instance Drop (DV.Vector Word8) where

@@ -12,15 +12,19 @@ module HaskellWorks.Data.ByteString
   , hGetContentsChunkedBy
   ) where
 
-import Data.Semigroup ((<>))
+import Control.Monad.ST
+import Data.Semigroup   ((<>))
 import Data.Word
 
-import qualified Data.ByteString          as BS
-import qualified Data.ByteString.Internal as BSI
-import qualified Data.ByteString.Lazy     as LBS
-import qualified Data.Vector.Storable     as DVS
-import qualified System.IO                as IO
-import qualified System.IO.Unsafe         as IO
+import qualified Control.Monad.ST.Unsafe       as ST
+import qualified Data.ByteString               as BS
+import qualified Data.ByteString.Internal      as BSI
+import qualified Data.ByteString.Lazy          as LBS
+import qualified Data.ByteString.Lazy.Internal as LBSI
+import qualified Data.Vector.Storable          as DVS
+import qualified Data.Vector.Storable.Mutable  as DVSM
+import qualified System.IO                     as IO
+import qualified System.IO.Unsafe              as IO
 
 class ToByteString a where
   toByteString :: a -> BS.ByteString
@@ -47,6 +51,10 @@ instance ToByteString (DVS.Vector Word32) where
 instance ToByteString (DVS.Vector Word64) where
   toByteString v = case DVS.unsafeToForeignPtr (DVS.unsafeCast v :: DVS.Vector Word8) of
     (fptr, start, offset) -> BSI.fromForeignPtr fptr start offset
+  {-# INLINE toByteString #-}
+
+instance ToByteString [Word64] where
+  toByteString = toByteString . DVS.fromList
   {-# INLINE toByteString #-}
 
 class ToByteStrings a where
@@ -78,6 +86,29 @@ instance ToByteStrings (DVS.Vector Word32) where
 
 instance ToByteStrings (DVS.Vector Word64) where
   toByteStrings = (:[]) . toByteString
+  {-# INLINE toByteStrings #-}
+
+instance ToByteStrings [Word64] where
+  toByteStrings ws = toByteString <$> go ws
+    where go :: [Word64] -> [DVS.Vector Word64]
+          go us = DVS.createT (goST us)
+          goST :: [Word64] -> ST s [DVSM.MVector s Word64]
+          goST us = do
+            mv <- DVSM.new defaultChunkSize
+            (i, ts) <- writeWords 0 defaultChunkSize us mv
+            mvs <- ST.unsafeInterleaveST (goST ts)
+            if null ts
+              then return [DVSM.take i mv]
+              else return (DVSM.take i mv:mvs)
+          writeWords :: Int -> Int -> [Word64] -> DVSM.MVector s Word64 -> ST s (Int, [Word64])
+          writeWords i n us mv = if i < n
+            then case us of
+              t:ts -> do
+                DVSM.write mv i t
+                writeWords (i + 1) n ts mv
+              [] -> return (i, us)
+            else return (i, us)
+          defaultChunkSize = (LBSI.defaultChunkSize `div` 64) * 8
   {-# INLINE toByteStrings #-}
 
 instance ToByteStrings [DVS.Vector Word8] where

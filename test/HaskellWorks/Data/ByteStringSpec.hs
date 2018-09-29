@@ -1,15 +1,17 @@
 module HaskellWorks.Data.ByteStringSpec where
 
 import Control.Monad
+import Data.Foldable
 import HaskellWorks.Hspec.Hedgehog
 import Hedgehog
 import Test.Hspec
 
-import qualified Data.ByteString              as BS
-import qualified Data.ByteString.Lazy         as LBS
-import qualified HaskellWorks.Data.ByteString as BS
-import qualified Hedgehog.Gen                 as G
-import qualified Hedgehog.Range               as R
+import qualified Data.ByteString               as BS
+import qualified Data.ByteString.Lazy          as LBS
+import qualified Data.ByteString.Lazy.Internal as LBSI
+import qualified HaskellWorks.Data.ByteString  as BS
+import qualified Hedgehog.Gen                  as G
+import qualified Hedgehog.Range                as R
 
 {-# ANN module ("HLint: Ignore Redundant do" :: String) #-}
 
@@ -45,4 +47,7 @@ spec = describe "HaskellWorks.Data.ByteStringSpec" $ do
     chunkSize <- forAll $ G.int (R.linear 1 4)
     forM_ (drop 1 (reverse (BS.rechunk chunkSize bss))) $ \bs -> do
       (BS.length bs) `mod` chunkSize === 0
+  it "rechunk creates correctly sized segments" $ requireProperty $ do
+    ws <- forAll $ G.list (R.linear 0 (LBSI.defaultChunkSize `div` 4)) (G.word64 R.constantBounded)
+    fold (BS.toByteStrings ws) === BS.toByteString ws
 

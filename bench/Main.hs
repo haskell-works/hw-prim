@@ -1,7 +1,9 @@
 {-# LANGUAGE BangPatterns        #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module Main where
+module Main
+  ( main
+  ) where
 
 import Criterion.Main
 import Data.Word

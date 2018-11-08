@@ -47,36 +47,18 @@ sumFileLazyByteStringViaVector64 multiple filePath = do
   let !_ = sum (DVS.foldl' (+) 0 <$> wss)
   return ()
 
-mkBenchMapAccumL :: (Word64 -> Word64 -> (Word64, Word64)) -> Word64 -> FilePath -> IO ()
-mkBenchMapAccumL f s filePath = do
-  !(v :: DVS.Vector Word64) <- mmapVectorLike filePath
-  let !_ = snd $ DVS.mapAccumL f s v
-  return ()
-
-mkBenchMapAccumLViaStrictState :: (Word64 -> Word64 -> (Word64, Word64)) -> Word64 -> FilePath -> IO ()
-mkBenchMapAccumLViaStrictState f s filePath = do
-  !(v :: DVS.Vector Word64) <- mmapVectorLike filePath
-  let !_ = snd $ DVS.mapAccumLViaStrictState f s v
-  return ()
-
-mkBenchMapAccumLViaLazyState :: (Word64 -> Word64 -> (Word64, Word64)) -> Word64 -> FilePath -> IO ()
-mkBenchMapAccumLViaLazyState f s filePath = do
-  !(v :: DVS.Vector Word64) <- mmapVectorLike filePath
-  let !_ = snd $ DVS.mapAccumLViaLazyState f s v
-  return ()
-
 benchRankJson40Conduits :: [Benchmark]
 benchRankJson40Conduits =
-  [ env (return ()) $ \_ -> bgroup "medium.csv"
+  [ env (mmapVectorLike "corpus/small.csv") $ \(v :: DVS.Vector Word64) -> bgroup "medium.csv"
     -- [ bench "Foldl' over ByteString"                        (whnfIO (sumFileByteString                "corpus/medium.csv"))
     -- , bench "Foldl' over Vector Word64"                     (whnfIO (sumFileVector64                  "corpus/medium.csv"))
     -- [ bench "Foldl' over Lazy ByteString via Vector Word64" (whnfIO (sumFileLazyByteStringViaVector64 512 "corpus/medium.csv"))
     -- , bench "Foldl' over Lazy ByteString via Vector Word64" (whnfIO (sumFileLazyByteStringViaVector64 256 "corpus/medium.csv"))
     -- , bench "Foldl' over Lazy ByteString via Vector Word64" (whnfIO (sumFileLazyByteStringViaVector64 128 "corpus/medium.csv"))
     -- , bench "Foldl' over Lazy ByteString via Vector Word64" (whnfIO (sumFileLazyByteStringViaVector64 64  "corpus/medium.csv"))
-    [ bench "mapAccumL               for DVS.Vector Word64" (whnfIO (mkBenchMapAccumL               (\a b -> (a + b, a * b)) 3 "corpus/small.csv"))
-    , bench "mapAccumLViaStrictState for DVS.Vector Word64" (whnfIO (mkBenchMapAccumLViaStrictState (\a b -> (a + b, a * b)) 3 "corpus/small.csv"))
-    , bench "mapAccumLViaLazyState   for DVS.Vector Word64" (whnfIO (mkBenchMapAccumLViaLazyState   (\a b -> (a + b, a * b)) 3 "corpus/small.csv"))
+    [ bench "mapAccumL               for DVS.Vector Word64" (whnf (snd . DVS.mapAccumL               (\a b -> (a + b, a * b)) 3) v)
+    , bench "mapAccumLViaStrictState for DVS.Vector Word64" (whnf (snd . DVS.mapAccumLViaStrictState (\a b -> (a + b, a * b)) 3) v)
+    , bench "mapAccumLViaLazyState   for DVS.Vector Word64" (whnf (snd . DVS.mapAccumLViaLazyState   (\a b -> (a + b, a * b)) 3) v)
     ]
   ]
 

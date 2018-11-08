@@ -23,8 +23,38 @@ spec = describe "HaskellWorks.Data.Vector.StorableSpec" $ do
   it "mapAccumL: f a b = (a + 1, b * 2)" $ requireProperty $ do
     as <- forAll $ G.list (R.linear 0 10) (G.word64 (R.linear 0 255))
     let f a b = (a + 1, b * 2)
-    (DVS.toList <$> DVS.mapAccumL f (0 :: Int) (DVS.fromList as)) === L.mapAccumL f (0 :: Int) as
+    let actual    = DVS.toList <$> DVS.mapAccumL f (0 :: Int) (DVS.fromList as)
+    let expected  = L.mapAccumL f (0 :: Int) as
+    actual === expected
   it "mapAccumL: f a b = (a * 2, b + 1)" $ requireProperty $ do
     as <- forAll $ G.list (R.linear 0 10) (G.word64 (R.linear 0 255))
     let f a b = (a * 2, b + 1)
-    (DVS.toList <$> DVS.mapAccumL f (0 :: Int) (DVS.fromList as)) === L.mapAccumL f (0 :: Int) as
+    let actual    = DVS.toList <$> DVS.mapAccumL f (0 :: Int) (DVS.fromList as)
+    let expected  = L.mapAccumL f (0 :: Int) as
+    actual === expected
+
+  it "mapAccumLViaStrictState: f a b = (a + 1, b * 2)" $ requireProperty $ do
+    as <- forAll $ G.list (R.linear 0 10) (G.word64 (R.linear 0 255))
+    let f a b = (a + 1, b * 2)
+    let actual    = DVS.toList <$> DVS.mapAccumLViaStrictState f (1 :: Int) (DVS.fromList as)
+    let expected  = L.mapAccumL f (1 :: Int) as
+    actual === expected
+  it "mapAccumLViaStrictState: f a b = (a * 2, b + 1)" $ requireProperty $ do
+    as <- forAll $ G.list (R.linear 0 10) (G.word64 (R.linear 0 255))
+    let f a b = (a * 2, b + 1)
+    let actual    = DVS.toList <$> DVS.mapAccumLViaStrictState f (1 :: Int) (DVS.fromList as)
+    let expected  = L.mapAccumL f (1 :: Int) as
+    actual === expected
+
+  it "mapAccumLViaLazyState: f a b = (a + 1, b * 2)" $ requireProperty $ do
+    as <- forAll $ G.list (R.linear 0 10) (G.word64 (R.linear 0 255))
+    let f a b = (a + 1, b * 2)
+    let actual    = DVS.toList <$> DVS.mapAccumLViaLazyState f (1 :: Int) (DVS.fromList as)
+    let expected  = L.mapAccumL f (1 :: Int) as
+    actual === expected
+  it "mapAccumLViaLazyState: f a b = (a * 2, b + 1)" $ requireProperty $ do
+    as <- forAll $ G.list (R.linear 0 10) (G.word64 (R.linear 0 255))
+    let f a b = (a * 2, b + 1)
+    let actual    = DVS.toList <$> DVS.mapAccumLViaLazyState f (1 :: Int) (DVS.fromList as)
+    let expected  = L.mapAccumL f (1 :: Int) as
+    actual === expected

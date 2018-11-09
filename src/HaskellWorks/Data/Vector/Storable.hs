@@ -87,7 +87,7 @@ mapAccumLViaStrictState f a vb = swap . flip MSS.runState a $ DVS.forM vb go
 
 unstreamM :: (Storable a, Monad m) => MBundle m u a -> m (DVS.Vector a)
 {-# INLINE [1] unstreamM #-}
-unstreamM s = do
+unstreamM = \s -> do
   xs <- DVFBM.toList s
   return $ DVG.unstream $ DVFB.unsafeFromList (DVFBM.size s) xs
 
@@ -96,35 +96,34 @@ mapAccumLFusable :: forall a b c. (Storable b, Storable c)
   -> a
   -> DVS.Vector b
   -> (a, DVS.Vector c)
-mapAccumLFusable f a v = swap $ DVFU.unId $ flip runStateT a $ unstreamM (bundleMapAccumL f (DVG.stream v))
+mapAccumLFusable = \f a v -> swap $ DVFU.unId $ flip runStateT a $ unstreamM (bundleMapAccumL f (DVG.stream v))
 {-# INLINE mapAccumLFusable #-}
 
 -- | Map a function over a 'Bundle'
 bundleMapAccumL :: Monad m => (a -> b -> (a, c)) -> DVFBM.Bundle m v b -> DVFBM.Bundle (StateT a m) v c
-bundleMapAccumL f = bundleMapAccumLM (\a b -> return (f a b))
+bundleMapAccumL = \f -> bundleMapAccumLM (\a b -> return (f a b))
 {-# INLINE bundleMapAccumL #-}
 
 -- | Map a monadic function over a 'Bundle'
 bundleMapAccumLM :: Monad m => (a -> b -> m (a, c)) -> DVFBM.Bundle m v b -> DVFBM.Bundle (StateT a m) v c
-bundleMapAccumLM f DVFBM.Bundle{DVFBM.sElems = s, DVFBM.sSize = n} = DVFBM.fromStream (streamMapAccumLM f s) n
+bundleMapAccumLM = \f DVFBM.Bundle{DVFBM.sElems = s, DVFBM.sSize = n} -> DVFBM.fromStream (streamMapAccumLM f s) n
 {-# INLINE [1] bundleMapAccumLM #-}
 
 streamMapAccumL :: Monad m => (a -> b -> (a, c)) -> DVFSM.Stream m b -> DVFSM.Stream (StateT a m) c
-streamMapAccumL f = streamMapAccumLM (\a b -> return (f a b))
+streamMapAccumL = \f -> streamMapAccumLM (\a b -> return (f a b))
 {-# INLINE streamMapAccumL #-}
 
 streamMapAccumLM :: forall m a b c . Monad m => (a -> b -> m (a, c)) -> DVFSM.Stream m b -> DVFSM.Stream (StateT a m) c
-streamMapAccumLM f (DVFSM.Stream step t) = DVFSM.Stream (step' step) t
-  where step' :: forall s . (s -> m (DVFSM.Step s b)) -> s -> StateT a m (DVFSM.Step s c)
-        step' innerStep s = StateT go
-          where go :: a -> m (DVFSM.Step s c, a)
-                go a = do
-                  r <- innerStep s
-                  case r of
-                    DVFSM.Yield b s' -> do
-                      (a', c') <- f a b
-                      return (DVFSM.Yield c' s', a')
-                    DVFSM.Skip    s' -> return (DVFSM.Skip s', a)
-                    DVFSM.Done       -> return (DVFSM.Done, a)
-        {-# INLINE [0] step' #-}
+streamMapAccumLM =  \f (DVFSM.Stream step t) ->
+                      let step' :: forall s . (s -> m (DVFSM.Step s b)) -> s -> StateT a m (DVFSM.Step s c)
+                          step' = \innerStep s -> StateT $ \a -> do
+                            r <- innerStep s
+                            case r of
+                              DVFSM.Yield b s' -> do
+                                (a', c') <- f a b
+                                return (DVFSM.Yield c' s', a')
+                              DVFSM.Skip    s' -> return (DVFSM.Skip s', a)
+                              DVFSM.Done       -> return (DVFSM.Done, a)
+                          {-# INLINE [0] step' #-}
+                      in DVFSM.Stream (step' step) t
 {-# INLINE [1] streamMapAccumLM #-}

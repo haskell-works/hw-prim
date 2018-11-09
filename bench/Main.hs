@@ -3,7 +3,9 @@
 
 module Main where
 
+import Control.Monad.Trans.State
 import Criterion.Main
+import Data.Vector.Fusion.Util              (Id (..))
 import Data.Word
 import Foreign
 import HaskellWorks.Data.FromForeignRegion
@@ -53,11 +55,16 @@ readLazyByteStringAsVectorList filePath = do
   lbs <- LBS.readFile filePath
   return (asVector64 <$> LBS.toChunks lbs)
 
-
+mapOnStateId :: DVS.Vector Word64 -> DVS.Vector Word64
+mapOnStateId v = unId $ go
+  where go :: Id (DVS.Vector Word64)
+        go = fst <$> flip runStateT 0 ho
+        ho :: StateT Word64 Id (DVS.Vector Word64)
+        ho = DVS.mapM return v
 
 benchRankJson40Conduits :: [Benchmark]
 benchRankJson40Conduits =
-  [ env (readLazyByteStringAsVectorList "corpus/small.csv") $ \vs -> bgroup "medium.csv"
+  [ env (readLazyByteStringAsVectorList "corpus/small.csv") $ \(vs :: [DVS.Vector Word64]) -> bgroup "medium.csv"
     -- [ bench "Foldl' over ByteString"                        (whnfIO (sumFileByteString                "corpus/medium.csv"))
     -- , bench "Foldl' over Vector Word64"                     (whnfIO (sumFileVector64                  "corpus/medium.csv"))
     -- [ bench "Foldl' over Lazy ByteString via Vector Word64" (whnfIO (sumFileLazyByteStringViaVector64 512 "corpus/medium.csv"))
@@ -68,6 +75,7 @@ benchRankJson40Conduits =
     , bench "mapAccumLViaStrictState for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . snd . DVS.mapAccumLViaStrictState (\a b -> (a + b, a * b)) 3 <$> us)) vs)
     , bench "mapAccumLViaLazyState   for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . snd . DVS.mapAccumLViaLazyState   (\a b -> (a + b, a * b)) 3 <$> us)) vs)
     , bench "mapAccumLFusable        for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . snd . DVS.mapAccumLFusable        (\a b -> (a + b, a * b)) 3 <$> us)) vs)
+    , bench "mapOnStateId            for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . mapOnStateId <$> us)) vs)
     ]
   ]
 

@@ -56,11 +56,16 @@ readLazyByteStringAsVectorList filePath = do
   return (asVector64 <$> LBS.toChunks lbs)
 
 mapOnStateId :: DVS.Vector Word64 -> DVS.Vector Word64
-mapOnStateId v = unId $ go
+mapOnStateId v = unId go
   where go :: Id (DVS.Vector Word64)
         go = fst <$> flip runStateT 0 ho
         ho :: StateT Word64 Id (DVS.Vector Word64)
         ho = DVS.mapM return v
+
+mapOnId :: DVS.Vector Word64 -> DVS.Vector Word64
+mapOnId v = unId go
+  where go :: Id (DVS.Vector Word64)
+        go = DVS.mapM return v
 
 benchRankJson40Conduits :: [Benchmark]
 benchRankJson40Conduits =
@@ -76,6 +81,8 @@ benchRankJson40Conduits =
     , bench "mapAccumLViaLazyState   for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . snd . DVS.mapAccumLViaLazyState   (\a b -> (a + b, a * b)) 3 <$> us)) vs)
     , bench "mapAccumLFusable        for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . snd . DVS.mapAccumLFusable        (\a b -> (a + b, a * b)) 3 <$> us)) vs)
     , bench "mapOnStateId            for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . mapOnStateId <$> us)) vs)
+    , bench "mapOnId                 for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . mapOnId      <$> us)) vs)
+    , bench "map                     for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . DVS.map id   <$> us)) vs)
     ]
   ]
 

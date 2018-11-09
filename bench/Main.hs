@@ -67,6 +67,7 @@ benchRankJson40Conduits =
     [ bench "mapAccumL               for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . snd . DVS.mapAccumL               (\a b -> (a + b, a * b)) 3 <$> us)) vs)
     , bench "mapAccumLViaStrictState for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . snd . DVS.mapAccumLViaStrictState (\a b -> (a + b, a * b)) 3 <$> us)) vs)
     , bench "mapAccumLViaLazyState   for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . snd . DVS.mapAccumLViaLazyState   (\a b -> (a + b, a * b)) 3 <$> us)) vs)
+    , bench "mapAccumLFusable        for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . snd . DVS.mapAccumLFusable        (\a b -> (a + b, a * b)) 3 <$> us)) vs)
     ]
   ]
 

@@ -7,6 +7,7 @@ import Criterion.Main
 import Data.Word
 import Foreign
 import HaskellWorks.Data.FromForeignRegion
+import HaskellWorks.Data.Vector.AsVector64
 import HaskellWorks.Data.Vector.AsVector64s
 
 import qualified Data.ByteString                   as BS
@@ -47,18 +48,25 @@ sumFileLazyByteStringViaVector64 multiple filePath = do
   let !_ = sum (DVS.foldl' (+) 0 <$> wss)
   return ()
 
+readLazyByteStringAsVectorList :: FilePath -> IO [DVS.Vector Word64]
+readLazyByteStringAsVectorList filePath = do
+  lbs <- LBS.readFile filePath
+  return (asVector64 <$> LBS.toChunks lbs)
+
+
+
 benchRankJson40Conduits :: [Benchmark]
 benchRankJson40Conduits =
-  [ env (mmapVectorLike "corpus/small.csv") $ \(v :: DVS.Vector Word64) -> bgroup "medium.csv"
+  [ env (readLazyByteStringAsVectorList "corpus/small.csv") $ \vs -> bgroup "medium.csv"
     -- [ bench "Foldl' over ByteString"                        (whnfIO (sumFileByteString                "corpus/medium.csv"))
     -- , bench "Foldl' over Vector Word64"                     (whnfIO (sumFileVector64                  "corpus/medium.csv"))
     -- [ bench "Foldl' over Lazy ByteString via Vector Word64" (whnfIO (sumFileLazyByteStringViaVector64 512 "corpus/medium.csv"))
     -- , bench "Foldl' over Lazy ByteString via Vector Word64" (whnfIO (sumFileLazyByteStringViaVector64 256 "corpus/medium.csv"))
     -- , bench "Foldl' over Lazy ByteString via Vector Word64" (whnfIO (sumFileLazyByteStringViaVector64 128 "corpus/medium.csv"))
     -- , bench "Foldl' over Lazy ByteString via Vector Word64" (whnfIO (sumFileLazyByteStringViaVector64 64  "corpus/medium.csv"))
-    [ bench "mapAccumL               for DVS.Vector Word64" (whnf (snd . DVS.mapAccumL               (\a b -> (a + b, a * b)) 3) v)
-    , bench "mapAccumLViaStrictState for DVS.Vector Word64" (whnf (snd . DVS.mapAccumLViaStrictState (\a b -> (a + b, a * b)) 3) v)
-    , bench "mapAccumLViaLazyState   for DVS.Vector Word64" (whnf (snd . DVS.mapAccumLViaLazyState   (\a b -> (a + b, a * b)) 3) v)
+    [ bench "mapAccumL               for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . snd . DVS.mapAccumL               (\a b -> (a + b, a * b)) 3 <$> us)) vs)
+    , bench "mapAccumLViaStrictState for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . snd . DVS.mapAccumLViaStrictState (\a b -> (a + b, a * b)) 3 <$> us)) vs)
+    , bench "mapAccumLViaLazyState   for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . snd . DVS.mapAccumLViaLazyState   (\a b -> (a + b, a * b)) 3 <$> us)) vs)
     ]
   ]
 

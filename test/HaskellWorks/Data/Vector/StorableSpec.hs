@@ -58,3 +58,17 @@ spec = describe "HaskellWorks.Data.Vector.StorableSpec" $ do
     let actual    = DVS.toList <$> DVS.mapAccumLViaLazyState f (1 :: Int) (DVS.fromList as)
     let expected  = L.mapAccumL f (1 :: Int) as
     actual === expected
+
+  it "mapAccumLFusable: f a b = (a + 1, b * 2)" $ requireProperty $ do
+    as <- forAll $ G.list (R.linear 0 10) (G.word64 (R.linear 0 255))
+    let f a b = (a + 1, b * 2)
+    let actual    = DVS.toList <$> DVS.mapAccumLFusable f (1 :: Int) (DVS.fromList as)
+    let expected  = L.mapAccumL f (1 :: Int) as
+    actual === expected
+  it "mapAccumLFusable: f a b = (a * 2, b + 1)" $ requireProperty $ do
+    as <- forAll $ G.list (R.linear 0 10) (G.word64 (R.linear 0 255))
+    let f a b = (a * 2, b + 1)
+    let actual    = DVS.toList <$> DVS.mapAccumLViaLazyState f (1 :: Int) (DVS.fromList as)
+    let expected  = L.mapAccumL f (1 :: Int) as
+    actual === expected
+

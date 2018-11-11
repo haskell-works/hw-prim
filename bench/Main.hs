@@ -3,15 +3,16 @@
 
 module Main where
 
-import Control.Monad.Trans.State
 import Criterion.Main
-import Data.Vector.Fusion.Util              (Id (..))
 import Data.Word
 import Foreign
 import HaskellWorks.Data.FromForeignRegion
 import HaskellWorks.Data.Vector.AsVector64
 import HaskellWorks.Data.Vector.AsVector64s
 
+import qualified Bench.MapId                       as B
+import qualified Bench.MapOnId                     as B
+import qualified Bench.MapOnStateId                as B
 import qualified Data.ByteString                   as BS
 import qualified Data.ByteString.Internal          as BSI
 import qualified Data.ByteString.Lazy              as LBS
@@ -55,18 +56,6 @@ readLazyByteStringAsVectorList filePath = do
   lbs <- LBS.readFile filePath
   return (asVector64 <$> LBS.toChunks lbs)
 
-mapOnStateId :: DVS.Vector Word64 -> DVS.Vector Word64
-mapOnStateId v = unId go
-  where go :: Id (DVS.Vector Word64)
-        go = fst <$> flip runStateT 0 ho
-        ho :: StateT Word64 Id (DVS.Vector Word64)
-        ho = DVS.mapM return v
-
-mapOnId :: DVS.Vector Word64 -> DVS.Vector Word64
-mapOnId v = unId go
-  where go :: Id (DVS.Vector Word64)
-        go = DVS.mapM return v
-
 benchRankJson40Conduits :: [Benchmark]
 benchRankJson40Conduits =
   [ env (readLazyByteStringAsVectorList "corpus/small.csv") $ \(vs :: [DVS.Vector Word64]) -> bgroup "medium.csv"
@@ -80,9 +69,9 @@ benchRankJson40Conduits =
     , bench "mapAccumLViaStrictState for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . snd . DVS.mapAccumLViaStrictState (\a b -> (a + b, a * b)) 3 <$> us)) vs)
     , bench "mapAccumLViaLazyState   for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . snd . DVS.mapAccumLViaLazyState   (\a b -> (a + b, a * b)) 3 <$> us)) vs)
     , bench "mapAccumLFusable        for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . snd . DVS.mapAccumLFusable        (\a b -> (a + b, a * b)) 3 <$> us)) vs)
-    , bench "mapOnStateId            for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . mapOnStateId <$> us)) vs)
-    , bench "mapOnId                 for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . mapOnId      <$> us)) vs)
-    , bench "map                     for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . DVS.map id   <$> us)) vs)
+    -- , bench "mapOnStateId            for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . B.mapOnStateId <$> us)) vs)
+    -- , bench "mapOnId                 for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . B.mapOnId      <$> us)) vs)
+    -- , bench "map                     for DVS.Vector Word64" (whnf (\us -> sum (DVS.length . B.mapId        <$> us)) vs)
     ]
   ]
 

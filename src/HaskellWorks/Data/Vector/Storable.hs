@@ -7,19 +7,22 @@ module HaskellWorks.Data.Vector.Storable
   , mapAccumLViaLazyState
   , mapAccumLViaStrictState
   , mapAccumLFusable
+  , mapAccumLViaTranscribe
   ) where
 
 import Control.Monad
-import Control.Monad.ST          (ST)
+import Control.Monad.ST                  (ST)
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.State
-import Data.Monoid               (Monoid (..), (<>))
-import Data.Traversable          hiding (mapAccumL)
+import Data.Monoid                       (Monoid (..), (<>))
+import Data.Traversable                  hiding (mapAccumL)
 import Data.Tuple
-import Data.Vector.Fusion.Bundle (Bundle, MBundle, inplace)
-import Data.Vector.Storable      (Storable)
+import Data.Vector.Fusion.Bundle         (Bundle, MBundle, inplace)
+import Data.Vector.Fusion.Bundle.Size    (Size (Exact))
+import Data.Vector.Fusion.Stream.Monadic (Step (..), Stream (Stream))
+import Data.Vector.Storable              (Storable)
 import Data.Word
-import Prelude                   hiding (foldMap)
+import Prelude                           hiding (foldMap)
 
 import qualified Control.Monad.State.Lazy          as MSL
 import qualified Control.Monad.State.Strict        as MSS
@@ -58,6 +61,30 @@ mapAccumL f a vb = DVS.createT $ do
             go (i + 1) a1 vc
           else return a0
 {-# INLINE mapAccumL #-}
+
+transcribe :: Monad m => (s -> a -> (b, s)) -> s -> Stream m a -> Stream m b
+transcribe f w (Stream step state) = Stream step' (state, w)
+  where step' (t, x) = do
+          stepResult <- step t
+          return $ case stepResult of
+            Yield a s' -> let (z, y) = f x a in Yield z (s', y)
+            Skip    s' -> Skip (s', x)
+            Done       -> Done
+        {-# INLINE step' #-}
+{-# INLINE transcribe #-}
+
+
+
+mapAccumLViaTranscribe ::  forall a b c. (Storable b, Storable c)
+  => (a -> b -> (a, c))
+  -> a
+  -> DVS.Vector b
+  -> (a, DVS.Vector c)
+mapAccumLViaTranscribe f a vs = (undefined, DVG.unstream $ h $ DVG.stream vs)
+  where g a b = swap (f a b)
+        h :: Bundle DVS.Vector b -> Bundle DVS.Vector c
+        h ba = DVFBM.fromStream (transcribe g a (DVFBM.elements ba)) (Exact (DVS.length vs))
+{-# INLINE mapAccumLViaTranscribe #-}
 
 mapAccumLViaLazyState :: forall a b c. (Storable b, Storable c)
   => (a -> b -> (a, c))

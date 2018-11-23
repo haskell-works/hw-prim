@@ -1,10 +1,13 @@
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE MultiWayIf        #-}
+{-# LANGUAGE BangPatterns        #-}
+{-# LANGUAGE FlexibleInstances   #-}
+{-# LANGUAGE MultiWayIf          #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 module HaskellWorks.Data.ByteString
   ( chunkedBy
   , ToByteString(..)
   , ToByteStrings(..)
+  , mmap
   , rechunk
   , rechunkPadded
   , resegment
@@ -13,8 +16,9 @@ module HaskellWorks.Data.ByteString
   ) where
 
 import Control.Monad.ST
-import Data.Semigroup   ((<>))
+import Data.Semigroup     ((<>))
 import Data.Word
+import Foreign.ForeignPtr
 
 import qualified Control.Monad.ST.Unsafe       as ST
 import qualified Data.ByteString               as BS
@@ -24,6 +28,7 @@ import qualified Data.ByteString.Lazy.Internal as LBSI
 import qualified Data.Vector.Storable          as DVS
 import qualified Data.Vector.Storable.Mutable  as DVSM
 import qualified System.IO                     as IO
+import qualified System.IO.MMap                as IO
 import qualified System.IO.Unsafe              as IO
 
 class ToByteString a where
@@ -208,3 +213,9 @@ hGetContentsChunkedBy k h = lazyRead
           if BS.null c
             then IO.hClose h >> return []
             else (c:) <$> lazyRead
+
+mmap :: FilePath -> IO BS.ByteString
+mmap filepath = do
+  (fptr :: ForeignPtr Word8, offset, size) <- IO.mmapFileForeignPtr filepath IO.ReadOnly Nothing
+  let !bs = BSI.fromForeignPtr (castForeignPtr fptr) offset size
+  return bs

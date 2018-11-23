@@ -1,19 +1,23 @@
+{-# LANGUAGE BangPatterns        #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
 module HaskellWorks.Data.Vector.Storable
   ( padded
   , foldMap
   , mapAccumL
+  , mmap
   ) where
 
 import Control.Monad.ST     (ST)
 import Data.Monoid          (Monoid (..), (<>))
 import Data.Vector.Storable (Storable)
 import Data.Word
+import Foreign.ForeignPtr
 import Prelude              hiding (foldMap)
 
 import qualified Data.Vector.Storable         as DVS
 import qualified Data.Vector.Storable.Mutable as DVSM
+import qualified System.IO.MMap               as IO
 
 {-# ANN module ("HLint: ignore Redundant do"        :: String) #-}
 
@@ -42,3 +46,11 @@ mapAccumL f a vb = DVS.createT $ do
             go (i + 1) a1 vc
           else return a0
 {-# INLINE mapAccumL #-}
+
+-- | MMap the file as a storable vector.  If the size of the file is not a multiple of the element size
+-- in bytes, then the last few bytes of the file will not be included in the vector.
+mmap :: Storable a => FilePath -> IO (DVS.Vector a)
+mmap filepath = do
+  (fptr :: ForeignPtr Word8, offset, size) <- IO.mmapFileForeignPtr filepath IO.ReadOnly Nothing
+  let !v = DVS.unsafeFromForeignPtr fptr offset size
+  return (DVS.unsafeCast v)

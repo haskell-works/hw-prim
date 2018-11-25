@@ -6,6 +6,7 @@ module HaskellWorks.Data.Vector.Storable
   , foldMap
   , mapAccumL
   , mmap
+  , constructSI
   ) where
 
 import Control.Monad.ST     (ST)
@@ -54,3 +55,17 @@ mmap filepath = do
   (fptr :: ForeignPtr Word8, offset, size) <- IO.mmapFileForeignPtr filepath IO.ReadOnly Nothing
   let !v = DVS.unsafeFromForeignPtr fptr offset size
   return (DVS.unsafeCast v)
+
+-- | Construct a vector statefully with index
+constructSI :: forall a s. Storable a => Int -> (Int -> s -> (s, a)) -> s -> (s, DVS.Vector a)
+constructSI n f state = DVS.createT $ do
+  mv <- DVSM.unsafeNew n
+  state' <- go 0 state mv
+  return (state', mv)
+  where go :: Int -> s -> DVSM.MVector t a -> ST t s
+        go i s mv = if i < DVSM.length mv
+          then do
+            let (s', a) = f i s
+            DVSM.unsafeWrite mv i a
+            return s'
+          else return s

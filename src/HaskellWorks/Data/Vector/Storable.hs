@@ -67,5 +67,5 @@ constructSI n f state = DVS.createT $ do
           then do
             let (s', a) = f i s
             DVSM.unsafeWrite mv i a
-            return s'
+            go (i + 1) s' mv
           else return s

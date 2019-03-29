@@ -1,7 +1,7 @@
 cabal-version:  2.2
 
 name:           hw-prim
-version:        0.6.2.22
+version:        0.6.2.23
 synopsis:       Primitive functions and data types
 description:    Primitive functions and data types.
 category:       Data

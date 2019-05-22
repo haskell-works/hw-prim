@@ -34,6 +34,7 @@ common bytestring           { build-depends: bytestring           >= 0.9        
 common criterion            { build-depends: criterion            >= 1.2        && < 1.6    }
 common directory            { build-depends: directory            >= 1.2        && < 1.4    }
 common exceptions           { build-depends: exceptions           >= 0.8        && < 0.11   }
+common ghc-prim             { build-depends: ghc-prim                                       }
 common hedgehog             { build-depends: hedgehog             >= 0.5        && < 1.1    }
 common hspec                { build-depends: hspec                >= 2.4        && < 2.6    }
 common hw-hspec-hedgehog    { build-depends: hw-hspec-hedgehog    >= 0.1        && < 0.2    }
@@ -52,12 +53,14 @@ library
   import:   base
           , common
           , bytestring
+          , ghc-prim
           , mmap
           , semigroups
           , transformers
           , vector
   exposed-modules:
     HaskellWorks.Data.AtIndex
+    HaskellWorks.Data.Branchless
     HaskellWorks.Data.ByteString
     HaskellWorks.Data.ByteString.Builder
     HaskellWorks.Data.ByteString.Lazy

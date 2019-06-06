@@ -67,6 +67,7 @@ library
     HaskellWorks.Data.Char
     HaskellWorks.Data.Char.IsChar
     HaskellWorks.Data.Concat
+    HaskellWorks.Data.Cons
     HaskellWorks.Data.Container
     HaskellWorks.Data.Decode
     HaskellWorks.Data.Drop
@@ -78,6 +79,7 @@ library
     HaskellWorks.Data.Head
     HaskellWorks.Data.Length
     HaskellWorks.Data.Naive
+    HaskellWorks.Data.Ops
     HaskellWorks.Data.Positioning
     HaskellWorks.Data.Product
     HaskellWorks.Data.Search

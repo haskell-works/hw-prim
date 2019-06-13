@@ -73,6 +73,7 @@ library
     HaskellWorks.Data.Drop
     HaskellWorks.Data.Empty
     HaskellWorks.Data.Filter
+    HaskellWorks.Data.Foldable
     HaskellWorks.Data.FromByteString
     HaskellWorks.Data.FromForeignRegion
     HaskellWorks.Data.Generate
@@ -123,6 +124,7 @@ test-suite hw-prim-test
   main-is: Spec.hs
   other-modules:
     HaskellWorks.Data.ByteStringSpec
+    HaskellWorks.Data.FoldableSpec
     HaskellWorks.Data.FromByteStringSpec
     HaskellWorks.Data.FromForeignRegionSpec
     HaskellWorks.Data.SearchSpec

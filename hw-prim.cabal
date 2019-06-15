@@ -101,6 +101,7 @@ library
     HaskellWorks.Data.Vector.BoxedVectorLike
     HaskellWorks.Data.Vector.Storable
     HaskellWorks.Data.Vector.StorableVectorLike
+    HaskellWorks.Data.Word
   other-modules:      Paths_hw_prim
   autogen-modules:    Paths_hw_prim
   hs-source-dirs:     src

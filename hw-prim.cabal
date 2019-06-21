@@ -76,6 +76,7 @@ library
     HaskellWorks.Data.Foldable
     HaskellWorks.Data.FromByteString
     HaskellWorks.Data.FromForeignRegion
+    HaskellWorks.Data.FromString
     HaskellWorks.Data.Generate
     HaskellWorks.Data.Head
     HaskellWorks.Data.Length

@@ -1,8 +1,3 @@
--- |
--- Copyright: 2016 John Ky
--- License: MIT
---
--- Tree Cursor
 module HaskellWorks.Data.TreeCursor
     ( TreeCursor(..)
     ) where

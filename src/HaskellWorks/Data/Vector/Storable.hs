@@ -1,4 +1,5 @@
 {-# LANGUAGE BangPatterns        #-}
+{-# LANGUAGE RankNTypes          #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
 module HaskellWorks.Data.Vector.Storable
@@ -7,15 +8,17 @@ module HaskellWorks.Data.Vector.Storable
   , mapAccumL
   , mmap
   , constructSI
+  , construct2N
   ) where
 
-import Control.Monad.ST     (ST)
+import Control.Monad.ST     (ST, runST)
 import Data.Monoid          (Monoid (..), (<>))
 import Data.Vector.Storable (Storable)
 import Data.Word
 import Foreign.ForeignPtr
 import Prelude              hiding (foldMap)
 
+import qualified Data.Vector.Generic          as DVG
 import qualified Data.Vector.Storable         as DVS
 import qualified Data.Vector.Storable.Mutable as DVSM
 import qualified System.IO.MMap               as IO
@@ -69,3 +72,32 @@ constructSI n f state = DVS.createT $ do
             DVSM.unsafeWrite mv i a
             go (i + 1) s' mv
           else return s
+
+construct2N :: (Storable b, Storable c)
+  => Int
+  -> (forall s. a -> DVSM.MVector s b -> ST s Int)
+  -> Int
+  -> (forall s. a -> DVSM.MVector s c -> ST s Int)
+  -> [a]
+  -> (DVS.Vector b, DVS.Vector c)
+construct2N nb fb nc fc as = runST $ do
+  mbs <- DVSM.unsafeNew nb
+  mcs <- DVSM.unsafeNew nc
+  (mbs2, mcs2) <- go fb 0 mbs fc 0 mcs as
+  bs <- DVG.unsafeFreeze mbs2
+  cs <- DVG.unsafeFreeze mcs2
+  return (bs, cs)
+  where go :: (Storable b, Storable c)
+          => (forall t. a -> DVSM.MVector t b -> ST t Int)
+          -> Int
+          -> DVSM.MVector s b
+          -> (forall t. a -> DVSM.MVector t c -> ST t Int)
+          -> Int
+          -> DVSM.MVector s c
+          -> [a]
+          -> ST s (DVSM.MVector s b, DVSM.MVector s c)
+        go   _ bn mbs   _ cn mcs []     = return (DVSM.take bn mbs, DVSM.take cn mcs)
+        go fb' bn mbs fc' cn mcs (d:ds) = do
+          bi <- fb' d (DVSM.drop bn mbs)
+          ci <- fc' d (DVSM.drop cn mcs)
+          go fb' (bn + bi) mbs fc' (cn + ci) mcs ds

@@ -60,19 +60,7 @@ instance Generate (DVS.Vector Word64) where
   generate = DVS.generate
   {-# INLINE generate #-}
 
-instance Generate (DV.Vector Int8) where
-  generate = DV.generate
-  {-# INLINE generate #-}
-
-instance Generate (DV.Vector Int16) where
-  generate = DV.generate
-  {-# INLINE generate #-}
-
-instance Generate (DV.Vector Int32) where
-  generate = DV.generate
-  {-# INLINE generate #-}
-
-instance Generate (DV.Vector Int64) where
+instance Generate (DV.Vector a) where
   generate = DV.generate
   {-# INLINE generate #-}
 

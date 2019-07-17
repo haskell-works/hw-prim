@@ -58,19 +58,7 @@ instance Empty (DVS.Vector Word64) where
   empty = DVS.empty
   {-# INLINE empty #-}
 
-instance Empty (DV.Vector Int8) where
-  empty = DV.empty
-  {-# INLINE empty #-}
-
-instance Empty (DV.Vector Int16) where
-  empty = DV.empty
-  {-# INLINE empty #-}
-
-instance Empty (DV.Vector Int32) where
-  empty = DV.empty
-  {-# INLINE empty #-}
-
-instance Empty (DV.Vector Int64) where
+instance Empty (DV.Vector a) where
   empty = DV.empty
   {-# INLINE empty #-}
 

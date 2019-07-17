@@ -29,19 +29,7 @@ instance Drop BS.ByteString where
   drop = BS.drop . fromIntegral
   {-# INLINE drop #-}
 
-instance Drop (DV.Vector Word8) where
-  drop = DV.drop . fromIntegral
-  {-# INLINE drop #-}
-
-instance Drop (DV.Vector Word16) where
-  drop = DV.drop . fromIntegral
-  {-# INLINE drop #-}
-
-instance Drop (DV.Vector Word32) where
-  drop = DV.drop . fromIntegral
-  {-# INLINE drop #-}
-
-instance Drop (DV.Vector Word64) where
+instance Drop (DV.Vector a) where
   drop = DV.drop . fromIntegral
   {-# INLINE drop #-}
 
@@ -61,27 +49,11 @@ instance Drop (DVS.Vector Word64) where
   drop = DVS.drop . fromIntegral
   {-# INLINE drop #-}
 
-instance Drop (DV.Vector Int8) where
-  drop = DV.drop . fromIntegral
-  {-# INLINE drop #-}
-
-instance Drop (DV.Vector Int16) where
-  drop = DV.drop . fromIntegral
-  {-# INLINE drop #-}
-
-instance Drop (DV.Vector Int32) where
-  drop = DV.drop . fromIntegral
-  {-# INLINE drop #-}
-
-instance Drop (DV.Vector Int64) where
-  drop = DV.drop . fromIntegral
-  {-# INLINE drop #-}
-
-instance Drop (DVS.Vector Int8) where
+instance Drop (DVS.Vector Int16) where
   drop = DVS.drop . fromIntegral
   {-# INLINE drop #-}
 
-instance Drop (DVS.Vector Int16) where
+instance Drop (DVS.Vector Int8) where
   drop = DVS.drop . fromIntegral
   {-# INLINE drop #-}
 

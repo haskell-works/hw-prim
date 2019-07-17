@@ -25,19 +25,7 @@ instance Snoc BS.ByteString where
   snoc = BS.snoc
   {-# INLINE snoc #-}
 
-instance Snoc (DV.Vector Word8) where
-  snoc = DV.snoc
-  {-# INLINE snoc #-}
-
-instance Snoc (DV.Vector Word16) where
-  snoc = DV.snoc
-  {-# INLINE snoc #-}
-
-instance Snoc (DV.Vector Word32) where
-  snoc = DV.snoc
-  {-# INLINE snoc #-}
-
-instance Snoc (DV.Vector Word64) where
+instance Snoc (DV.Vector a) where
   snoc = DV.snoc
   {-# INLINE snoc #-}
 
@@ -55,22 +43,6 @@ instance Snoc (DVS.Vector Word32) where
 
 instance Snoc (DVS.Vector Word64) where
   snoc = DVS.snoc
-  {-# INLINE snoc #-}
-
-instance Snoc (DV.Vector Int8) where
-  snoc = DV.snoc
-  {-# INLINE snoc #-}
-
-instance Snoc (DV.Vector Int16) where
-  snoc = DV.snoc
-  {-# INLINE snoc #-}
-
-instance Snoc (DV.Vector Int32) where
-  snoc = DV.snoc
-  {-# INLINE snoc #-}
-
-instance Snoc (DV.Vector Int64) where
-  snoc = DV.snoc
   {-# INLINE snoc #-}
 
 instance Snoc (DVS.Vector Int8) where

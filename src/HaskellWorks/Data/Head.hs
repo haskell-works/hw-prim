@@ -60,19 +60,7 @@ instance Head (DVS.Vector Word64) where
   head = DVS.head
   {-# INLINE head #-}
 
-instance Head (DV.Vector Int8) where
-  head = DV.head
-  {-# INLINE head #-}
-
-instance Head (DV.Vector Int16) where
-  head = DV.head
-  {-# INLINE head #-}
-
-instance Head (DV.Vector Int32) where
-  head = DV.head
-  {-# INLINE head #-}
-
-instance Head (DV.Vector Int64) where
+instance Head (DV.Vector a) where
   head = DV.head
   {-# INLINE head #-}
 

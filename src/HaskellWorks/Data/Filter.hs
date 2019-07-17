@@ -60,19 +60,7 @@ instance Filter (DVS.Vector Word64) where
   filter = DVS.filter
   {-# INLINE filter #-}
 
-instance Filter (DV.Vector Int8) where
-  filter = DV.filter
-  {-# INLINE filter #-}
-
-instance Filter (DV.Vector Int16) where
-  filter = DV.filter
-  {-# INLINE filter #-}
-
-instance Filter (DV.Vector Int32) where
-  filter = DV.filter
-  {-# INLINE filter #-}
-
-instance Filter (DV.Vector Int64) where
+instance Filter (DV.Vector a) where
   filter = DV.filter
   {-# INLINE filter #-}
 

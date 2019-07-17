@@ -59,19 +59,7 @@ instance Null (DVS.Vector Word64) where
   null = DVS.null
   {-# INLINE null #-}
 
-instance Null (DV.Vector Int8) where
-  null = DV.null
-  {-# INLINE null #-}
-
-instance Null (DV.Vector Int16) where
-  null = DV.null
-  {-# INLINE null #-}
-
-instance Null (DV.Vector Int32) where
-  null = DV.null
-  {-# INLINE null #-}
-
-instance Null (DV.Vector Int64) where
+instance Null (DV.Vector a) where
   null = DV.null
   {-# INLINE null #-}
 

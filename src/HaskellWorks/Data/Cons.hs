@@ -25,19 +25,7 @@ instance Cons BS.ByteString where
   cons = BS.cons
   {-# INLINE cons #-}
 
-instance Cons (DV.Vector Word8) where
-  cons = DV.cons
-  {-# INLINE cons #-}
-
-instance Cons (DV.Vector Word16) where
-  cons = DV.cons
-  {-# INLINE cons #-}
-
-instance Cons (DV.Vector Word32) where
-  cons = DV.cons
-  {-# INLINE cons #-}
-
-instance Cons (DV.Vector Word64) where
+instance Cons (DV.Vector a) where
   cons = DV.cons
   {-# INLINE cons #-}
 
@@ -55,22 +43,6 @@ instance Cons (DVS.Vector Word32) where
 
 instance Cons (DVS.Vector Word64) where
   cons = DVS.cons
-  {-# INLINE cons #-}
-
-instance Cons (DV.Vector Int8) where
-  cons = DV.cons
-  {-# INLINE cons #-}
-
-instance Cons (DV.Vector Int16) where
-  cons = DV.cons
-  {-# INLINE cons #-}
-
-instance Cons (DV.Vector Int32) where
-  cons = DV.cons
-  {-# INLINE cons #-}
-
-instance Cons (DV.Vector Int64) where
-  cons = DV.cons
   {-# INLINE cons #-}
 
 instance Cons (DVS.Vector Int8) where

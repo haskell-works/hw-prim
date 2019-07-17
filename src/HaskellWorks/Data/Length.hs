@@ -31,19 +31,7 @@ instance Length BS.ByteString where
   length = fromIntegral . BS.length
   {-# INLINE length #-}
 
-instance Length (DV.Vector Word8) where
-  length = fromIntegral . DV.length
-  {-# INLINE length #-}
-
-instance Length (DV.Vector Word16) where
-  length = fromIntegral . DV.length
-  {-# INLINE length #-}
-
-instance Length (DV.Vector Word32) where
-  length = fromIntegral . DV.length
-  {-# INLINE length #-}
-
-instance Length (DV.Vector Word64) where
+instance Length (DV.Vector a) where
   length = fromIntegral . DV.length
   {-# INLINE length #-}
 
@@ -61,22 +49,6 @@ instance Length (DVS.Vector Word32) where
 
 instance Length (DVS.Vector Word64) where
   length = fromIntegral . DVS.length
-  {-# INLINE length #-}
-
-instance Length (DV.Vector Int8) where
-  length = fromIntegral . DV.length
-  {-# INLINE length #-}
-
-instance Length (DV.Vector Int16) where
-  length = fromIntegral . DV.length
-  {-# INLINE length #-}
-
-instance Length (DV.Vector Int32) where
-  length = fromIntegral . DV.length
-  {-# INLINE length #-}
-
-instance Length (DV.Vector Int64) where
-  length = fromIntegral . DV.length
   {-# INLINE length #-}
 
 instance Length (DVS.Vector Int8) where

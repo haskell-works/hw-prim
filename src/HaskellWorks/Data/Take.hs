@@ -28,19 +28,7 @@ instance Take BS.ByteString where
   take = BS.take . fromIntegral
   {-# INLINE take #-}
 
-instance Take (DV.Vector Word8) where
-  take = DV.take . fromIntegral
-  {-# INLINE take #-}
-
-instance Take (DV.Vector Word16) where
-  take = DV.take . fromIntegral
-  {-# INLINE take #-}
-
-instance Take (DV.Vector Word32) where
-  take = DV.take . fromIntegral
-  {-# INLINE take #-}
-
-instance Take (DV.Vector Word64) where
+instance Take (DV.Vector a) where
   take = DV.take . fromIntegral
   {-# INLINE take #-}
 
@@ -58,22 +46,6 @@ instance Take (DVS.Vector Word32) where
 
 instance Take (DVS.Vector Word64) where
   take = DVS.take . fromIntegral
-  {-# INLINE take #-}
-
-instance Take (DV.Vector Int8) where
-  take = DV.take . fromIntegral
-  {-# INLINE take #-}
-
-instance Take (DV.Vector Int16) where
-  take = DV.take . fromIntegral
-  {-# INLINE take #-}
-
-instance Take (DV.Vector Int32) where
-  take = DV.take . fromIntegral
-  {-# INLINE take #-}
-
-instance Take (DV.Vector Int64) where
-  take = DV.take . fromIntegral
   {-# INLINE take #-}
 
 instance Take (DVS.Vector Int8) where

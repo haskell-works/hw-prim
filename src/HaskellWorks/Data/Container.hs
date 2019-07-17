@@ -22,17 +22,8 @@ instance Container [a] where
 instance Container BS.ByteString where
   type Elem BS.ByteString = Word8
 
-instance Container (DV.Vector Word8) where
-  type Elem (DV.Vector Word8) = Word8
-
-instance Container (DV.Vector Word16) where
-  type Elem (DV.Vector Word16) = Word16
-
-instance Container (DV.Vector Word32) where
-  type Elem (DV.Vector Word32) = Word32
-
-instance Container (DV.Vector Word64) where
-  type Elem (DV.Vector Word64) = Word64
+instance Container (DV.Vector a) where
+  type Elem (DV.Vector a) = a
 
 instance Container (DVS.Vector Word8) where
   type Elem (DVS.Vector Word8) = Word8

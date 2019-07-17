@@ -6,7 +6,6 @@ module HaskellWorks.Data.Vector.BoxedVectorLike
   ( BoxedVectorLike(..)
   ) where
 
-import Data.Word
 import Foreign.Storable
 
 import qualified Data.Vector as DV
@@ -18,37 +17,7 @@ class BoxedVectorLike v e where
   bUnfoldr :: (Storable a) => (b -> Maybe (a, b)) -> b -> v a
   bUnfoldrN :: (Storable a) => Int -> (b -> Maybe (a, b)) -> b -> v a
 
-instance BoxedVectorLike DV.Vector Word8 where
-  bImap = DV.imap
-  bMap = DV.map
-  bUnfoldr = DV.unfoldr
-  bUnfoldrN = DV.unfoldrN
-  {-# INLINE bImap     #-}
-  {-# INLINE bMap      #-}
-  {-# INLINE bUnfoldr  #-}
-  {-# INLINE bUnfoldrN #-}
-
-instance BoxedVectorLike DV.Vector Word16 where
-  bImap = DV.imap
-  bMap = DV.map
-  bUnfoldr = DV.unfoldr
-  bUnfoldrN = DV.unfoldrN
-  {-# INLINE bImap     #-}
-  {-# INLINE bMap      #-}
-  {-# INLINE bUnfoldr  #-}
-  {-# INLINE bUnfoldrN #-}
-
-instance BoxedVectorLike DV.Vector Word32 where
-  bImap = DV.imap
-  bMap = DV.map
-  bUnfoldr = DV.unfoldr
-  bUnfoldrN = DV.unfoldrN
-  {-# INLINE bImap     #-}
-  {-# INLINE bMap      #-}
-  {-# INLINE bUnfoldr  #-}
-  {-# INLINE bUnfoldrN #-}
-
-instance BoxedVectorLike DV.Vector Word64 where
+instance BoxedVectorLike DV.Vector a where
   bImap = DV.imap
   bMap = DV.map
   bUnfoldr = DV.unfoldr

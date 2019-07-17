@@ -31,19 +31,7 @@ instance Uncons BS.ByteString where
   uncons = BS.uncons
   {-# INLINE uncons   #-}
 
-instance Uncons (DV.Vector Word8) where
-  uncons s = if DV.length s == 0 then Nothing else Just (DV.head s, drop 1 s)
-  {-# INLINE uncons   #-}
-
-instance Uncons (DV.Vector Word16) where
-  uncons s = if DV.length s == 0 then Nothing else Just (DV.head s, drop 1 s)
-  {-# INLINE uncons   #-}
-
-instance Uncons (DV.Vector Word32) where
-  uncons s = if DV.length s == 0 then Nothing else Just (DV.head s, drop 1 s)
-  {-# INLINE uncons   #-}
-
-instance Uncons (DV.Vector Word64) where
+instance Uncons (DV.Vector a) where
   uncons s = if DV.length s == 0 then Nothing else Just (DV.head s, drop 1 s)
   {-# INLINE uncons   #-}
 
@@ -61,22 +49,6 @@ instance Uncons (DVS.Vector Word32) where
 
 instance Uncons (DVS.Vector Word64) where
   uncons s = if DVS.length s == 0 then Nothing else Just (DVS.head s, drop 1 s)
-  {-# INLINE uncons   #-}
-
-instance Uncons (DV.Vector Int8) where
-  uncons s = if DV.length s == 0 then Nothing else Just (DV.head s, drop 1 s)
-  {-# INLINE uncons   #-}
-
-instance Uncons (DV.Vector Int16) where
-  uncons s = if DV.length s == 0 then Nothing else Just (DV.head s, drop 1 s)
-  {-# INLINE uncons   #-}
-
-instance Uncons (DV.Vector Int32) where
-  uncons s = if DV.length s == 0 then Nothing else Just (DV.head s, drop 1 s)
-  {-# INLINE uncons   #-}
-
-instance Uncons (DV.Vector Int64) where
-  uncons s = if DV.length s == 0 then Nothing else Just (DV.head s, drop 1 s)
   {-# INLINE uncons   #-}
 
 instance Uncons (DVS.Vector Int8) where

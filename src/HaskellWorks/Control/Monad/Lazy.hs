@@ -3,7 +3,7 @@ module HaskellWorks.Control.Monad.Lazy
   ( interleaveSequenceIO
   , interleaveSequenceM
   , interleaveUnfoldrM
-  , interleaveTraverse
+  , interleaveTraverseM
   ) where
 
 import Control.Monad.IO.Unlift
@@ -44,8 +44,8 @@ interleaveUnfoldrM f z = do
 --
 -- It is intended to be like the "standard" 'traverse' except
 -- that the list is generated lazily.
-interleaveTraverse :: MonadUnliftIO m => (a -> m b) -> [a] -> m [b]
-interleaveTraverse f as = do
+interleaveTraverseM :: MonadUnliftIO m => (a -> m b) -> [a] -> m [b]
+interleaveTraverseM f as = do
   u <- askUnliftIO
   liftIO $ IO.unsafeInterleaveIO (go u as)
   where

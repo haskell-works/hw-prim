@@ -9,15 +9,18 @@ module HaskellWorks.Data.Vector.Storable
   , mmap
   , constructSI
   , construct2N
+  , construct64UnzipN
   ) where
 
-import Control.Monad.ST     (ST, runST)
-import Data.Monoid          (Monoid (..), (<>))
-import Data.Vector.Storable (Storable)
+import Control.Monad.ST                   (ST, runST)
+import Data.Monoid                        (Monoid (..), (<>))
+import Data.Vector.Storable               (Storable)
 import Data.Word
 import Foreign.ForeignPtr
-import Prelude              hiding (foldMap)
+import HaskellWorks.Data.Vector.AsVector8
+import Prelude                            hiding (foldMap)
 
+import qualified Data.ByteString              as BS
 import qualified Data.Vector.Generic          as DVG
 import qualified Data.Vector.Storable         as DVS
 import qualified Data.Vector.Storable.Mutable as DVSM
@@ -101,3 +104,25 @@ construct2N nb fb nc fc as = runST $ do
           bi <- fb' d (DVSM.drop bn mbs)
           ci <- fc' d (DVSM.drop cn mcs)
           go fb' (bn + bi) mbs fc' (cn + ci) mcs ds
+
+construct64UnzipN :: Int -> [(BS.ByteString, BS.ByteString)] -> (DVS.Vector Word64, DVS.Vector Word64)
+construct64UnzipN nBytes xs = (DVS.unsafeCast ibv, DVS.unsafeCast bpv)
+  where [ibv, bpv] = DVS.createT $ do
+          let nW64s     = (nBytes + 7) `div` 8
+          let capacity  = nW64s * 8
+          ibmv <- DVSM.new capacity
+          bpmv <- DVSM.new capacity
+          (ibmvRemaining, bpmvRemaining) <- go ibmv bpmv xs
+          return
+            [ DVSM.take (((DVSM.length ibmv - ibmvRemaining) `div` 8) * 8) ibmv
+            , DVSM.take (((DVSM.length bpmv - bpmvRemaining) `div` 8) * 8) bpmv
+            ]
+        go :: DVSM.MVector s Word8 -> DVSM.MVector s Word8 -> [(BS.ByteString, BS.ByteString)] -> ST s (Int, Int)
+        go ibmv bpmv ((ib, bp):ys) = do
+          DVS.copy (DVSM.take (BS.length ib) ibmv) (asVector8 ib)
+          DVS.copy (DVSM.take (BS.length bp) bpmv) (asVector8 bp)
+          go (DVSM.drop (BS.length ib) ibmv) (DVSM.drop (BS.length bp) bpmv) ys
+        go ibmv bpmv [] = do
+          DVSM.set (DVSM.take 8 ibmv) 0
+          DVSM.set (DVSM.take 8 bpmv) 0
+          return (DVSM.length (DVSM.drop 8 ibmv), DVSM.length (DVSM.drop 8 bpmv))

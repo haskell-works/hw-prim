@@ -106,6 +106,7 @@ library
     HaskellWorks.Data.Vector.Storable
     HaskellWorks.Data.Vector.StorableVectorLike
     HaskellWorks.Data.Word
+    HaskellWorks.Foreign
   other-modules:      Paths_hw_prim
   autogen-modules:    Paths_hw_prim
   hs-source-dirs:     src

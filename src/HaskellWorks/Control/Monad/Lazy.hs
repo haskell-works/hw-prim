@@ -6,8 +6,11 @@ module HaskellWorks.Control.Monad.Lazy
   , interleaveUnfoldrM
   , interleaveTraverseM
   , interleaveForM
+  , forceM
   ) where
 
+import Control.DeepSeq
+import Control.Monad
 import Control.Monad.IO.Unlift
 
 import qualified System.IO.Unsafe as IO
@@ -59,3 +62,6 @@ interleaveTraverseM f as = do
 
 interleaveForM :: MonadUnliftIO m => [a] -> (a -> m b) -> m [b]
 interleaveForM = flip interleaveTraverseM
+
+forceM :: (Monad m, NFData a) => m a -> m a
+forceM = (force <$!>)

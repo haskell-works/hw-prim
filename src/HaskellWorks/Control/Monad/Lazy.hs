@@ -1,9 +1,11 @@
 {-# LANGUAGE BangPatterns #-}
+
 module HaskellWorks.Control.Monad.Lazy
   ( interleaveSequenceIO
   , interleaveSequenceM
   , interleaveUnfoldrM
   , interleaveTraverseM
+  , interleaveForM
   ) where
 
 import Control.Monad.IO.Unlift
@@ -54,3 +56,6 @@ interleaveTraverseM f as = do
       !res <- unliftIO u (f v)
       rest <- IO.unsafeInterleaveIO (go u vs)
       pure (res:rest)
+
+interleaveForM :: MonadUnliftIO m => [a] -> (a -> m b) -> m [b]
+interleaveForM = flip interleaveTraverseM

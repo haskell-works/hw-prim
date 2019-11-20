@@ -8,6 +8,7 @@ module HaskellWorks.Data.ByteString
   , ToByteString(..)
   , ToByteStrings(..)
   , mmap
+  , padded
   , rechunk
   , rechunkPadded
   , resegment
@@ -219,3 +220,7 @@ mmap filepath = do
   (fptr :: ForeignPtr Word8, offset, size) <- IO.mmapFileForeignPtr filepath IO.ReadOnly Nothing
   let !bs = BSI.fromForeignPtr (castForeignPtr fptr) offset size
   return bs
+
+padded :: Int -> BS.ByteString -> BS.ByteString
+padded n v = v <> BS.replicate ((n - BS.length v) `max` 0) 0
+{-# INLINE padded #-}

@@ -108,20 +108,21 @@ construct2N nb fb nc fc as = runST $ do
 construct64UnzipN :: Int -> [(BS.ByteString, BS.ByteString)] -> (DVS.Vector Word64, DVS.Vector Word64)
 construct64UnzipN nBytes xs = (DVS.unsafeCast ibv, DVS.unsafeCast bpv)
   where [ibv, bpv] = DVS.createT $ do
-          let nW64s     = (nBytes + 7) `div` 8
-          ibmv <- DVSM.new nW64s
-          bpmv <- DVSM.new nW64s
+          let nW8s     = (nBytes + 7) `div` 8 * 8
+          ibmv <- DVSM.new nW8s
+          bpmv <- DVSM.new nW8s
           (ibmvRemaining, bpmvRemaining) <- go ibmv bpmv xs
-          return
-            [ DVSM.take (((DVSM.length ibmv - ibmvRemaining) `div` 8) * 8) ibmv
-            , DVSM.take (((DVSM.length bpmv - bpmvRemaining) `div` 8) * 8) bpmv
-            ]
+          let ibl = ((DVSM.length ibmv - ibmvRemaining + 7) `div` 8) * 8
+          let bpl = ((DVSM.length bpmv - bpmvRemaining + 7) `div` 8) * 8
+          return [ DVSM.take ibl ibmv, DVSM.take bpl bpmv]
         go :: DVSM.MVector s Word8 -> DVSM.MVector s Word8 -> [(BS.ByteString, BS.ByteString)] -> ST s (Int, Int)
         go ibmv bpmv ((ib, bp):ys) = do
           DVS.copy (DVSM.take (BS.length ib) ibmv) (asVector8 ib)
           DVS.copy (DVSM.take (BS.length bp) bpmv) (asVector8 bp)
           go (DVSM.drop (BS.length ib) ibmv) (DVSM.drop (BS.length bp) bpmv) ys
         go ibmv bpmv [] = do
-          DVSM.set (DVSM.take 8 ibmv) 0
-          DVSM.set (DVSM.take 8 bpmv) 0
-          return (DVSM.length (DVSM.drop 8 ibmv), DVSM.length (DVSM.drop 8 bpmv))
+          let ibl = DVSM.length ibmv `mod` 8
+          let bpl = DVSM.length bpmv `mod` 8
+          DVSM.set (DVSM.take ibl ibmv) 0
+          DVSM.set (DVSM.take bpl bpmv) 0
+          return (DVSM.length (DVSM.drop ibl ibmv), DVSM.length (DVSM.drop bpl bpmv))

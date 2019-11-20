@@ -6,15 +6,18 @@ module HaskellWorks.Data.Vector.StorableSpec
   ( spec
   ) where
 
-import Control.Monad.ST            (ST)
-import Data.Vector.Storable        (Storable)
+import Control.Monad.ST                  (ST)
+import Data.Vector.Storable              (Storable)
+import HaskellWorks.Data.Vector.Storable (construct64UnzipN)
 import HaskellWorks.Hspec.Hedgehog
 import Hedgehog
 import Test.Hspec
 
+import qualified Data.ByteString                   as BS
 import qualified Data.List                         as L
 import qualified Data.Vector.Storable              as DVS
 import qualified Data.Vector.Storable.Mutable      as DVSM
+import qualified HaskellWorks.Data.ByteString      as BS
 import qualified HaskellWorks.Data.Vector.Storable as DVS
 import qualified Hedgehog.Gen                      as G
 import qualified Hedgehog.Range                    as R
@@ -36,6 +39,23 @@ spec = describe "HaskellWorks.Data.Vector.StorableSpec" $ do
     let (bs, cs) = DVS.construct2N (length as) stepb (length as * 2) stepc as
     DVS.fromList as           === bs
     DVS.fromList (dupList as) === cs
+  describe "construct64UnzipN" $ do
+    it "property" $ requireProperty $ do
+      abss  <- forAll $ G.list (R.linear 1 8) $ (,)
+        <$> (fmap BS.pack (G.list (R.linear 1 8) (G.word8 R.constantBounded)))
+        <*> (fmap BS.pack (G.list (R.linear 1 8) (G.word8 R.constantBounded)))
+      ass   <- forAll $ pure $ fmap fst abss
+      bss   <- forAll $ pure $ fmap snd abss
+      as    <- forAll $ pure $ mconcat ass
+      bs    <- forAll $ pure $ mconcat bss
+      al    <- forAll $ pure $ BS.length (mconcat ass)
+      bl    <- forAll $ pure $ BS.length (mconcat bss)
+      len   <- forAll $ pure $ al + bl
+      let res = construct64UnzipN len (zip ass bss)
+      let ra = BS.toByteString (fst res)
+      let rb = BS.toByteString (snd res)
+      ra === BS.padded ((BS.length as + 7) `div` 8 * 8) as
+      rb === BS.padded ((BS.length bs + 7) `div` 8 * 8) bs
 
 dupList :: [a] -> [a]
 dupList (a:as) = (a:a:dupList as)

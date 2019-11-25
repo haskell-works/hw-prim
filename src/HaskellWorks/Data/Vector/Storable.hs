@@ -108,7 +108,7 @@ construct2N nb fb nc fc as = runST $ do
 construct64UnzipN :: Int -> [(BS.ByteString, BS.ByteString)] -> (DVS.Vector Word64, DVS.Vector Word64)
 construct64UnzipN nBytes xs = (DVS.unsafeCast ibv, DVS.unsafeCast bpv)
   where [ibv, bpv] = DVS.createT $ do
-          let nW8s     = (nBytes + 7) `div` 8 * 8
+          let nW8s     = (nBytes + 7) `div` 8
           ibmv <- DVSM.new nW8s
           bpmv <- DVSM.new nW8s
           (ibmvRemaining, bpmvRemaining) <- go ibmv bpmv xs

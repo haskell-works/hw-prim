@@ -26,33 +26,37 @@ flag bounds-checking-enabled
   manual:               False
   default:              False
 
-common base                 { build-depends: base                 >= 4          && < 5      }
+common base                     { build-depends: base                     >= 4          && < 5      }
 
-common QuickCheck           { build-depends: QuickCheck           >= 2.10       && < 2.14   }
-common bytestring           { build-depends: bytestring           >= 0.9        && < 0.11   }
-common criterion            { build-depends: criterion            >= 1.2        && < 1.6    }
-common deepseq              { build-depends: deepseq              >= 1.4        && < 1.5    }
-common directory            { build-depends: directory            >= 1.2        && < 1.4    }
-common exceptions           { build-depends: exceptions           >= 0.8        && < 0.11   }
-common ghc-prim             { build-depends: ghc-prim             >= 0.5        && < 0.6    }
-common hedgehog             { build-depends: hedgehog             >= 1.0        && < 1.1    }
-common hspec                { build-depends: hspec                >= 2.4        && < 2.8    }
-common hw-hspec-hedgehog    { build-depends: hw-hspec-hedgehog    >= 0.1        && < 0.2    }
-common mmap                 { build-depends: mmap                 >= 0.5        && < 0.6    }
-common semigroups           { build-depends: semigroups           >= 0.8.4      && < 0.20   }
-common transformers         { build-depends: transformers         >= 0.4        && < 0.6    }
-common vector               { build-depends: vector               >= 0.12       && < 0.13   }
-common unliftio-core        { build-depends: unliftio-core        >= 0.1.2.0    && < 0.2    }
+common QuickCheck               { build-depends: QuickCheck               >= 2.10       && < 2.14   }
+common bytestring               { build-depends: bytestring               >= 0.9        && < 0.11   }
+common criterion                { build-depends: criterion                >= 1.2        && < 1.6    }
+common deepseq                  { build-depends: deepseq                  >= 1.4        && < 1.5    }
+common directory                { build-depends: directory                >= 1.2        && < 1.4    }
+common doctest                  { build-depends: doctest                  >= 0.16.2     && < 0.17   }
+common doctest-discover         { build-depends: doctest-discover         >= 0.2        && < 0.3    }
+common exceptions               { build-depends: exceptions               >= 0.8        && < 0.11   }
+common ghc-prim                 { build-depends: ghc-prim                 >= 0.5        && < 0.6    }
+common hedgehog                 { build-depends: hedgehog                 >= 1.0        && < 1.1    }
+common hspec                    { build-depends: hspec                    >= 2.4        && < 2.8    }
+common hw-hspec-hedgehog        { build-depends: hw-hspec-hedgehog        >= 0.1        && < 0.2    }
+common mmap                     { build-depends: mmap                     >= 0.5        && < 0.6    }
+common semigroups               { build-depends: semigroups               >= 0.8.4      && < 0.20   }
+common transformers             { build-depends: transformers             >= 0.4        && < 0.6    }
+common vector                   { build-depends: vector                   >= 0.12       && < 0.13   }
+common unliftio-core            { build-depends: unliftio-core            >= 0.1.2.0    && < 0.2    }
 
-common common
+common hw-prim
+  build-depends:        hw-prim
+
+common config
   default-language:     Haskell2010
   ghc-options:          -Wall -O2 -msse4.2
   if flag(bounds-checking-enabled)
     cpp-options:        -DBOUNDS_CHECKING_ENABLED
 
 library
-  import:               base
-                      , common
+  import:               base, config
                       , bytestring
                       , deepseq
                       , ghc-prim
@@ -112,8 +116,7 @@ library
   hs-source-dirs:       src
 
 test-suite hw-prim-test
-  import:               base
-                      , common
+  import:               base, config
                       , QuickCheck
                       , bytestring
                       , directory
@@ -121,6 +124,7 @@ test-suite hw-prim-test
                       , hedgehog
                       , hspec
                       , hw-hspec-hedgehog
+                      , hw-prim
                       , mmap
                       , semigroups
                       , transformers
@@ -139,16 +143,15 @@ test-suite hw-prim-test
                         HaskellWorks.Data.Vector.StorableSpec
                         Paths_hw_prim
   autogen-modules:      Paths_hw_prim
-  build-depends:        hw-prim
   hs-source-dirs:       test
   ghc-options:          -threaded -rtsopts -with-rtsopts=-N
   build-tool-depends:   hspec-discover:hspec-discover
 
 benchmark bench
-  import:               base
-                      , common
+  import:               base, config
                       , bytestring
                       , criterion
+                      , hw-prim
                       , mmap
                       , semigroups
                       , transformers
@@ -159,3 +162,15 @@ benchmark bench
   hs-source-dirs:       bench
   build-depends:        hw-prim
   autogen-modules:      Paths_hw_prim
+
+test-suite doctest
+  import:               base, config
+                      , doctest
+                      , doctest-discover
+                      , hw-prim
+  default-language:     Haskell2010
+  type:                 exitcode-stdio-1.0
+  ghc-options:          -threaded
+  main-is:              DoctestDriver.hs
+  HS-Source-Dirs:       doctest
+  build-tool-depends:   doctest-discover:doctest-discover

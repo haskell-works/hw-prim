@@ -22,7 +22,7 @@ import qualified HaskellWorks.Data.Vector.Storable as DVS
 import qualified Hedgehog.Gen                      as G
 import qualified Hedgehog.Range                    as R
 
-{-# ANN module ("HLint: Ignore Redundant do" :: String) #-}
+{-# ANN module ("HLint: ignore Redundant do" :: String) #-}
 
 spec :: Spec
 spec = describe "HaskellWorks.Data.Vector.StorableSpec" $ do

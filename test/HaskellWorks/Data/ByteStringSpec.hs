@@ -13,7 +13,7 @@ import qualified HaskellWorks.Data.ByteString  as BS
 import qualified Hedgehog.Gen                  as G
 import qualified Hedgehog.Range                as R
 
-{-# ANN module ("HLint: Ignore Redundant do" :: String) #-}
+{-# ANN module ("HLint: ignore Redundant do" :: String) #-}
 
 spec :: Spec
 spec = describe "HaskellWorks.Data.ByteStringSpec" $ do
@@ -50,4 +50,3 @@ spec = describe "HaskellWorks.Data.ByteStringSpec" $ do
   it "rechunk creates correctly sized segments" $ requireProperty $ do
     ws <- forAll $ G.list (R.linear 0 (LBSI.defaultChunkSize `div` 4)) (G.word64 R.constantBounded)
     fold (BS.toByteStrings ws) === BS.toByteString ws
-

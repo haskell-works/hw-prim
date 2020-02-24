@@ -6,11 +6,11 @@ module HaskellWorks.Data.Vector.StorableSpec
   ( spec
   ) where
 
-import Control.Monad.ST                  (ST)
-import Data.Vector.Storable              (Storable)
-import HaskellWorks.Data.Vector.Storable (construct64UnzipN)
+import Control.Monad.ST            (ST)
+import Data.Vector.Storable        (Storable)
 import HaskellWorks.Hspec.Hedgehog
 import Hedgehog
+import Prelude                     hiding (abs)
 import Test.Hspec
 
 import qualified Data.ByteString                   as BS
@@ -51,11 +51,23 @@ spec = describe "HaskellWorks.Data.Vector.StorableSpec" $ do
       al    <- forAll $ pure $ BS.length (mconcat ass)
       bl    <- forAll $ pure $ BS.length (mconcat bss)
       len   <- forAll $ pure $ al + bl
-      let res = construct64UnzipN len (zip ass bss)
+      let res = DVS.construct64UnzipN len (zip ass bss)
       let ra = BS.toByteString (fst res)
       let rb = BS.toByteString (snd res)
       ra === BS.padded ((BS.length as + 7) `div` 8 * 8) as
       rb === BS.padded ((BS.length bs + 7) `div` 8 * 8) bs
+  it "unzipFromListN2" $ requireProperty $ do
+    abs       <- forAll $ G.list (R.linear 0 8) $ (,)
+      <$> G.word8 R.constantBounded
+      <*> G.word8 R.constantBounded
+    len       <- forAll $ G.int (R.linear 0 8)
+    as        <- forAll $ pure $ fmap fst abs
+    bs        <- forAll $ pure $ fmap snd abs
+    (va, vb)  <- forAll $ pure $ DVS.unzipFromListN2 len abs
+    let eva = DVS.fromList (take len as)
+    let evb = DVS.fromList (take len bs)
+    va === eva
+    vb === evb
 
 dupList :: [a] -> [a]
 dupList (a:as) = (a:a:dupList as)

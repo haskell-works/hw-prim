@@ -10,6 +10,7 @@ module HaskellWorks.Data.Vector.Storable
   , constructSI
   , construct2N
   , construct64UnzipN
+  , unzipFromListN2
   ) where
 
 import Control.Monad.ST                   (ST, runST)
@@ -18,7 +19,7 @@ import Data.Vector.Storable               (Storable)
 import Data.Word
 import Foreign.ForeignPtr
 import HaskellWorks.Data.Vector.AsVector8
-import Prelude                            hiding (foldMap)
+import Prelude                            hiding (abs, foldMap)
 
 import qualified Data.ByteString              as BS
 import qualified Data.Vector.Generic          as DVG
@@ -126,3 +127,25 @@ construct64UnzipN nBytes xs = (DVS.unsafeCast ibv, DVS.unsafeCast bpv)
           DVSM.set (DVSM.take ibl ibmv) 0
           DVSM.set (DVSM.take bpl bpmv) 0
           return (DVSM.length (DVSM.drop ibl ibmv), DVSM.length (DVSM.drop bpl bpmv))
+
+unzipFromListN2 :: (Storable a, Storable b) => Int -> [(a, b)] -> (DVS.Vector a, DVS.Vector b)
+unzipFromListN2 n abs = runST $ do
+  mas <- DVSM.unsafeNew n
+  mbs <- DVSM.unsafeNew n
+  len <- go 0 mas mbs abs
+  as <- DVG.unsafeFreeze (DVSM.take len mas)
+  bs <- DVG.unsafeFreeze (DVSM.take len mbs)
+  return (as, bs)
+  where go :: (Storable c, Storable d)
+          => Int
+          -> DVSM.MVector s c
+          -> DVSM.MVector s d
+          -> [(c, d)]
+          -> ST s Int
+        go i _   _   []           = return i
+        go i mvc mvd ((c, d):cds) = if i < n
+          then do
+            DVSM.write mvc i c
+            DVSM.write mvd i d
+            go (i + 1) mvc mvd cds
+          else return i

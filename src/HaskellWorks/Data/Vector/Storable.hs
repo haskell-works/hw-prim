@@ -14,7 +14,6 @@ module HaskellWorks.Data.Vector.Storable
   ) where
 
 import Control.Monad.ST                   (ST, runST)
-import Data.Monoid                        (Monoid (..), (<>))
 import Data.Vector.Storable               (Storable)
 import Data.Word
 import Foreign.ForeignPtr

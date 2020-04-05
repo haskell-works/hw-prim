@@ -3,7 +3,6 @@ module HaskellWorks.Data.ByteString.Builder
   ) where
 
 import Data.Function
-import Data.Monoid   (Monoid (..))
 
 import qualified Data.ByteString      as BS
 import qualified Data.ByteString.Lazy as LBS

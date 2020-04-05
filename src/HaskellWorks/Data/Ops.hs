@@ -7,8 +7,6 @@ module HaskellWorks.Data.Ops
   , (><)
   ) where
 
-import Data.Semigroup (Semigroup, (<>))
-
 import qualified HaskellWorks.Data.Cons      as HW
 import qualified HaskellWorks.Data.Container as HW
 import qualified HaskellWorks.Data.Snoc      as HW

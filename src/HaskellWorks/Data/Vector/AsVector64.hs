@@ -4,7 +4,6 @@ module HaskellWorks.Data.Vector.AsVector64
   ( AsVector64(..)
   ) where
 
-import Data.Semigroup ((<>))
 import Data.Word
 
 import qualified Data.ByteString          as BS

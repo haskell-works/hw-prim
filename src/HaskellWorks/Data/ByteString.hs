@@ -17,7 +17,6 @@ module HaskellWorks.Data.ByteString
   ) where
 
 import Control.Monad.ST
-import Data.Semigroup     ((<>))
 import Data.Word
 import Foreign.ForeignPtr
 

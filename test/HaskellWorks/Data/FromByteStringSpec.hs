@@ -11,7 +11,7 @@ import Test.Hspec
 import qualified Data.ByteString      as BS
 import qualified Data.Vector.Storable as DVS
 
-{-# ANN module ("HLint: ignore Redundant do" :: String) #-}
+{- HLINT ignore "Redundant do" -}
 
 spec :: Spec
 spec = describe "HaskellWorks.Data.FromByteStringSpec" $ do

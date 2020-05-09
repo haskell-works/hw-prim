@@ -26,7 +26,7 @@ import qualified Data.Vector.Storable         as DVS
 import qualified Data.Vector.Storable.Mutable as DVSM
 import qualified System.IO.MMap               as IO
 
-{-# ANN module ("HLint: ignore Redundant do"        :: String) #-}
+{- HLINT ignore "Redundant do" -}
 
 padded :: Int -> DVS.Vector Word8 -> DVS.Vector Word8
 padded n v = v <> DVS.replicate ((n - DVS.length v) `max` 0) 0

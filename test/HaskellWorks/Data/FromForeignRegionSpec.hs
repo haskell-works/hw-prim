@@ -21,7 +21,7 @@ import qualified Hedgehog.Range                      as R
 import qualified System.Directory                    as IO
 import qualified System.IO                           as IO
 
-{-# ANN module ("HLint: ignore Redundant do" :: String) #-}
+{- HLINT ignore "Redundant do" -}
 
 spec :: Spec
 spec = describe "HaskellWorks.Data.FromForeignRegionSpec" $ do

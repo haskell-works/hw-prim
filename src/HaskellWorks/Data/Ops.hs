@@ -1,4 +1,3 @@
-{-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE Rank2Types      #-}
 
 module HaskellWorks.Data.Ops

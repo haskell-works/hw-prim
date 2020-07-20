@@ -2,7 +2,6 @@
 {-# LANGUAGE FlexibleInstances   #-}
 {-# LANGUAGE Rank2Types          #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TupleSections       #-}
 
 module HaskellWorks.Data.Vector.AsVector64ns
   ( AsVector64ns(..)

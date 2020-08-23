@@ -42,8 +42,8 @@ spec = describe "HaskellWorks.Data.Vector.StorableSpec" $ do
   describe "construct64UnzipN" $ do
     it "property" $ requireProperty $ do
       abss  <- forAll $ G.list (R.linear 1 8) $ (,)
-        <$> (fmap BS.pack (G.list (R.linear 1 8) (G.word8 R.constantBounded)))
-        <*> (fmap BS.pack (G.list (R.linear 1 8) (G.word8 R.constantBounded)))
+        <$> fmap BS.pack (G.list (R.linear 1 8) (G.word8 R.constantBounded))
+        <*> fmap BS.pack (G.list (R.linear 1 8) (G.word8 R.constantBounded))
       ass   <- forAll $ pure $ fmap fst abss
       bss   <- forAll $ pure $ fmap snd abss
       as    <- forAll $ pure $ mconcat ass
@@ -70,7 +70,7 @@ spec = describe "HaskellWorks.Data.Vector.StorableSpec" $ do
     vb === evb
 
 dupList :: [a] -> [a]
-dupList (a:as) = (a:a:dupList as)
+dupList (a:as) = a:a:dupList as
 dupList []     = []
 
 stepb :: Storable a => a -> DVSM.MVector s a -> ST s Int

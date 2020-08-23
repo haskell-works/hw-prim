@@ -1,5 +1,4 @@
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE TypeSynonymInstances       #-}
+{-# LANGUAGE TypeSynonymInstances #-}
 
 module HaskellWorks.Data.Positioning
   ( Count

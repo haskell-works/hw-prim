@@ -1,5 +1,5 @@
 {-# OPTIONS_GHC -fno-warn-incomplete-patterns #-}
-{-# LANGUAGE OverloadedLists     #-}
+
 {-# LANGUAGE ScopedTypeVariables #-}
 
 module HaskellWorks.Data.FoldableSpec (spec) where

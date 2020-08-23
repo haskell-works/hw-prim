@@ -2,13 +2,11 @@
 {-# LANGUAGE FlexibleInstances   #-}
 {-# LANGUAGE Rank2Types          #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TupleSections       #-}
 
 module HaskellWorks.Data.Vector.AsVector64ns
   ( AsVector64ns(..)
   ) where
 
-import Control.Applicative                  ((<$>))
 import Data.Word
 import HaskellWorks.Data.Vector.AsVector8ns (asVector8ns)
 

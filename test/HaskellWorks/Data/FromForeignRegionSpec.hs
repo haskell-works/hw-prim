@@ -29,5 +29,5 @@ spec = describe "HaskellWorks.Data.FromForeignRegionSpec" $ do
     liftIO $ BS.hPut h (BS.pack ws)
     liftIO $ IO.hClose h
     !(_ :: DVS.Vector Word64) <- liftIO $ IO.mmapFromForeignRegion fp
-    liftIO $ IO.removeFile fp
+    -- liftIO $ IO.removeFile fp
     True === True

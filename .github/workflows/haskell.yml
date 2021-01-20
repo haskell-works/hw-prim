@@ -23,17 +23,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Select optimal cabal version
+        run: |
+          case "$OS" in
+            Windows_NT)   echo "CABAL_VERSION=3.4.0.0-rc5"  >> $GITHUB_ENV;;
+            *)            echo "CABAL_VERSION=3.4.0.0-rc4"  >> $GITHUB_ENV;;
+          esac
+
       - uses: haskell/actions/setup@v1
         id: setup-haskell
         with:
           ghc-version: ${{ matrix.ghc }}
-
-      - uses: actions/cache@v2
-        name: Cache cabal store
-        with:
-          path: dist-newstyle
-          key: cache-${{ runner.os }}-${{ matrix.ghc }}-${{ hashFiles('cabal-cache.cabal') }}-${{ github.sha }}
-          restore-keys: cache-${{ runner.os }}-${{ matrix.ghc }}-${{ hashFiles('cabal-cache.cabal') }}-
+          cabal-version: ${{ env.CABAL_VERSION }}
 
       - name: Set some window specific things
         if: matrix.os == 'windows-latest'

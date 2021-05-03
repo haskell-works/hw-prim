@@ -59,7 +59,6 @@ library
   import:               base, config
                       , bytestring
                       , deepseq
-                      , ghc-prim
                       , mmap
                       , transformers
                       , unliftio-core

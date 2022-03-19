@@ -36,10 +36,27 @@ jobs:
       - name: Configure project
         run: cabal configure --enable-tests --enable-benchmarks --write-ghc-environment-files=ghc8.4.4+
 
-      - uses: action-works/cabal-cache@v1
-        name: Cache cabal store
+      - name: Cabal cache over S3
+        uses: action-works/cabal-cache-s3@v1
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         with:
-          key-prefix: CwBTpnRd
+          region: us-west-2
+          dist-dir: dist-newstyle
+          store-path: ${{ steps.setup-haskell.outputs.cabal-store }}
+          threads: 16
+          archive-uri: ${{ secrets.BINARY_CACHE_URI }}
+          skip: "${{ secrets.BINARY_CACHE_URI == '' }}"
+
+      - name: Cabal cache over HTTPS
+        uses: action-works/cabal-cache-s3@v1
+        with:
+          dist-dir: dist-newstyle
+          store-path: ${{ steps.setup-haskell.outputs.cabal-store }}
+          threads: 16
+          archive-uri: https://cache.haskellworks.io/archive
+          skip: "${{ secrets.BINARY_CACHE_URI != '' }}"
 
       - name: Build
         # Try building it twice in case of flakey builds on Windows

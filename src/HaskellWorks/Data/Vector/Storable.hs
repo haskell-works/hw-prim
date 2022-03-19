@@ -114,7 +114,7 @@ construct64UnzipN nBytes xs = (DVS.unsafeCast ibv, DVS.unsafeCast bpv)
           (ibmvRemaining, bpmvRemaining) <- go ibmv bpmv xs
           let ibl = ((DVSM.length ibmv - ibmvRemaining + 7) `div` 8) * 8
           let bpl = ((DVSM.length bpmv - bpmvRemaining + 7) `div` 8) * 8
-          return [ DVSM.take ibl ibmv, DVSM.take bpl bpmv]
+          return [DVSM.take ibl ibmv, DVSM.take bpl bpmv]
         go :: DVSM.MVector s Word8 -> DVSM.MVector s Word8 -> [(BS.ByteString, BS.ByteString)] -> ST s (Int, Int)
         go ibmv bpmv ((ib, bp):ys) = do
           DVS.copy (DVSM.take (BS.length ib) ibmv) (asVector8 ib)

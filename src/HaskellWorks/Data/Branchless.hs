@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP       #-}
 {-# LANGUAGE MagicHash #-}
 
 module HaskellWorks.Data.Branchless
@@ -37,7 +38,11 @@ import GHC.Word (Word16 (..), Word32 (..), Word64 (..), Word8 (..))
 -- >>> ltWord8 6 5
 -- 0
 ltWord8 :: Word8 -> Word8 -> Word8
+#if MIN_VERSION_base(4,16,0)
+ltWord8 (W8# a#) (W8# b#) = fromIntegral (I# (ltWord8# a# b#))
+#else
 ltWord8 (W8# a#) (W8# b#) = fromIntegral (I8# (ltWord# a# b#))
+#endif
 {-# INLINE ltWord8 #-}
 
 -- | Branchless less-than comparison
@@ -51,7 +56,11 @@ ltWord8 (W8# a#) (W8# b#) = fromIntegral (I8# (ltWord# a# b#))
 -- >>> ltWord16 6 5
 -- 0
 ltWord16 :: Word16 -> Word16 -> Word16
+#if MIN_VERSION_base(4,16,0)
+ltWord16 (W16# a#) (W16# b#) = fromIntegral (I# (ltWord16# a# b#))
+#else
 ltWord16 (W16# a#) (W16# b#) = fromIntegral (I16# (ltWord# a# b#))
+#endif
 {-# INLINE ltWord16 #-}
 
 -- | Branchless less-than comparison
@@ -65,7 +74,11 @@ ltWord16 (W16# a#) (W16# b#) = fromIntegral (I16# (ltWord# a# b#))
 -- >>> ltWord32 6 5
 -- 0
 ltWord32 :: Word32 -> Word32 -> Word32
+#if MIN_VERSION_base(4,16,0)
+ltWord32 (W32# a#) (W32# b#) = fromIntegral (I# (ltWord32# a# b#))
+#else
 ltWord32 (W32# a#) (W32# b#) = fromIntegral (I32# (ltWord# a# b#))
+#endif
 {-# INLINE ltWord32 #-}
 
 -- | Branchless less-than comparison
@@ -79,7 +92,11 @@ ltWord32 (W32# a#) (W32# b#) = fromIntegral (I32# (ltWord# a# b#))
 -- >>> ltWord64 6 5
 -- 0
 ltWord64 :: Word64 -> Word64 -> Word64
+#if MIN_VERSION_base(4,16,0)
+ltWord64 (W64# a#) (W64# b#) = fromIntegral (I# (ltWord# a# b#))
+#else
 ltWord64 (W64# a#) (W64# b#) = fromIntegral (I64# (ltWord# a# b#))
+#endif
 {-# INLINE ltWord64 #-}
 
 -- | Branchless less-than-or-equal-to comparison
@@ -93,7 +110,12 @@ ltWord64 (W64# a#) (W64# b#) = fromIntegral (I64# (ltWord# a# b#))
 -- >>> leWord8 6 5
 -- 0
 leWord8 :: Word8 -> Word8 -> Word8
+#if MIN_VERSION_base(4,16,0)
+leWord8 (W8# a#) (W8# b#) = fromIntegral (I# (leWord8# a# b#))
+#else
 leWord8 (W8# a#) (W8# b#) = fromIntegral (I8# (leWord# a# b#))
+#endif
+
 {-# INLINE leWord8 #-}
 
 -- | Branchless less-than-or-equal-to comparison
@@ -107,7 +129,11 @@ leWord8 (W8# a#) (W8# b#) = fromIntegral (I8# (leWord# a# b#))
 -- >>> leWord16 6 5
 -- 0
 leWord16 :: Word16 -> Word16 -> Word16
+#if MIN_VERSION_base(4,16,0)
+leWord16 (W16# a#) (W16# b#) = fromIntegral (I# (leWord16# a# b#))
+#else
 leWord16 (W16# a#) (W16# b#) = fromIntegral (I16# (leWord# a# b#))
+#endif
 {-# INLINE leWord16 #-}
 
 -- | Branchless less-than-or-equal-to comparison
@@ -121,7 +147,11 @@ leWord16 (W16# a#) (W16# b#) = fromIntegral (I16# (leWord# a# b#))
 -- >>> leWord32 6 5
 -- 0
 leWord32 :: Word32 -> Word32 -> Word32
+#if MIN_VERSION_base(4,16,0)
+leWord32 (W32# a#) (W32# b#) = fromIntegral (I# (leWord32# a# b#))
+#else
 leWord32 (W32# a#) (W32# b#) = fromIntegral (I32# (leWord# a# b#))
+#endif
 {-# INLINE leWord32 #-}
 
 -- | Branchless less-than-or-equal-to comparison
@@ -135,7 +165,11 @@ leWord32 (W32# a#) (W32# b#) = fromIntegral (I32# (leWord# a# b#))
 -- >>> leWord64 6 5
 -- 0
 leWord64 :: Word64 -> Word64 -> Word64
+#if MIN_VERSION_base(4,16,0)
+leWord64 (W64# a#) (W64# b#) = fromIntegral (I# (leWord# a# b#))
+#else
 leWord64 (W64# a#) (W64# b#) = fromIntegral (I64# (leWord# a# b#))
+#endif
 {-# INLINE leWord64 #-}
 
 -- | Branchless greater-than comparison
@@ -149,7 +183,11 @@ leWord64 (W64# a#) (W64# b#) = fromIntegral (I64# (leWord# a# b#))
 -- >>> gtWord8 6 5
 -- 1
 gtWord8 :: Word8 -> Word8 -> Word8
+#if MIN_VERSION_base(4,16,0)
+gtWord8 (W8# a#) (W8# b#) = fromIntegral (I# (gtWord8# a# b#))
+#else
 gtWord8 (W8# a#) (W8# b#) = fromIntegral (I8# (gtWord# a# b#))
+#endif
 {-# INLINE gtWord8 #-}
 
 -- | Branchless greater-than comparison
@@ -163,7 +201,11 @@ gtWord8 (W8# a#) (W8# b#) = fromIntegral (I8# (gtWord# a# b#))
 -- >>> gtWord16 6 5
 -- 1
 gtWord16 :: Word16 -> Word16 -> Word16
+#if MIN_VERSION_base(4,16,0)
+gtWord16 (W16# a#) (W16# b#) = fromIntegral (I# (gtWord16# a# b#))
+#else
 gtWord16 (W16# a#) (W16# b#) = fromIntegral (I16# (gtWord# a# b#))
+#endif
 {-# INLINE gtWord16 #-}
 
 -- | Branchless greater-than comparison
@@ -177,7 +219,11 @@ gtWord16 (W16# a#) (W16# b#) = fromIntegral (I16# (gtWord# a# b#))
 -- >>> gtWord32 6 5
 -- 1
 gtWord32 :: Word32 -> Word32 -> Word32
+#if MIN_VERSION_base(4,16,0)
+gtWord32 (W32# a#) (W32# b#) = fromIntegral (I# (gtWord32# a# b#))
+#else
 gtWord32 (W32# a#) (W32# b#) = fromIntegral (I32# (gtWord# a# b#))
+#endif
 {-# INLINE gtWord32 #-}
 
 -- | Branchless greater-than comparison
@@ -191,7 +237,11 @@ gtWord32 (W32# a#) (W32# b#) = fromIntegral (I32# (gtWord# a# b#))
 -- >>> gtWord64 6 5
 -- 1
 gtWord64 :: Word64 -> Word64 -> Word64
+#if MIN_VERSION_base(4,16,0)
+gtWord64 (W64# a#) (W64# b#) = fromIntegral (I# (gtWord# a# b#))
+#else
 gtWord64 (W64# a#) (W64# b#) = fromIntegral (I64# (gtWord# a# b#))
+#endif
 {-# INLINE gtWord64 #-}
 
 -- | Branchless greater-than-or-equal-to comparison
@@ -205,7 +255,11 @@ gtWord64 (W64# a#) (W64# b#) = fromIntegral (I64# (gtWord# a# b#))
 -- >>> geWord8 6 5
 -- 1
 geWord8 :: Word8 -> Word8 -> Word8
+#if MIN_VERSION_base(4,16,0)
+geWord8 (W8# a#) (W8# b#) = fromIntegral (I# (geWord8# a# b#))
+#else
 geWord8 (W8# a#) (W8# b#) = fromIntegral (I8# (geWord# a# b#))
+#endif
 {-# INLINE geWord8 #-}
 
 -- | Branchless greater-than-or-equal-to comparison
@@ -219,7 +273,11 @@ geWord8 (W8# a#) (W8# b#) = fromIntegral (I8# (geWord# a# b#))
 -- >>> geWord16 6 5
 -- 1
 geWord16 :: Word16 -> Word16 -> Word16
+#if MIN_VERSION_base(4,16,0)
+geWord16 (W16# a#) (W16# b#) = fromIntegral (I# (geWord16# a# b#))
+#else
 geWord16 (W16# a#) (W16# b#) = fromIntegral (I16# (geWord# a# b#))
+#endif
 {-# INLINE geWord16 #-}
 
 -- | Branchless greater-than-or-equal-to comparison
@@ -233,7 +291,11 @@ geWord16 (W16# a#) (W16# b#) = fromIntegral (I16# (geWord# a# b#))
 -- >>> geWord32 6 5
 -- 1
 geWord32 :: Word32 -> Word32 -> Word32
+#if MIN_VERSION_base(4,16,0)
+geWord32 (W32# a#) (W32# b#) = fromIntegral (I# (geWord32# a# b#))
+#else
 geWord32 (W32# a#) (W32# b#) = fromIntegral (I32# (geWord# a# b#))
+#endif
 {-# INLINE geWord32 #-}
 
 -- | Branchless greater-than-or-equal-to comparison
@@ -247,5 +309,9 @@ geWord32 (W32# a#) (W32# b#) = fromIntegral (I32# (geWord# a# b#))
 -- >>> geWord64 6 5
 -- 1
 geWord64 :: Word64 -> Word64 -> Word64
+#if MIN_VERSION_base(4,16,0)
+geWord64 (W64# a#) (W64# b#) = fromIntegral (I# (geWord# a# b#))
+#else
 geWord64 (W64# a#) (W64# b#) = fromIntegral (I64# (geWord# a# b#))
+#endif
 {-# INLINE geWord64 #-}

@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP                 #-}
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
 {-# LANGUAGE Rank2Types          #-}
@@ -8,11 +9,9 @@ module HaskellWorks.Data.Vector.AsVector8ns
   ( AsVector8ns(..)
   ) where
 
-import Control.Applicative ((<$>))
 import Control.Monad.ST
 import Data.Word
 import Foreign.ForeignPtr
--- import HaskellWorks.Data.ByteString (ToByteString (..))
 import HaskellWorks.Data.Vector.AsVector8
 
 import qualified Data.ByteString              as BS
@@ -20,6 +19,10 @@ import qualified Data.ByteString.Internal     as BS
 import qualified Data.ByteString.Lazy         as LBS
 import qualified Data.Vector.Storable         as DVS
 import qualified Data.Vector.Storable.Mutable as DVSM
+
+#if !MIN_VERSION_base(4,13,0)
+import Control.Applicative ((<$>)) -- Fix warning in ghc >= 9.2
+#endif
 
 class AsVector8ns a where
   -- | Represent the value as a list of Vector of 'n' Word8 chunks.  The last chunk will

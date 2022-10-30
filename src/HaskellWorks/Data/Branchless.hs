@@ -92,7 +92,9 @@ ltWord32 (W32# a#) (W32# b#) = fromIntegral (I32# (ltWord# a# b#))
 -- >>> ltWord64 6 5
 -- 0
 ltWord64 :: Word64 -> Word64 -> Word64
-#if MIN_VERSION_base(4,16,0)
+#if MIN_VERSION_base(4,17,0)
+ltWord64 (W64# a#) (W64# b#) = fromIntegral (I# (ltWord64# a# b#))
+#elif MIN_VERSION_base(4,16,0)
 ltWord64 (W64# a#) (W64# b#) = fromIntegral (I# (ltWord# a# b#))
 #else
 ltWord64 (W64# a#) (W64# b#) = fromIntegral (I64# (ltWord# a# b#))
@@ -165,7 +167,9 @@ leWord32 (W32# a#) (W32# b#) = fromIntegral (I32# (leWord# a# b#))
 -- >>> leWord64 6 5
 -- 0
 leWord64 :: Word64 -> Word64 -> Word64
-#if MIN_VERSION_base(4,16,0)
+#if MIN_VERSION_base(4,17,0)
+leWord64 (W64# a#) (W64# b#) = fromIntegral (I# (leWord64# a# b#))
+#elif MIN_VERSION_base(4,16,0)
 leWord64 (W64# a#) (W64# b#) = fromIntegral (I# (leWord# a# b#))
 #else
 leWord64 (W64# a#) (W64# b#) = fromIntegral (I64# (leWord# a# b#))
@@ -237,7 +241,9 @@ gtWord32 (W32# a#) (W32# b#) = fromIntegral (I32# (gtWord# a# b#))
 -- >>> gtWord64 6 5
 -- 1
 gtWord64 :: Word64 -> Word64 -> Word64
-#if MIN_VERSION_base(4,16,0)
+#if MIN_VERSION_base(4,17,0)
+gtWord64 (W64# a#) (W64# b#) = fromIntegral (I# (gtWord64# a# b#))
+#elif MIN_VERSION_base(4,16,0)
 gtWord64 (W64# a#) (W64# b#) = fromIntegral (I# (gtWord# a# b#))
 #else
 gtWord64 (W64# a#) (W64# b#) = fromIntegral (I64# (gtWord# a# b#))
@@ -309,7 +315,9 @@ geWord32 (W32# a#) (W32# b#) = fromIntegral (I32# (geWord# a# b#))
 -- >>> geWord64 6 5
 -- 1
 geWord64 :: Word64 -> Word64 -> Word64
-#if MIN_VERSION_base(4,16,0)
+#if MIN_VERSION_base(4,17,0)
+geWord64 (W64# a#) (W64# b#) = fromIntegral (I# (geWord64# a# b#))
+#elif MIN_VERSION_base(4,16,0)
 geWord64 (W64# a#) (W64# b#) = fromIntegral (I# (geWord# a# b#))
 #else
 geWord64 (W64# a#) (W64# b#) = fromIntegral (I64# (geWord# a# b#))

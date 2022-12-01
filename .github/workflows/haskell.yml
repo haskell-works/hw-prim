@@ -61,7 +61,6 @@ jobs:
           store-path: ${{ steps.setup-haskell.outputs.cabal-store }}
           threads: 16
           archive-uri: https://cache.haskellworks.io/archive
-          skip: "${{ secrets.BINARY_CACHE_URI != '' }}"
 
       - name: Build
         run: cabal build all --enable-tests --enable-benchmarks

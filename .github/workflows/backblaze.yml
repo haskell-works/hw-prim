@@ -1,0 +1,69 @@
+name: Binaries (Backblaze)
+
+defaults:
+  run:
+    shell: bash
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        ghc: ["9.4.2"]
+        os: [ubuntu-latest]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: haskell/actions/setup@v1
+        id: setup-haskell
+        with:
+          ghc-version: ${{ matrix.ghc }}
+          cabal-version: 3.8.1.0
+
+      - name: Set some window specific things
+        if: matrix.os == 'windows-latest'
+        run: echo 'EXE_EXT=.exe' >> $GITHUB_ENV
+
+      - name: Configure project
+        run: |
+          cabal configure --enable-tests --enable-benchmarks --write-ghc-environment-files=ghc8.4.4+
+          cabal build all --enable-tests --enable-benchmarks --dry-run
+
+      - name: Cabal cache over S3
+        uses: action-works/cabal-cache-s3@v1
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.BACKBLAZE_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.BACKBLAZE_AWS_SECRET_ACCESS_KEY }}
+        with:
+          region: us-west-2
+          dist-dir: dist-newstyle
+          store-path: ${{ steps.setup-haskell.outputs.cabal-store }}
+          threads: 16
+          archive-uri: ${{ secrets.BACKBLAZE_BINARY_CACHE_URI }}
+          host-name: s3.us-west-004.backblazeb2.com
+          host-port: 443
+          host-ssl: "True"
+          skip: "${{ secrets.BINARY_CACHE_URI == '' }}"
+
+      - name: Cabal cache over HTTPS
+        uses: action-works/cabal-cache-s3@v1
+        with:
+          dist-dir: dist-newstyle
+          store-path: ${{ steps.setup-haskell.outputs.cabal-store }}
+          threads: 16
+          archive-uri: https://cache.haskellworks.io/archive
+
+      - name: Build
+        run: cabal build all --enable-tests --enable-benchmarks
+
+      - name: Test
+        run: cabal test all --enable-tests --enable-benchmarks

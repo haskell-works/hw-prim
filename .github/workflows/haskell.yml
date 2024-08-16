@@ -17,24 +17,29 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ghc: ["9.8.1", "9.6.3", "9.4.8", "9.2.8", "9.0.2", "8.10.7"]
-        os: [ubuntu-latest, macOS-latest, windows-latest]
-        exclude:
-        - os: windows-latest
-          ghc: "9.4.2"
+        ghc: ["9.10.1", "9.8.2", "9.6.6", "9.4.8", "9.2.8"]
+        os: [ubuntu-latest, windows-latest]
+        include:
+        - ghc: "9.6.6"
+          os: macOS-latest
+        - ghc: "9.8.2"
+          os: macOS-latest
+        - ghc: "9.10.1"
+          os: macOS-latest
 
     env:
       # Modify this value to "invalidate" the cabal cache.
-      CABAL_CACHE_VERSION: "2024-01-05"
+      CACHE_VERSION: "2024-01-05"
 
     steps:
       - uses: actions/checkout@v2
 
-      - uses: haskell-actions/setup@v2
+      - name: Install Haskell
+        uses: haskell-actions/setup@v2
         id: setup-haskell
         with:
           ghc-version: ${{ matrix.ghc }}
-          cabal-version: '3.10.2.1'
+          cabal-version: '3.12.1.0'
 
       - name: Set some window specific things
         if: matrix.os == 'windows-latest'
@@ -45,33 +50,34 @@ jobs:
           cabal configure --enable-tests --enable-benchmarks --write-ghc-environment-files=ghc8.4.4+
           cabal build all --enable-tests --enable-benchmarks --dry-run
 
-      - name: Cabal cache over S3
-        uses: action-works/cabal-cache-s3@v1
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        with:
-          region: us-west-2
-          dist-dir: dist-newstyle
-          store-path: ${{ steps.setup-haskell.outputs.cabal-store }}
-          threads: 16
-          archive-uri: ${{ secrets.BINARY_CACHE_URI }}/${{ env.CABAL_CACHE_VERSION }}/${{ runner.os }}/${{ matrix.cabal }}/${{ matrix.ghc }}
-          skip: "${{ secrets.BINARY_CACHE_URI == '' }}"
+      - name: Record dependencies
+        run: |
+          cat dist-newstyle/cache/plan.json | jq -r '."install-plan"[].id' | sort | uniq > dependencies.txt
+          date +"%Y-%m-%d" > date.txt
 
-      - name: Cabal cache over HTTPS
-        uses: action-works/cabal-cache-s3@v1
+      - uses: actions/cache@v4
+        name: Cache cabal store
         with:
-          dist-dir: dist-newstyle
-          store-path: ${{ steps.setup-haskell.outputs.cabal-store }}
-          threads: 16
-          archive-uri: https://cache.haskellworks.io/${{ env.CABAL_CACHE_VERSION }}/${{ runner.os }}/${{ matrix.cabal }}/${{ matrix.ghc }}
-          skip: "${{ secrets.BINARY_CACHE_URI != '' }}"
+          path: ${{ steps.setup-haskell.outputs.cabal-store }}
+          key: |
+            cache-${{ env.CACHE_VERSION }}-${{ runner.os }}-${{ matrix.ghc }}-${{ hashFiles('dependencies.txt') }}-${{ hashFiles('date.txt') }}
+          restore-keys: |
+            cache-${{ env.CACHE_VERSION }}-${{ runner.os }}-${{ matrix.ghc }}-${{ hashFiles('dependencies.txt') }}-${{ hashFiles('date.txt') }}
+            cache-${{ env.CACHE_VERSION }}-${{ runner.os }}-${{ matrix.ghc }}-${{ hashFiles('dependencies.txt') }}
+            cache-${{ env.CACHE_VERSION }}-${{ runner.os }}-${{ matrix.ghc }}
 
       - name: Build
         run: cabal build all --enable-tests --enable-benchmarks
 
       - name: Test
         run: cabal test all --enable-tests --enable-benchmarks
+
+      - name: Upload dependencies.txt
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: dependencies
+          path: dependencies.txt
 
   check:
     needs: build
